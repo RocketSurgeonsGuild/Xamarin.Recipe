@@ -1,0 +1,154 @@
+public static class BuildParameters
+{
+    public static string Target { get; private set; }
+    public static string Configuration { get; private set; }
+    public static string Title {get; private set;}
+    public static Cake.Core.Configuration.ICakeConfiguration CakeConfiguration { get; private set; }
+    public static bool IsLocalBuild { get; private set; }
+    public static bool IsRunningOnUnix { get; private set; }
+    public static bool IsRunningOnWindows { get; private set; }
+    public static bool IsRunningOnAppVeyor { get; private set; }
+    public static bool IsPullRequest { get; private set; }
+    public static bool IsMainRepository { get; private set; }
+    public static bool IsPublicRepository {get; private set; }
+    public static bool IsMasterBranch { get; private set; }
+    public static bool IsDevelopBranch { get; private set; }
+    public static bool IsReleaseBranch { get; private set; }
+    public static bool IsHotFixBranch { get; private set ; }
+    public static bool IsTagged { get; private set; }
+    public static bool IsPublishBuild { get; private set; }
+    public static bool IsReleaseBuild { get; private set; }
+    public static bool ShouldRunGitVersion { get; private set; }
+    public static string AppCenterApiKey { get; private set; }
+  
+    public static bool IsDotNetCoreBuild { get; set; }
+    public static bool IsNuGetBuild { get; set; }
+    public static bool TransifexEnabled { get; set; }
+    public static bool PrepareLocalRelease { get; set; }
+
+    public static bool ShouldDeployAppCenter { get; set; }
+
+    public static BuildVersion Version { get; private set; }
+    public static BuildPaths Paths { get; private set; }
+    public static BuildTasks Tasks { get; set; }
+    public static DirectoryPath RootDirectoryPath { get; private set; }
+    public static FilePath SolutionFilePath { get; private set; }
+    public static DirectoryPath SourceDirectoryPath { get; private set; }
+    public static DirectoryPath SolutionDirectoryPath { get; private set; }
+    public static DirectoryPath TestDirectoryPath { get; private set; }
+    public static FilePath IntegrationTestScriptPath { get; private set; }
+    public static string TestFilePattern { get; private set; }
+    public static string ResharperSettingsFileName { get; private set; }
+    public static string RepositoryOwner { get; private set; }
+    public static string RepositoryName { get; private set; }
+
+    static BuildParameters()
+    {
+        Tasks = new BuildTasks();
+    }
+
+    public static bool CanDistribute
+    {
+        get
+        {
+            return !string.IsNullOrEmpty(BuildParameters.AppCenterApiKey);
+        }
+    }
+
+    public static void SetParameters(
+        ICakeContext context,
+        BuildSystem buildSystem,
+        DirectoryPath sourceDirectoryPath,
+        string title,
+        FilePath solutionFilePath = null,
+        DirectoryPath solutionDirectoryPath = null,
+        DirectoryPath rootDirectoryPath = null,
+        DirectoryPath testDirectoryPath = null,
+        string testFilePattern = null,
+        string integrationTestScriptPath = null,
+        string resharperSettingsFileName = null,
+        string repositoryOwner = null,
+        string repositoryName = null,
+        string appVeyorAccountName = null,
+        string appVeyorProjectSlug = null,
+        bool isPublicRepository = true,
+        bool? shouldRunGitVersion = false,
+        bool shouldDeployAppCenter = false,
+        string mainBranch = "main",
+        string devBranch = "dev")
+    {
+        if (context == null)
+        {
+            throw new ArgumentNullException("context");
+        }
+
+        SourceDirectoryPath = sourceDirectoryPath;
+        Title = title;
+        SolutionFilePath = solutionFilePath ?? SourceDirectoryPath.CombineWithFilePath(Title + ".sln");
+        SolutionDirectoryPath = solutionDirectoryPath ?? SourceDirectoryPath.Combine(Title);
+        RootDirectoryPath = rootDirectoryPath ?? context.MakeAbsolute(context.Environment.WorkingDirectory);
+        TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
+        TestFilePattern = testFilePattern;
+        IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
+        ResharperSettingsFileName = resharperSettingsFileName ?? string.Format("{0}.sln.DotSettings", Title);
+        RepositoryOwner = repositoryOwner ?? string.Empty;
+        RepositoryName = repositoryName ?? Title;
+        // AppVeyorAccountName = appVeyorAccountName ?? RepositoryOwner.Replace("-", "").ToLower();
+        // AppVeyorProjectSlug = appVeyorProjectSlug ?? Title.Replace(".", "-").ToLower();
+
+        Target = context.Argument("target", "Default");
+        Configuration = context.Argument("configuration", "Release");
+        Title = title;
+
+        CakeConfiguration = context.GetConfiguration();
+
+        Target = context.Argument("target", "Default");
+        Configuration = context.Argument("configuration", "Release");
+        PrepareLocalRelease = context.Argument("prepareLocalRelease", false);
+        CakeConfiguration = context.GetConfiguration();
+        IsLocalBuild = buildSystem.IsLocalBuild;
+        IsRunningOnUnix = context.IsRunningOnUnix();
+        IsRunningOnWindows = context.IsRunningOnWindows();
+        IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor;
+        IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
+        IsMainRepository = StringComparer.OrdinalIgnoreCase.Equals(string.Concat(repositoryOwner, "/", repositoryName), buildSystem.AppVeyor.Environment.Repository.Name);
+        IsPublicRepository = isPublicRepository;
+        IsMasterBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
+        IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
+        IsReleaseBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase);
+        IsHotFixBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
+        IsTagged = (
+            buildSystem.AppVeyor.Environment.Repository.Tag.IsTag &&
+            !string.IsNullOrWhiteSpace(buildSystem.AppVeyor.Environment.Repository.Tag.Name)
+        );
+
+        IsDotNetCoreBuild = true;
+
+        ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;
+        ShouldDeployAppCenter = shouldDeployAppCenter;
+
+		SetBuildPaths(BuildPaths.GetPaths(context));
+    }
+
+    public static void SetBuildVersion(BuildVersion version)
+    {
+        Version  = version;
+    }
+
+    public static void SetBuildPaths(BuildPaths paths)
+    {
+        Paths = paths;
+    }
+
+    public static void PrintParameters(ICakeContext context)
+    {
+
+    }
+}
+
+public static Cake.Core.Configuration.ICakeConfiguration GetConfiguration(this ICakeContext context)
+{
+    var configProvider = new Cake.Core.Configuration.CakeConfigurationProvider(context.FileSystem, context.Environment);
+    var arguments = (IDictionary<string, string>)context.Arguments.GetType().GetProperty("Arguments").GetValue(context.Arguments);
+    return configProvider.CreateConfiguration(context.Environment.WorkingDirectory,arguments);
+}

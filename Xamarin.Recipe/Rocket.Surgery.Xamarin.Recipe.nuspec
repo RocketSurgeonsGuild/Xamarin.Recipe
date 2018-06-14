@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Rocket.Surgery.Xamarin.Recipe</id>
+    <version>0.1.0</version>
+    <authors>Rodney Littles II</authors>
+    <owners>Rocket Surgeons Guild</owners>
+                <copyright>Copyright Rodney Littles II © 2017</copyright>
+    <description>Re-usable build script for Cake that is focused on building and deploying Xamarin mobile.</description>
+    <tags>Build Cake Xamarin Mobile</tags>
+  </metadata>
+</package>
