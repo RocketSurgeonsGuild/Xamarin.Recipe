@@ -46,6 +46,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("IsPullRequest: {0}", BuildParameters.IsPullRequest);
         Information("IsMainRepository: {0}", BuildParameters.IsMainRepository);
         Information("IsMasterBranch: {0}", BuildParameters.IsMasterBranch);
+        Information("IsFeatureBranch: {0}", BuildParameters.IsFeatureBranch);
         Information("IsReleaseBranch: {0}", BuildParameters.IsReleaseBranch);
         Information("IsHotFixBranch: {0}", BuildParameters.IsHotFixBranch);
         Information("IsTagged: {0}", BuildParameters.IsTagged);
@@ -65,13 +66,24 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         CleanDirectories(BuildParameters.Paths.Directories.ToClean);
     });
 
-BuildParameters.Tasks.DefaultTask = Task("Execute");
+    BuildParameters.Tasks.RestoreTask = Task("Restore")
+    .Does(() =>
+    {
+        Information("Restoring {0}...", BuildParameters.SolutionFilePath);
 
-BuildParameters.Tasks.RestoreTask = Task("Restore");
+        NuGetRestore(
+            BuildParameters.SolutionFilePath,
+            new NuGetRestoreSettings
+            {
+                Source = BuildParameters.NuGetSources
+            });
+    });
 
 BuildParameters.Tasks.BuildTask = Task("Build");
 
 BuildParameters.Tasks.TestTask = Task("Test");
+
+BuildParameters.Tasks.DefaultTask = Task("Execute");
 
 public Builder Build
 {

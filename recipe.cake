@@ -19,7 +19,8 @@ BuildParameters.Tasks.CleanTask
     .IsDependentOn("Generate-Version-File");
 
 Task("Generate-Version-File")
-    .Does(() => {
+    .Does(() => 
+    {
         var buildMetaDataCodeGen = TransformText(@"
         public class BuildMetaData
         {
@@ -27,27 +28,15 @@ Task("Generate-Version-File")
             public static string Version { get; } = ""<%version%>"";
         }",
         "<%",
-        "%>"
-        )
-   .WithToken("date", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))
-   .WithToken("version", BuildParameters.Version.SemVersion)
-   .ToString();
+        "%>")
+        .WithToken("date", DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"))
+        .WithToken("version", BuildParameters.Version.SemVersion)
+        .ToString();
 
     System.IO.File.WriteAllText(
         "./Xamarin.Recipe/Content/version.cake",
         buildMetaDataCodeGen
         );
     });
-
-Task("Run-Local-Integration-Tests")
-    .IsDependentOn("Default")
-    .Does(() => {
-    CakeExecuteScript("./test.cake",
-        new CakeSettings {
-            Arguments = new Dictionary<string, string>{
-                { "recipe-version", BuildParameters.Version.SemVersion },
-                { "verbosity", Context.Log.Verbosity.ToString("F") }
-            }});
-});
 
 Build.RunNuGet();

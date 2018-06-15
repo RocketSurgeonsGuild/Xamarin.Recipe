@@ -13,6 +13,7 @@ public static class BuildParameters
     public static bool IsPublicRepository {get; private set; }
     public static bool IsMasterBranch { get; private set; }
     public static bool IsDevelopBranch { get; private set; }
+    public static bool IsFeatureBranch { get; private set; }
     public static bool IsReleaseBranch { get; private set; }
     public static bool IsHotFixBranch { get; private set ; }
     public static bool IsTagged { get; private set; }
@@ -40,7 +41,10 @@ public static class BuildParameters
     public static string TestFilePattern { get; private set; }
     public static string ResharperSettingsFileName { get; private set; }
     public static string RepositoryOwner { get; private set; }
-    public static string RepositoryName { get; private set; }
+    public static string RepositoryName { get; private set; }    
+
+    public static FilePath NugetConfig { get; private set; }
+    public static ICollection<string> NuGetSources { get; private set; }
 
     static BuildParameters()
     {
@@ -71,11 +75,13 @@ public static class BuildParameters
         string repositoryName = null,
         string appVeyorAccountName = null,
         string appVeyorProjectSlug = null,
-        bool isPublicRepository = true,
-        bool? shouldRunGitVersion = false,
+        bool isPublicRepository = false,
+        bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
         string mainBranch = "main",
-        string devBranch = "dev")
+        string devBranch = "dev",
+        FilePath nugetConfig = null,
+        ICollection<string> nuGetSources = null)
     {
         if (context == null)
         {
@@ -115,12 +121,18 @@ public static class BuildParameters
         IsPublicRepository = isPublicRepository;
         IsMasterBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
         IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
+        IsFeatureBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("feature", StringComparison.OrdinalIgnoreCase);
         IsReleaseBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase);
         IsHotFixBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
         IsTagged = (
             buildSystem.AppVeyor.Environment.Repository.Tag.IsTag &&
             !string.IsNullOrWhiteSpace(buildSystem.AppVeyor.Environment.Repository.Tag.Name)
         );
+
+        NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
+        NuGetSources = GetNuGetSources(context, nuGetSources);
+
+        GetNuGetSources(context, nuGetSources);
 
         IsDotNetCoreBuild = true;
 
@@ -142,7 +154,8 @@ public static class BuildParameters
 
     public static void PrintParameters(ICakeContext context)
     {
-
+        context.Information("NugetConfig: {0} ({1})", NugetConfig, context.FileExists(NugetConfig));
+        context.Information("NuGetSources: {0}", string.Join(", ", NuGetSources));
     }
 }
 
@@ -151,4 +164,31 @@ public static Cake.Core.Configuration.ICakeConfiguration GetConfiguration(this I
     var configProvider = new Cake.Core.Configuration.CakeConfigurationProvider(context.FileSystem, context.Environment);
     var arguments = (IDictionary<string, string>)context.Arguments.GetType().GetProperty("Arguments").GetValue(context.Arguments);
     return configProvider.CreateConfiguration(context.Environment.WorkingDirectory,arguments);
+}
+
+public static ICollection<string> GetNuGetSources(ICakeContext context, ICollection<string> nuGetSources)
+{
+    if (nuGetSources == null)
+    {
+        if (context.FileExists(BuildParameters.NugetConfig))
+        {
+            nuGetSources = (
+                from configuration in System.Xml.Linq.XDocument.Load(BuildParameters.NugetConfig.FullPath).Elements("configuration")
+                from packageSources in configuration.Elements("packageSources")
+                from add in packageSources.Elements("add")
+                from value in add.Attributes("value")
+                select value.Value
+                ).ToArray();
+        }
+        else
+        {
+            // TODO: Use parameter for Cake Contrib feed from environment variable, similar to BuildParameters.MyGet.SourceUrl
+            nuGetSources = new []{
+                "https://api.nuget.org/v3/index.json",
+                "https://www.myget.org/F/cake-contrib/api/v3/index.json"
+            };
+        }
+    }
+    
+    return nuGetSources;
 }
