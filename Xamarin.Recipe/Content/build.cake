@@ -56,9 +56,16 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("Build DirectoryPath: {0}", MakeAbsolute(BuildParameters.Paths.Directories.Build));
     });
 
-BuildParameters.Tasks.DefaultTask = Task("Execute");
+    BuildParameters.Tasks.CleanTask = Task("Clean")
+    .IsDependentOn("Show-Info")
+    .Does(() =>
+    {
+        Information("Cleaning...");
 
-BuildParameters.Tasks.CleanTask = Task("Clean");
+        CleanDirectories(BuildParameters.Paths.Directories.ToClean);
+    });
+
+BuildParameters.Tasks.DefaultTask = Task("Execute");
 
 BuildParameters.Tasks.RestoreTask = Task("Restore");
 
@@ -117,7 +124,6 @@ public class Builder
         //TODO: Only set .NET Core dependencies here.
         // Move the remaining IsDependentOn calls to the Task assignment.
                 
-        BuildParameters.Tasks.CleanTask.IsDependentOn("Show-Info");
         BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("MSBuild");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOSArchive").IsDependentOn("AndroidArchive");
