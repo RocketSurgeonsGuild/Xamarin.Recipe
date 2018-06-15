@@ -19,8 +19,7 @@ BuildParameters.Tasks.CleanTask
     .IsDependentOn("Generate-Version-File");
 
 Task("Generate-Version-File")
-    .Does(() =>
-    {
+    .Does(() => {
         var buildMetaDataCodeGen = TransformText(@"
         public class BuildMetaData
         {
@@ -42,14 +41,13 @@ Task("Generate-Version-File")
 
 Task("Run-Local-Integration-Tests")
     .IsDependentOn("Default")
-    .Does(() =>
-    {
-        CakeExecuteScript("./test.cake",
-            new CakeSettings {
-                Arguments = new Dictionary<string, string>{
-                    { "recipe-version", BuildParameters.Version.SemVersion },
-                    { "verbosity", Context.Log.Verbosity.ToString("F") }
-                }});
-    });
+    .Does(() => {
+    CakeExecuteScript("./test.cake",
+        new CakeSettings {
+            Arguments = new Dictionary<string, string>{
+                { "recipe-version", BuildParameters.Version.SemVersion },
+                { "verbosity", Context.Log.Verbosity.ToString("F") }
+            }});
+});
 
 Build.RunNuGet();
