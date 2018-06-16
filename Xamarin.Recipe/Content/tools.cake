@@ -7,6 +7,8 @@ private const string GitVersionTool = "#tool nuget:?package=GitVersion.CommandLi
 private const string WyamTool = "#tool nuget:?package=Wyam&version=1.2.0";
 private const string MSBuildExtensionPackTool = "#tool nuget:?package=MSBuild.Extension.Pack&version=1.9.0";
 private const string XUnitTool = "#tool nuget:?package=xunit.runner.console&version=2.1.0";
+private const string AndroidAppManifest = "#addin nuget:?package=Cake.AndroidAppManifest&version=1.1.0";
+private const string Plist = "#addin nuget:?package=Cake.Plist&version=0.4.0";
 
 Action<string, Action> RequireTool = (tool, action) => {
     var script = MakeAbsolute(File(string.Format("./{0}.cake", Guid.NewGuid())));

@@ -41,6 +41,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
     .Does(() =>
     {
         Information("Target: {0}", BuildParameters.Target);
+        Information("Application Target: {0}", BuildParameters.ApplicationTarget);
         Information("Configuration: {0}", BuildParameters.Configuration);
         Information("IsLocalBuild: {0}", BuildParameters.IsLocalBuild);
         Information("IsPullRequest: {0}", BuildParameters.IsPullRequest);
@@ -82,6 +83,8 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
 BuildParameters.Tasks.BuildTask = Task("Build");
 
 BuildParameters.Tasks.TestTask = Task("Test");
+
+BuildParameters.Tasks.ArchiveTask = Task("Archive");
 
 BuildParameters.Tasks.DefaultTask = Task("Execute");
 
@@ -137,8 +140,9 @@ public class Builder
         // Move the remaining IsDependentOn calls to the Task assignment.
                 
         BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
-        BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("MSBuild");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOSArchive").IsDependentOn("AndroidArchive");
+        BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build").IsDependentOn("iPhone-Build");
+        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("iOSArchive").IsDependentOn("AndroidArchive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Archive").IsDependentOn("Distribute");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("AppCenter");
     }

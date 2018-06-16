@@ -1,6 +1,7 @@
 public static class BuildParameters
 {
     public static string Target { get; private set; }
+    public static ApplicationTarget ApplicationTarget { get; private set; }
     public static string Configuration { get; private set; }
     public static string Title {get; private set;}
     public static Cake.Core.Configuration.ICakeConfiguration CakeConfiguration { get; private set; }
@@ -36,6 +37,8 @@ public static class BuildParameters
     public static FilePath SolutionFilePath { get; private set; }
     public static DirectoryPath SourceDirectoryPath { get; private set; }
     public static DirectoryPath SolutionDirectoryPath { get; private set; }
+    public static FilePath AndroidProjectPath { get; private set; }
+    public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
     public static string TestFilePattern { get; private set; }
@@ -66,6 +69,8 @@ public static class BuildParameters
         string title,
         FilePath solutionFilePath = null,
         DirectoryPath solutionDirectoryPath = null,
+        FilePath androidProjectPath = null,
+        string platform = "iPhone",
         DirectoryPath rootDirectoryPath = null,
         DirectoryPath testDirectoryPath = null,
         string testFilePattern = null,
@@ -93,6 +98,7 @@ public static class BuildParameters
         SolutionFilePath = solutionFilePath ?? SourceDirectoryPath.CombineWithFilePath(Title + ".sln");
         SolutionDirectoryPath = solutionDirectoryPath ?? SourceDirectoryPath.Combine(Title);
         RootDirectoryPath = rootDirectoryPath ?? context.MakeAbsolute(context.Environment.WorkingDirectory);
+        AndroidProjectPath = androidProjectPath;
         TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
         TestFilePattern = testFilePattern;
         IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
@@ -103,14 +109,11 @@ public static class BuildParameters
         // AppVeyorProjectSlug = appVeyorProjectSlug ?? Title.Replace(".", "-").ToLower();
 
         Target = context.Argument("target", "Default");
-        Configuration = context.Argument("configuration", "Release");
-        Title = title;
-
-        CakeConfiguration = context.GetConfiguration();
-
-        Target = context.Argument("target", "Default");
+        ApplicationTarget = context.Argument("app", ApplicationTarget.Android);
         Configuration = context.Argument("configuration", "Release");
         PrepareLocalRelease = context.Argument("prepareLocalRelease", false);
+        Platform = platform;
+        Title = title;
         CakeConfiguration = context.GetConfiguration();
         IsLocalBuild = buildSystem.IsLocalBuild;
         IsRunningOnUnix = context.IsRunningOnUnix();

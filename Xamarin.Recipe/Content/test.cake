@@ -9,5 +9,3 @@ Task("UI-Test")
     {
 
     });
-
-BuildParameters.Tasks.TestTask.IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
