@@ -56,6 +56,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("Solution DirectoryPath: {0}", MakeAbsolute((DirectoryPath)BuildParameters.SolutionDirectoryPath));
         Information("Source DirectoryPath: {0}", MakeAbsolute(BuildParameters.SourceDirectoryPath));
         Information("Build DirectoryPath: {0}", MakeAbsolute(BuildParameters.Paths.Directories.Build));
+        Information("Test DirectoryPath: {0}", MakeAbsolute(BuildParameters.TestDirectoryPath));
     });
 
     BuildParameters.Tasks.CleanTask = Task("Clean")

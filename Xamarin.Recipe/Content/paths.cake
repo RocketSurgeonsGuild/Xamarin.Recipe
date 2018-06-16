@@ -36,6 +36,8 @@ public class BuildPaths
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
         var solutionInfoFilePath = ((DirectoryPath)BuildParameters.SourceDirectoryPath).CombineWithFilePath("SolutionInfo.cs");
         var buildLogFilePath = ((DirectoryPath)buildDirectoryPath).CombineWithFilePath("MsBuild.log");
+        var unitTestFilePaths = context.GetFiles(BuildParameters.TestDirectoryPath + "/unit/**/*.csproj").ToArray();
+        var uiTestFilePaths = context.GetFiles(BuildParameters.TestDirectoryPath + "/ui/**/*.csproj").ToArray();
 
         var repoFilesPaths = new FilePath[] {
             "LICENSE",
@@ -62,6 +64,8 @@ public class BuildPaths
         var buildFiles = new BuildFiles(
             context,
             repoFilesPaths,
+            unitTestFilePaths,
+            uiTestFilePaths,
             testCoverageOutputFilePath,
             solutionInfoFilePath,
             buildLogFilePath);
@@ -83,10 +87,16 @@ public class BuildFiles
     public FilePath SolutionInfoFilePath { get; private set; }
 
     public FilePath BuildLogFilePath { get; private set; }
+    
+    public ICollection<FilePath> UnitTestFilePaths { get; private set; }
+    
+    public ICollection<FilePath> UITestFilePaths { get; private set; }
 
     public BuildFiles(
         ICakeContext context,
         FilePath[] repoFilesPaths,
+        FilePath[] unitTestFilePaths,
+        FilePath[] uiTestFilePaths,
         FilePath testCoverageOutputFilePath,
         FilePath solutionInfoFilePath,
         FilePath buildLogFilePath
@@ -96,6 +106,8 @@ public class BuildFiles
         TestCoverageOutputFilePath = testCoverageOutputFilePath;
         SolutionInfoFilePath = solutionInfoFilePath;
         BuildLogFilePath = buildLogFilePath;
+        UnitTestFilePaths = unitTestFilePaths;
+        UITestFilePaths = uiTestFilePaths;
     }
 
     private static FilePath[] Filter(ICakeContext context, FilePath[] files)

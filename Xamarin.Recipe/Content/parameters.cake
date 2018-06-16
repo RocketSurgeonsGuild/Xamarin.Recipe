@@ -135,8 +135,6 @@ public static class BuildParameters
         NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
         NuGetSources = GetNuGetSources(context, nuGetSources);
 
-        GetNuGetSources(context, nuGetSources);
-
         IsDotNetCoreBuild = true;
 
         ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;

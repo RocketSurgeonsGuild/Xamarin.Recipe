@@ -3,7 +3,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 private const string GitReleaseManagerTool = "#tool nuget:?package=gitreleasemanager&version=0.7.0";
-private const string GitVersionTool = "#tool nuget:?package=GitVersion.CommandLine&version=3.6.2";
+private const string GitVersionTool = "#tool nuget:?package=GitVersion.CommandLine&version=3.6.5";
 private const string WyamTool = "#tool nuget:?package=Wyam&version=1.2.0";
 private const string MSBuildExtensionPackTool = "#tool nuget:?package=MSBuild.Extension.Pack&version=1.9.0";
 private const string XUnitTool = "#tool nuget:?package=xunit.runner.console&version=2.1.0";
