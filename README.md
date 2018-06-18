@@ -14,4 +14,4 @@ Most of the code, conventions and concepts for this set of scripts came directly
 
 |dev|main|
 |:--:|:--:|
-[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/dev?svg=true)](ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/dev)|[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/main?svg=true)](ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/main)|
+[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/dev?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/dev)|[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/main?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/main)|

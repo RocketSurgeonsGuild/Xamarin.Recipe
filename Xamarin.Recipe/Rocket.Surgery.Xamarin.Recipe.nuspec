@@ -6,6 +6,7 @@
     <authors>Rodney Littles II</authors>
     <owners>Rocket Surgeons Guild</owners>
     <copyright>Copyright Rodney Littles, II © 2018</copyright>
+    <licenseUrl>https://github.com/RocketSurgeonsGuild/Xamarin.Recipe/blob/main/LICENSE</licenseUrl>
     <description>Re-usable build script for Cake that is focused on building and deploying Xamarin mobile.</description>
     <tags>Build Cake Xamarin Mobile</tags>
   </metadata>
