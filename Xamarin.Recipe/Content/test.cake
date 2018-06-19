@@ -4,12 +4,13 @@ Task("Unit-Test")
         Verbose("Executing Unit Tests");
         foreach(FilePath path in BuildParameters.Paths.Files.UnitTestFilePaths)
         {
-            Verbose("Executing: {0}", path);
+            var fullPath = MakeAbsolute(path).FullPath;
 
-            DotNetCoreTest(path.FullPath, new DotNetCoreTestSettings
+            Verbose("Executing: {0}", fullPath);
+
+            DotNetCoreTest(fullPath, new DotNetCoreTestSettings
                 { 
-                    Configuration = BuildParameters.Configuration,
-                    NoBuild = true
+                    Configuration = BuildParameters.Configuration
                 });
         }
     });

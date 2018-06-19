@@ -39,6 +39,7 @@ public static class BuildParameters
     public static DirectoryPath SolutionDirectoryPath { get; private set; }
     public static FilePath AndroidProjectPath { get; private set; }
     public static FilePath IOSProjectPath { get; private set; }
+    public static FilePath PlistFilePath { get; private set; }
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
@@ -49,7 +50,6 @@ public static class BuildParameters
     public static FilePath AndroidManifest { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
-    public static DirectoryPathCollection BinDirectories { get; private set; }
 
     static BuildParameters()
     {
@@ -73,6 +73,7 @@ public static class BuildParameters
         DirectoryPath solutionDirectoryPath = null,
         FilePath androidProjectPath = null,
         FilePath iosProjectPath = null,
+        FilePath plistFilePath = null,
         string platform = "iPhone",
         DirectoryPath rootDirectoryPath = null,
         DirectoryPath testDirectoryPath = null,
@@ -104,6 +105,7 @@ public static class BuildParameters
         RootDirectoryPath = rootDirectoryPath ?? context.MakeAbsolute(context.Environment.WorkingDirectory);
         AndroidProjectPath = androidProjectPath;
         IOSProjectPath = iosProjectPath;
+        PlistFilePath = plistFilePath;
         TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
         TestFilePattern = testFilePattern;
         IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
@@ -114,7 +116,7 @@ public static class BuildParameters
         // AppVeyorProjectSlug = appVeyorProjectSlug ?? Title.Replace(".", "-").ToLower();
 
         Target = context.Argument("target", "Default");
-        ApplicationTarget = context.Argument("app", ApplicationTarget.Android);
+        ApplicationTarget = context.Argument("application", ApplicationTarget.Android);
         Configuration = context.Argument("configuration", "Release");
         PrepareLocalRelease = context.Argument("prepareLocalRelease", false);
         Platform = platform;
@@ -138,7 +140,6 @@ public static class BuildParameters
         );
 
         AndroidManifest = androidManifest;
-        BinDirectories = context.GetDirectories($"{BuildParameters.SourceDirectoryPath}/**/bin/");
 
         NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
         NuGetSources = GetNuGetSources(context, nuGetSources);

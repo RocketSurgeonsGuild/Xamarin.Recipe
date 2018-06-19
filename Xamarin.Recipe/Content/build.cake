@@ -28,7 +28,7 @@ Setup(context =>
         BuildParameters.IsTagged);
 });
 
-Teardown(ctx =>
+Teardown(context =>
 {
    // Executed AFTER the last task.
    Information("Finished running tasks.");

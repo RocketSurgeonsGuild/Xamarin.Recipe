@@ -2,7 +2,6 @@ public class BuildPaths
 {
     public BuildFiles Files { get; private set; }
     public BuildDirectories Directories { get; private set; }
-
     public static BuildPaths GetPaths(ICakeContext context)
     {
         if (context == null)
@@ -31,7 +30,6 @@ public class BuildPaths
         var packagesDirectory = buildDirectoryPath + "/Packages";
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
-        var bin = BuildParameters.BinDirectories;
 
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
@@ -60,8 +58,7 @@ public class BuildPaths
             xUnitTestResultsDirectory,
             testCoverageDirectory,
             nuGetPackagesOutputDirectory,
-            packagesDirectory,
-            bin);
+            packagesDirectory);
 
         var buildFiles = new BuildFiles(
             context,
@@ -153,8 +150,7 @@ public class BuildDirectories
     public DirectoryPath NuGetPackages { get; private set; }
     public DirectoryPath ChocolateyPackages { get; private set; }
     public DirectoryPath Packages { get; private set; }
-    public DirectoryPathCollection Bin { get; private set; }
-    public DirectoryPathCollection ToClean { get; private set; }
+    public ICollection<DirectoryPath> ToClean { get; private set; }
 
     public BuildDirectories(
         DirectoryPath build,
@@ -171,8 +167,7 @@ public class BuildDirectories
         DirectoryPath xunitTestResults,
         DirectoryPath testCoverage,
         DirectoryPath nuGetPackages,
-        DirectoryPath packages,
-        DirectoryPathCollection bin)
+        DirectoryPath packages)
     {
         Build = build;
         TempBuild = tempBuild;
@@ -189,13 +184,12 @@ public class BuildDirectories
         TestCoverage = testCoverage;
         NuGetPackages = nuGetPackages;
         Packages = packages;
-        Bin = bin;
-
-        Bin.Add(Build);
-        Bin.Add(TempBuild);
-        Bin.Add(TestResults);
-        Bin.Add(TestCoverage);
         
-        ToClean = Bin;
+        ToClean = new[] {
+            Build,
+            TempBuild,
+            TestResults,
+            TestCoverage
+        };
     }
 }
