@@ -8,7 +8,8 @@ Task("Unit-Test")
 
             DotNetCoreTest(path.FullPath, new DotNetCoreTestSettings
                 { 
-                    Configuration = "Unit" 
+                    Configuration = BuildParameters.Configuration,
+                    NoBuild = true
                 });
         }
     });

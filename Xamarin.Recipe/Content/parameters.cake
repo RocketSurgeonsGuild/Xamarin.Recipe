@@ -38,6 +38,7 @@ public static class BuildParameters
     public static DirectoryPath SourceDirectoryPath { get; private set; }
     public static DirectoryPath SolutionDirectoryPath { get; private set; }
     public static FilePath AndroidProjectPath { get; private set; }
+    public static FilePath IOSProjectPath { get; private set; }
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
@@ -48,6 +49,7 @@ public static class BuildParameters
     public static FilePath AndroidManifest { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
+    public static DirectoryPathCollection BinDirectories { get; private set; }
 
     static BuildParameters()
     {
@@ -70,6 +72,7 @@ public static class BuildParameters
         FilePath solutionFilePath = null,
         DirectoryPath solutionDirectoryPath = null,
         FilePath androidProjectPath = null,
+        FilePath iosProjectPath = null,
         string platform = "iPhone",
         DirectoryPath rootDirectoryPath = null,
         DirectoryPath testDirectoryPath = null,
@@ -100,6 +103,7 @@ public static class BuildParameters
         SolutionDirectoryPath = solutionDirectoryPath ?? SourceDirectoryPath.Combine(Title);
         RootDirectoryPath = rootDirectoryPath ?? context.MakeAbsolute(context.Environment.WorkingDirectory);
         AndroidProjectPath = androidProjectPath;
+        IOSProjectPath = iosProjectPath;
         TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
         TestFilePattern = testFilePattern;
         IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
@@ -134,6 +138,7 @@ public static class BuildParameters
         );
 
         AndroidManifest = androidManifest;
+        BinDirectories = context.GetDirectories($"{BuildParameters.SourceDirectoryPath}/**/bin/");
 
         NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
         NuGetSources = GetNuGetSources(context, nuGetSources);

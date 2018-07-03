@@ -31,6 +31,7 @@ public class BuildPaths
         var packagesDirectory = buildDirectoryPath + "/Packages";
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
+        var bin = BuildParameters.BinDirectories;
 
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
@@ -59,7 +60,8 @@ public class BuildPaths
             xUnitTestResultsDirectory,
             testCoverageDirectory,
             nuGetPackagesOutputDirectory,
-            packagesDirectory);
+            packagesDirectory,
+            bin);
 
         var buildFiles = new BuildFiles(
             context,
@@ -151,7 +153,8 @@ public class BuildDirectories
     public DirectoryPath NuGetPackages { get; private set; }
     public DirectoryPath ChocolateyPackages { get; private set; }
     public DirectoryPath Packages { get; private set; }
-    public ICollection<DirectoryPath> ToClean { get; private set; }
+    public DirectoryPathCollection Bin { get; private set; }
+    public DirectoryPathCollection ToClean { get; private set; }
 
     public BuildDirectories(
         DirectoryPath build,
@@ -168,7 +171,8 @@ public class BuildDirectories
         DirectoryPath xunitTestResults,
         DirectoryPath testCoverage,
         DirectoryPath nuGetPackages,
-        DirectoryPath packages)
+        DirectoryPath packages,
+        DirectoryPathCollection bin)
     {
         Build = build;
         TempBuild = tempBuild;
@@ -185,12 +189,13 @@ public class BuildDirectories
         TestCoverage = testCoverage;
         NuGetPackages = nuGetPackages;
         Packages = packages;
+        Bin = bin;
 
-        ToClean = new[] {
-            Build,
-            TempBuild,
-            TestResults,
-            TestCoverage
-        };
+        Bin.Add(Build);
+        Bin.Add(TempBuild);
+        Bin.Add(TestResults);
+        Bin.Add(TestCoverage);
+        
+        ToClean = Bin;
     }
 }

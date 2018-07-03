@@ -41,6 +41,7 @@ Teardown(ctx =>
 BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
     .Does(() =>
     {
+        Information("");
         Information("Target: {0}", BuildParameters.Target);
         Information("Application Target: {0}", BuildParameters.ApplicationTarget);
         Information("Configuration: {0}", BuildParameters.Configuration);
@@ -53,6 +54,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("IsHotFixBranch: {0}", BuildParameters.IsHotFixBranch);
         Information("IsTagged: {0}", BuildParameters.IsTagged);
 
+        Information("");
         Information("Solution FilePath: {0}", MakeAbsolute((FilePath)BuildParameters.SolutionFilePath));
         Information("Solution DirectoryPath: {0}", MakeAbsolute((DirectoryPath)BuildParameters.SolutionDirectoryPath));
         Information("Source DirectoryPath: {0}", MakeAbsolute(BuildParameters.SourceDirectoryPath));
@@ -144,7 +146,7 @@ public class Builder
         BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build").IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("iOSArchive").IsDependentOn("AndroidArchive");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOSArchive").IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Archive").IsDependentOn("Distribute");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("AppCenter");
     }
@@ -174,7 +176,7 @@ public class Builder
         
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("iOSArchive");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOSArchive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Archive").IsDependentOn("Distribute");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("AppCenter");
     }
@@ -183,7 +185,7 @@ public class Builder
     {
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build");
         BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("AndroidArchive");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Archive").IsDependentOn("Distribute");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("AppCenter");
     }

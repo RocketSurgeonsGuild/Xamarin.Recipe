@@ -19,7 +19,7 @@ BuildParameters.Tasks.iOSArchiveTask = Task("iOSArchive")
         
             XBuild(BuildParameters.SolutionFilePath, configurator =>
                         configurator
-                            .SetConfiguration("Debug")
+                            .SetConfiguration(BuildParameters.Configuration)
                             .SetVerbosity(Verbosity.Minimal)
                             .UseToolVersion(XBuildToolVersion.NET40));
         });

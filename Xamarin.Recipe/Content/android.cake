@@ -1,6 +1,6 @@
 #addin nuget:?package=Cake.AndroidAppManifest&version=1.1.0
 
-BuildParameters.Tasks.AndroidArchiveTask = Task("AndroidArchive")
+BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
     .IsDependentOn("Android-Build")
     .Does(() =>
     {

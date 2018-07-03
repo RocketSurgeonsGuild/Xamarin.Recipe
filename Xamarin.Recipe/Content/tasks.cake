@@ -9,9 +9,11 @@ public class BuildTasks
     public CakeTaskBuilder<ActionTask> RestoreTask { get; set; }
     public CakeTaskBuilder<ActionTask> DotNetCoreRestoreTask { get; set; }
     public CakeTaskBuilder<ActionTask> BuildTask { get; set; }
+    public CakeTaskBuilder<ActionTask> ImageCopyTask {get; set; }
     public CakeTaskBuilder<ActionTask> iOSArchiveTask { get; set; }
     public CakeTaskBuilder<ActionTask> AndroidArchiveTask { get; set; }
     public CakeTaskBuilder<ActionTask> ArchiveTask { get; set; }
+    public CakeTaskBuilder<ActionTask> DistributeTask { get; set; }
     public CakeTaskBuilder<ActionTask> DotNetCoreBuildTask { get; set; }
     public CakeTaskBuilder<ActionTask> PackageTask { get; set; }
     public CakeTaskBuilder<ActionTask> DefaultTask { get; set; }
