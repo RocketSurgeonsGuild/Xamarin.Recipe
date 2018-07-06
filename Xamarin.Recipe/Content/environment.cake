@@ -8,6 +8,7 @@ public static class Environment
 	public static string KeyStoreVariable { get; private set; }
 	public static string KeyStoreAliasVariable { get; private set; }
 	public static string KeyStorePasswordVariable { get; private set; }
+	public static string BundleIdentifier { get; private set; }
 
     public static void SetVariableNames(
 		string myGetApiKeyVariable = null,
@@ -17,7 +18,8 @@ public static class Environment
 		string microsoftTeamsWebHookUrlVariable = null,
 		string keyStoreVariable = null,
 		string keyStoreAliasVariable = null,
-		string keyStorePasswordVarible = null)
+		string keyStorePasswordVarible = null,
+		string bundleIdentifier = null)
     {
 		MyGetApiKeyVariable = myGetApiKeyVariable ?? "MYGET_API_KEY";
 		MyGetSourceUrlVariable = myGetSourceUrlVariable ?? "MYGET_SOURCE";
@@ -27,5 +29,6 @@ public static class Environment
 		KeyStoreVariable = keyStoreVariable ?? "ANDROID_KEYSTORE";
 		KeyStoreAliasVariable = keyStoreAliasVariable ?? "ANDROID_KEYSTORE_ALIAS";
 		KeyStorePasswordVariable = keyStorePasswordVarible ?? "ANDROID_KEYSTORE_PASSWORD";
+		BundleIdentifier = bundleIdentifier ?? "APP_BUNDLE_IDENTIFIER";
     }
 }

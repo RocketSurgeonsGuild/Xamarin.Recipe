@@ -4,6 +4,7 @@ public class BuildVersion
     public string SemVersion { get; private set; }
     public string Milestone { get; private set; }
     public string InformationalVersion { get; private set; }
+    public int PreReleaseNumber { get; private set; }
     public string CakeVersion { get; private set; }
     public string NuGetVersion { get; private set; }
     public string AssemblySemVer { get; private set; }
@@ -21,6 +22,7 @@ public class BuildVersion
         string milestone = null;
         string informationalVersion = null;
         string fullSemVersion = null;
+        int? preReleaseNumber = null;
         GitVersion assertedVersions = null;
 
         if (BuildParameters.ShouldRunGitVersion)
@@ -47,6 +49,7 @@ public class BuildVersion
                 version = context.EnvironmentVariable("GitVersion_MajorMinorPatch");
                 semVersion = context.EnvironmentVariable("GitVersion_LegacySemVerPadded");
                 informationalVersion = context.EnvironmentVariable("GitVersion_InformationalVersion");
+                preReleaseNumber = context.EnvironmentVariable<int>("GitVersion_PreReleaseNumber", 1);
                 milestone = string.Concat(version);
             }
 
@@ -65,6 +68,7 @@ public class BuildVersion
             version = assertedVersions.MajorMinorPatch;
             semVersion = assertedVersions.LegacySemVerPadded;
             informationalVersion = assertedVersions.InformationalVersion;
+            preReleaseNumber = assertedVersions.PreReleaseNumber;
             milestone = string.Concat(version);
             fullSemVersion = assertedVersions.FullSemVer;
 
@@ -99,6 +103,7 @@ public class BuildVersion
             Milestone = milestone,
             CakeVersion = cakeVersion,
             InformationalVersion = informationalVersion,
+            PreReleaseNumber = preReleaseNumber ?? 1,
             FullSemVersion = fullSemVersion
         };
     }

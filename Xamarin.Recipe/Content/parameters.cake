@@ -44,8 +44,8 @@ public static class BuildParameters
     public static string TestFilePattern { get; private set; }
     public static string ResharperSettingsFileName { get; private set; }
     public static string RepositoryOwner { get; private set; }
-    public static string RepositoryName { get; private set; }    
-
+    public static string RepositoryName { get; private set; }
+    public static FilePath AndroidManifest { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
 
@@ -85,6 +85,7 @@ public static class BuildParameters
         bool shouldDeployAppCenter = false,
         string mainBranch = "main",
         string devBranch = "dev",
+        FilePath androidManifest = null,
         FilePath nugetConfig = null,
         ICollection<string> nuGetSources = null)
     {
@@ -131,6 +132,8 @@ public static class BuildParameters
             buildSystem.AppVeyor.Environment.Repository.Tag.IsTag &&
             !string.IsNullOrWhiteSpace(buildSystem.AppVeyor.Environment.Repository.Tag.Name)
         );
+
+        AndroidManifest = androidManifest;
 
         NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
         NuGetSources = GetNuGetSources(context, nuGetSources);

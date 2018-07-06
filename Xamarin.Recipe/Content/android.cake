@@ -1,3 +1,5 @@
+#addin nuget:?package=Cake.AndroidAppManifest&version=1.1.0
+
 BuildParameters.Tasks.AndroidArchiveTask = Task("AndroidArchive")
     .IsDependentOn("Android-Build")
     .Does(() =>
@@ -33,6 +35,7 @@ BuildParameters.Tasks.AndroidArchiveTask = Task("AndroidArchive")
     });
 
 Task("Android-Build")
+    .IsDependentOn("Android-Manifest")
     .Does(() => 
     {
         MSBuild(BuildParameters.AndroidProjectPath, configurator =>
@@ -40,4 +43,16 @@ Task("Android-Build")
                         .SetConfiguration(BuildParameters.Configuration)
                         .SetVerbosity(ToolSettings.MSBuildVerbosity)
                         .UseToolVersion(MSBuildToolVersion.VS2017));
+    });
+
+Task("Android-Manifest")
+    .Does(() =>
+    {
+        var manifest = DeserializeAppManifest(BuildParameters.AndroidManifest);
+
+        manifest.VersionName = BuildParameters.Version.Version;
+        manifest.VersionCode = BuildParameters.Version.PreReleaseNumber;
+        // manifest.PackageName = Environment.BundleIdentifier;
+
+        SerializeAppManifest(BuildParameters.AndroidManifest, manifest);
     });

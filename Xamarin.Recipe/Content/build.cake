@@ -19,7 +19,8 @@ Setup(context =>
         );
     });
 
-    Information("Building version {0} of " + BuildParameters.Title + " ({1}, {2}) using version {3} of Cake. (IsTagged: {4})",
+    Information("\n");
+    Warning("Building version {0} of " + BuildParameters.Title + " ({1}, {2}) using version {3} of Cake. (IsTagged: {4})",
         BuildParameters.Version.SemVersion,
         BuildParameters.Configuration,
         BuildParameters.Target,
