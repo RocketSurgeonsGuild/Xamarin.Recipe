@@ -158,8 +158,36 @@ public static class BuildParameters
 
     public static void PrintParameters(ICakeContext context)
     {
+        context.Information("IsLocalBuild: {0}", IsLocalBuild);
+        context.Information("\n");
+
+        context.Information("========== REPOSITORY ==========");
+        context.Information("IsDevelopBranch: {0}", IsDevelopBranch);
+        context.Information("IsMasterBranch: {0}", IsMasterBranch);
+        context.Information("IsReleaseBranch: {0}", IsReleaseBranch);
+        context.Information("IsHotFixBranch: {0}", IsHotFixBranch);
+        context.Information("IsTagged: {0}", IsTagged);
+        context.Information("IsPullRequest: {0}", IsPullRequest);
+        context.Information("IsMainRepository: {0}", IsMainRepository);
+        context.Information("IsPublicRepository: {0}", IsPublicRepository);
+        context.Information("==============================");
+        context.Information("\n");
+
+        context.Information("========== ANDROID ==========");
+        context.Information("AndroidManifest: {0}", AndroidManifest);
+        context.Information("AndroidProjectPath: {0}", AndroidProjectPath);
+        context.Information("==============================");
+        context.Information("\n");
+
+        context.Information("========== iOS ==========");
+        context.Information("==============================");
+        context.Information("\n");
+
+        context.Information("========== NUGET ==========");
         context.Information("NugetConfig: {0} ({1})", NugetConfig, context.FileExists(NugetConfig));
         context.Information("NuGetSources: {0}", string.Join(", ", NuGetSources));
+        context.Information("==============================");
+        context.Information("\n");
     }
 }
 
