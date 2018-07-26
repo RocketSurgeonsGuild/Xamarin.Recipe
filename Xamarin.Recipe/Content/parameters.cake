@@ -9,6 +9,7 @@ public static class BuildParameters
     public static bool IsRunningOnUnix { get; private set; }
     public static bool IsRunningOnWindows { get; private set; }
     public static bool IsRunningOnAppVeyor { get; private set; }
+    public static bool IsRunningOnVSTS {get; private set; }
     public static bool IsPullRequest { get; private set; }
     public static bool IsMainRepository { get; private set; }
     public static bool IsPublicRepository {get; private set; }
@@ -126,6 +127,7 @@ public static class BuildParameters
         IsRunningOnUnix = context.IsRunningOnUnix();
         IsRunningOnWindows = context.IsRunningOnWindows();
         IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor;
+        IsRunningOnVSTS = buildSystem.TFBuild.IsRunningOnTFS || buildSystem.TFBuild.IsRunningOnVSTS;
         IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
         IsMainRepository = StringComparer.OrdinalIgnoreCase.Equals(string.Concat(repositoryOwner, "/", repositoryName), buildSystem.AppVeyor.Environment.Repository.Name);
         IsPublicRepository = isPublicRepository;

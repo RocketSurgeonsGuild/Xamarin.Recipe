@@ -64,6 +64,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
 
     BuildParameters.Tasks.CleanTask = Task("Clean")
     .IsDependentOn("Show-Info")
+    .IsDependentOn("Print-VSTS-Environment-Variables")
     .Does(() =>
     {
         Information("Cleaning...");

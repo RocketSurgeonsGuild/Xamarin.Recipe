@@ -42,4 +42,9 @@ public class BuildTasks
     public CakeTaskBuilder<ActionTask> PublishDocumentationTask { get; set; }
     public CakeTaskBuilder<ActionTask> PreviewDocumentationTask { get; set; }
     public CakeTaskBuilder<ActionTask> ForcePublishDocumentationTask { get; set; }
+
+    public CakeTaskBuilder<ActionTask> VSTSTask { get; set; }
+    public CakeTaskBuilder<ActionTask> PrintVSTSEnvironmentVariablesTask { get; set; }
+    public CakeTaskBuilder<ActionTask> UploadVSTSArtifactsTask { get; set; }
+    public CakeTaskBuilder<ActionTask> ClearVSTSCacheTask { get; set; }
 }
