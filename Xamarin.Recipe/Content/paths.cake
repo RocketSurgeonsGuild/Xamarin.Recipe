@@ -1,3 +1,5 @@
+using System;
+
 public class BuildPaths
 {
     public BuildFiles Files { get; private set; }
@@ -31,12 +33,15 @@ public class BuildPaths
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
 
+        var unitTestPattern = BuildParameters.TestDirectoryPath + "/unit/**/*.Tests.csproj";
+        var uiTestPattern = BuildParameters.TestDirectoryPath + "/ui/**/*.Tests.csproj";
+
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
         var solutionInfoFilePath = ((DirectoryPath)BuildParameters.SourceDirectoryPath).CombineWithFilePath("SolutionInfo.cs");
         var buildLogFilePath = ((DirectoryPath)buildDirectoryPath).CombineWithFilePath("MsBuild.log");
-        var unitTestFilePaths = context.GetFiles(BuildParameters.TestDirectoryPath + "/unit/**/*.csproj").ToArray();
-        var uiTestFilePaths = context.GetFiles(BuildParameters.TestDirectoryPath + "/ui/**/*.csproj").ToArray();
+        var unitTestFilePaths = context.GetFiles(unitTestPattern).ToArray();
+        var uiTestFilePaths = context.GetFiles(uiTestPattern).ToArray();
 
         var repoFilesPaths = new FilePath[] {
             "LICENSE",

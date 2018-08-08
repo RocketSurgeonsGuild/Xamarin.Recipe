@@ -1,50 +1,50 @@
 public class BuildTasks
 {
-    public CakeTaskBuilder<ActionTask> DupFinderTask { get; set; }
-    public CakeTaskBuilder<ActionTask> InspectCodeTask { get; set; }
-    public CakeTaskBuilder<ActionTask> AnalyzeTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ShowInfoTask { get; set; }
-    public CakeTaskBuilder<ActionTask> CleanTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DotNetCoreCleanTask { get; set; }
-    public CakeTaskBuilder<ActionTask> RestoreTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DotNetCoreRestoreTask { get; set; }
-    public CakeTaskBuilder<ActionTask> BuildTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ImageCopyTask {get; set; }
-    public CakeTaskBuilder<ActionTask> iOSArchiveTask { get; set; }
-    public CakeTaskBuilder<ActionTask> AndroidArchiveTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ArchiveTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DistributeTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DotNetCoreBuildTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PackageTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DefaultTask { get; set; }
-    public CakeTaskBuilder<ActionTask> AppVeyorTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ReleaseNotesTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ClearCacheTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PreviewTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PublishDocsTask { get; set; }
-    public CakeTaskBuilder<ActionTask> UploadCodecovReportTask { get; set; }
-    public CakeTaskBuilder<ActionTask> UploadCoverallsReportTask { get; set; }
-    public CakeTaskBuilder<ActionTask> UploadCoverageReportTask { get; set; }
-    public CakeTaskBuilder<ActionTask> CreateReleaseNotesTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ExportReleaseNotesTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PublishGitHubReleaseTask { get; set; }
-    public CakeTaskBuilder<ActionTask> InstallReportGeneratorTask { get; set; }
-    public CakeTaskBuilder<ActionTask> InstallReportUnitTask { get; set; }
-    public CakeTaskBuilder<ActionTask> InstallOpenCoverTask { get; set; }
-    public CakeTaskBuilder<ActionTask> TestTask { get; set; }
-    public CakeTaskBuilder<ActionTask> TestxUnitTask { get; set; }
-    public CakeTaskBuilder<ActionTask> TestUITask { get; set; }
-    public CakeTaskBuilder<ActionTask> IntegrationTestTask { get;set; }
-    public CakeTaskBuilder<ActionTask> AppCenterTask { get; set; }
-    public CakeTaskBuilder<ActionTask> FastlaneTask { get; set; }
-    public CakeTaskBuilder<ActionTask> CleanDocumentationTask { get; set; }
-    public CakeTaskBuilder<ActionTask> DeployGraphDocumentation {get; set;}
-    public CakeTaskBuilder<ActionTask> PublishDocumentationTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PreviewDocumentationTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ForcePublishDocumentationTask { get; set; }
+    public CakeTaskBuilder DupFinderTask { get; set; }
+    public CakeTaskBuilder InspectCodeTask { get; set; }
+    public CakeTaskBuilder AnalyzeTask { get; set; }
+    public CakeTaskBuilder ShowInfoTask { get; set; }
+    public CakeTaskBuilder CleanTask { get; set; }
+    public CakeTaskBuilder DotNetCoreCleanTask { get; set; }
+    public CakeTaskBuilder RestoreTask { get; set; }
+    public CakeTaskBuilder DotNetCoreRestoreTask { get; set; }
+    public CakeTaskBuilder BuildTask { get; set; }
+    public CakeTaskBuilder ImageCopyTask {get; set; }
+    public CakeTaskBuilder iOSArchiveTask { get; set; }
+    public CakeTaskBuilder AndroidArchiveTask { get; set; }
+    public CakeTaskBuilder ArchiveTask { get; set; }
+    public CakeTaskBuilder DistributeTask { get; set; }
+    public CakeTaskBuilder DotNetCoreBuildTask { get; set; }
+    public CakeTaskBuilder PackageTask { get; set; }
+    public CakeTaskBuilder DefaultTask { get; set; }
+    public CakeTaskBuilder AppVeyorTask { get; set; }
+    public CakeTaskBuilder ReleaseNotesTask { get; set; }
+    public CakeTaskBuilder ClearCacheTask { get; set; }
+    public CakeTaskBuilder PreviewTask { get; set; }
+    public CakeTaskBuilder PublishDocsTask { get; set; }
+    public CakeTaskBuilder UploadCodecovReportTask { get; set; }
+    public CakeTaskBuilder UploadCoverallsReportTask { get; set; }
+    public CakeTaskBuilder UploadCoverageReportTask { get; set; }
+    public CakeTaskBuilder CreateReleaseNotesTask { get; set; }
+    public CakeTaskBuilder ExportReleaseNotesTask { get; set; }
+    public CakeTaskBuilder PublishGitHubReleaseTask { get; set; }
+    public CakeTaskBuilder InstallReportGeneratorTask { get; set; }
+    public CakeTaskBuilder InstallReportUnitTask { get; set; }
+    public CakeTaskBuilder InstallOpenCoverTask { get; set; }
+    public CakeTaskBuilder TestTask { get; set; }
+    public CakeTaskBuilder TestxUnitTask { get; set; }
+    public CakeTaskBuilder TestUITask { get; set; }
+    public CakeTaskBuilder IntegrationTestTask { get;set; }
+    public CakeTaskBuilder AppCenterTask { get; set; }
+    public CakeTaskBuilder FastlaneTask { get; set; }
+    public CakeTaskBuilder CleanDocumentationTask { get; set; }
+    public CakeTaskBuilder DeployGraphDocumentation {get; set;}
+    public CakeTaskBuilder PublishDocumentationTask { get; set; }
+    public CakeTaskBuilder PreviewDocumentationTask { get; set; }
+    public CakeTaskBuilder ForcePublishDocumentationTask { get; set; }
 
-    public CakeTaskBuilder<ActionTask> VSTSTask { get; set; }
-    public CakeTaskBuilder<ActionTask> PrintVSTSEnvironmentVariablesTask { get; set; }
-    public CakeTaskBuilder<ActionTask> UploadVSTSArtifactsTask { get; set; }
-    public CakeTaskBuilder<ActionTask> ClearVSTSCacheTask { get; set; }
+    public CakeTaskBuilder VSTSTask { get; set; }
+    public CakeTaskBuilder PrintVSTSEnvironmentVariablesTask { get; set; }
+    public CakeTaskBuilder UploadVSTSArtifactsTask { get; set; }
+    public CakeTaskBuilder ClearVSTSCacheTask { get; set; }
 }
