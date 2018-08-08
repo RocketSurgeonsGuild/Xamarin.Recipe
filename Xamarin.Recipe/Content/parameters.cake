@@ -28,9 +28,8 @@ public static class BuildParameters
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
-
     public static bool ShouldDeployAppCenter { get; set; }
-
+    public static bool ShouldCopyImages { get; private set; }
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
     public static BuildTasks Tasks { get; set; }
@@ -88,6 +87,7 @@ public static class BuildParameters
         bool isPublicRepository = false,
         bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
+        bool shouldCopyImages = false,
         string mainBranch = "main",
         string devBranch = "dev",
         FilePath androidManifest = null,
@@ -150,6 +150,7 @@ public static class BuildParameters
 
         ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;
         ShouldDeployAppCenter = shouldDeployAppCenter;
+        ShouldCopyImages = shouldCopyImages;
 
 		SetBuildPaths(BuildPaths.GetPaths(context));
     }
@@ -188,6 +189,8 @@ public static class BuildParameters
         context.Information("\n");
 
         context.Information("========== iOS ==========");
+        context.Information("InfoPlist: {0}", PlistFilePath);
+        context.Information("IOSProjectPath: {0}", IOSProjectPath);
         context.Information("==============================");
         context.Information("\n");
 

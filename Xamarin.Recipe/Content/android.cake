@@ -52,7 +52,7 @@ Task("Android-Manifest")
 
         manifest.VersionName = BuildParameters.Version.Version;
         manifest.VersionCode = BuildParameters.Version.PreReleaseNumber;
-        // manifest.PackageName = Environment.BundleIdentifier;
+        // manifest.PackageName = Environment.BundleIdentifierVariable;
 
         SerializeAppManifest(BuildParameters.AndroidManifest, manifest);
     });

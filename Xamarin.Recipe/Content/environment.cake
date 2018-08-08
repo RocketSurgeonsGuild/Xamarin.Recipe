@@ -11,7 +11,7 @@ public static class Environment
 	public static string XamarinBuildConfigurationVariable { get; private set; }
 	public static string AppIconSourceImagePathVariable { get; private set; }
 	public static string AppIconDestinationImagePathVariable { get; private set; }
-	public static string BundleIdentifier { get; private set; }
+	public static string BundleIdentifierVariable { get; private set; }
 
     public static void SetVariableNames(
 		string myGetApiKeyVariable = "MYGET_API_KEY",
@@ -25,7 +25,7 @@ public static class Environment
 		string xamarinBuildConfigurationVariable = "XAMARIN_BUILD_CONFIGURATION",
 		string appIconSourceImagePathVariable = "APP_IMG_SRC",
 		string appIconDestinationImagePathVariable = "APP_IMG_DEST",
-		string bundleIdentifier = "APP_BUNDLE_IDENTIFIER")
+		string bundleIdentifierVariable = "APP_BUNDLE_IDENTIFIER")
 		{
 			MyGetApiKeyVariable = myGetApiKeyVariable;
 			MyGetSourceUrlVariable = myGetSourceUrlVariable;
@@ -38,7 +38,7 @@ public static class Environment
 			XamarinBuildConfigurationVariable = xamarinBuildConfigurationVariable;
 			AppIconSourceImagePathVariable = appIconSourceImagePathVariable;
 			AppIconDestinationImagePathVariable = appIconDestinationImagePathVariable;
-			BundleIdentifier = bundleIdentifier;
+			BundleIdentifierVariable = bundleIdentifierVariable;
 		}
 
 	public static bool ShouldCopyImage

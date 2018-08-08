@@ -1,4 +1,5 @@
 BuildParameters.Tasks.ImageCopyTask = Task("Image-Copy")
+    .WithCriteria(BuildParameters.ShouldCopyImages)
     .IsDependentOn("Test")
     .Does(() =>
     {

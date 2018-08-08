@@ -1,7 +1,7 @@
 #addin nuget:?package=Cake.Plist&version=0.4.0
 
 BuildParameters.Tasks.iOSArchiveTask = Task("iOSArchive")
-        .WithCriteria(BuildParameters.IsRunningOnUnix)
+        .WithCriteria(() => BuildParameters.IsRunningOnUnix)
         .IsDependentOn("iPhone-Build")
     .Does(() =>
     {
@@ -10,31 +10,39 @@ BuildParameters.Tasks.iOSArchiveTask = Task("iOSArchive")
 
 Task("iPhone-Build")
     .IsDependentOn("iPhone-Bundle")
-    .WithCriteria(BuildParameters.IsRunningOnUnix)
+    .WithCriteria(() => IsRunningOnUnix())
     .Does(() =>
     {
-        // MSBuild(BuildParameters.SolutionFilePath, configurator =>
-        //             configurator
-        //                 .SetConfiguration(BuildParameters.Configuration)
-        //                 .SetPlatform(BuildParameters.Platform)
-        //                 .SetVerbosity(ToolSettings.MSBuildVerbosity)
-        //                 .UseToolVersion(MSBuildToolVersion.VS2017));
-    
-        XBuild(BuildParameters.SolutionFilePath, configurator =>
+        MSBuild(BuildParameters.SolutionFilePath, configurator =>
                     configurator
                         .SetConfiguration(BuildParameters.Configuration)
-                        .SetVerbosity(Verbosity.Minimal)
-                        .UseToolVersion(XBuildToolVersion.NET40));
+                        .SetVerbosity(ToolSettings.MSBuildVerbosity)
+                        .UseToolVersion(MSBuildToolVersion.VS2017)
+                        .WithProperty("Platform", BuildParameters.Platform)
+                        .WithProperty("BuildIpa", "true"));
+    
+        // XBuild(BuildParameters.SolutionFilePath, configurator =>
+        //             configurator
+        //                 .SetConfiguration(BuildParameters.Configuration)
+        //                 .SetVerbosity(Verbosity.Minimal)
+        //                 .UseToolVersion(XBuildToolVersion.NET40));
     });
 
 Task("iPhone-Bundle")
+    .WithCriteria(() => !string.IsNullOrEmpty(BuildParameters.PlistFilePath.FullPath))
     .Does(() =>
     {
-        dynamic plist = DeserializePlist(BuildParameters.PlistFilePath);
+        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
 
-        plist["CFBundleShortVersionString"] = BuildParameters.Version.SemVersion;
-        plist["CFBundleVersion"] = BuildParameters.Version.AssemblySemVer;
-        plist["CFBundleIdentifier"] = Environment.BundleIdentifier;
+        dynamic plist = DeserializePlist(BuildParameters.PlistFilePath);
+        
+        plist["CFBundleShortVersionString"] = BuildParameters.Version.Version;
+        plist["CFBundleVersion"] = BuildParameters.Version.PreReleaseNumber;
+
+        if(!string.IsNullOrEmpty(bundleIdentifier))
+        {
+            plist["CFBundleIdentifier"] = bundleIdentifier;
+        }
 
         SerializePlist(BuildParameters.PlistFilePath, plist);
     });
