@@ -13,6 +13,7 @@ public class BuildTasks
     public CakeTaskBuilder iOSArchiveTask { get; set; }
     public CakeTaskBuilder AndroidArchiveTask { get; set; }
     public CakeTaskBuilder ArchiveTask { get; set; }
+    public CakeTaskBuilder AppCenterTask { get; set; }
     public CakeTaskBuilder DistributeTask { get; set; }
     public CakeTaskBuilder DotNetCoreBuildTask { get; set; }
     public CakeTaskBuilder PackageTask { get; set; }
@@ -35,14 +36,12 @@ public class BuildTasks
     public CakeTaskBuilder TestxUnitTask { get; set; }
     public CakeTaskBuilder TestUITask { get; set; }
     public CakeTaskBuilder IntegrationTestTask { get;set; }
-    public CakeTaskBuilder AppCenterTask { get; set; }
     public CakeTaskBuilder FastlaneTask { get; set; }
     public CakeTaskBuilder CleanDocumentationTask { get; set; }
     public CakeTaskBuilder DeployGraphDocumentation {get; set;}
     public CakeTaskBuilder PublishDocumentationTask { get; set; }
     public CakeTaskBuilder PreviewDocumentationTask { get; set; }
     public CakeTaskBuilder ForcePublishDocumentationTask { get; set; }
-
     public CakeTaskBuilder VSTSTask { get; set; }
     public CakeTaskBuilder PrintVSTSEnvironmentVariablesTask { get; set; }
     public CakeTaskBuilder UploadVSTSArtifactsTask { get; set; }
