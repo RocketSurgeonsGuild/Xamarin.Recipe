@@ -331,3 +331,5 @@ ASALocalRun/
 
 # DotNet
 .dotnet
+
+\.DS_Store

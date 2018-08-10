@@ -8,7 +8,7 @@ public static class ToolSettings
     public static string TestCoverageExcludeByAttribute { get; private set; }
     public static string TestCoverageExcludeByFile { get; private set; }
     public static PlatformTarget BuildPlatformTarget { get; private set; }
-    public static MSBuildToolVersion BuildMSBuildToolVersion { get; private set; }
+    public static MSBuildToolVersion MSBuildToolVersion { get; private set; }
     public static Verbosity MSBuildVerbosity { get; private set; }
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
@@ -20,7 +20,7 @@ public static class ToolSettings
         string testCoverageExcludeByAttribute = null,
         string testCoverageExcludeByFile = null,
         PlatformTarget? buildPlatformTarget = null,
-        MSBuildToolVersion buildMSBuildToolVersion = MSBuildToolVersion.Default,
+        MSBuildToolVersion msBuildToolVersion = MSBuildToolVersion.Default,
         int? maxCpuCount = null,
         DirectoryPath outputDirectory = null,
         string[] dupFinderExcludeFilesByStartingCommentSubstring = null,
@@ -46,7 +46,7 @@ public static class ToolSettings
         TestCoverageExcludeByAttribute = testCoverageExcludeByAttribute ?? "*.ExcludeFromCodeCoverage*";
         TestCoverageExcludeByFile = testCoverageExcludeByFile ?? "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
         BuildPlatformTarget = buildPlatformTarget ?? PlatformTarget.MSIL;
-        BuildMSBuildToolVersion = buildMSBuildToolVersion;
+        MSBuildToolVersion = msBuildToolVersion;
         MaxCpuCount = maxCpuCount ?? 0;
         OutputDirectory = outputDirectory;
         MSBuildVerbosity = msBuildVerbosity;

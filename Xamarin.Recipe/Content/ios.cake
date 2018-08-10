@@ -17,15 +17,9 @@ Task("iPhone-Build")
                     configurator
                         .SetConfiguration(BuildParameters.Configuration)
                         .SetVerbosity(ToolSettings.MSBuildVerbosity)
-                        .UseToolVersion(MSBuildToolVersion.VS2017)
+                        .UseToolVersion(ToolSettings.MSBuildToolVersion)
                         .WithProperty("Platform", BuildParameters.Platform)
                         .WithProperty("BuildIpa", "true"));
-    
-        // XBuild(BuildParameters.SolutionFilePath, configurator =>
-        //             configurator
-        //                 .SetConfiguration(BuildParameters.Configuration)
-        //                 .SetVerbosity(Verbosity.Minimal)
-        //                 .UseToolVersion(XBuildToolVersion.NET40));
     });
 
 Task("iPhone-Bundle")
