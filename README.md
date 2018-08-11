@@ -1,6 +1,6 @@
 # Xamarin.Recipe
 
-Most of the code, conventions and concepts for this set of scripts came directly from [Cake.Recipe](https://github.com/cake-contrib/Cake.Recipe)
+Xamarin.Recipe is a set of convention based scripts for building and deploying Xamarin mobile applications. Most of the code, conventions and concepts for this came from [Cake.Recipe](https://github.com/cake-contrib/Cake.Recipe)
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/RocketSurgeonsGuild/Xamarin.Recipe/blob/dev/LICENSE)
 
@@ -8,6 +8,7 @@ Most of the code, conventions and concepts for this set of scripts came directly
 
 | | Stable | Pre-release |
 |:--:|:--:|:--:|
+|GitHub Release|[![GitHub release](https://img.shields.io/github/release/RocketSurgeonsGuild/Xamarin.Recipe.svg)](https://github.com/RocketSurgeonsGuild/Xamarin.Recipe/releases/latest)|
 |NuGet|[![NuGet](https://img.shields.io/nuget/v/Rocket.Surgery.Xamarin.Recipe.svg)](https://www.nuget.org/packages/Rocket.Surgery.Xamarin.Recipe)|[![NuGet](https://img.shields.io/nuget/vpre/Rocket.Surgery.Xamarin.Recipe.svg)](https://www.nuget.org/packages/Rocket.Surgery.Xamarin.Recipe)|
 
 ## Build Status
