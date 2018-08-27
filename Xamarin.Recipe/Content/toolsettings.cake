@@ -7,6 +7,7 @@ public static class ToolSettings
     public static string TestCoverageFilter { get; private set; }
     public static string TestCoverageExcludeByAttribute { get; private set; }
     public static string TestCoverageExcludeByFile { get; private set; }
+    public static string TestFramework { get; set; }
     public static PlatformTarget BuildPlatformTarget { get; private set; }
     public static MSBuildToolVersion MSBuildToolVersion { get; private set; }
     public static Verbosity MSBuildVerbosity { get; private set; }
@@ -19,6 +20,7 @@ public static class ToolSettings
         string testCoverageFilter = null,
         string testCoverageExcludeByAttribute = null,
         string testCoverageExcludeByFile = null,
+        string testFramework = "netcoreapp2.0",
         PlatformTarget? buildPlatformTarget = null,
         MSBuildToolVersion msBuildToolVersion = MSBuildToolVersion.Default,
         int? maxCpuCount = null,
@@ -45,6 +47,7 @@ public static class ToolSettings
         TestCoverageFilter = testCoverageFilter ?? string.Format("+[{0}*]* -[*.Tests]*", BuildParameters.Title);
         TestCoverageExcludeByAttribute = testCoverageExcludeByAttribute ?? "*.ExcludeFromCodeCoverage*";
         TestCoverageExcludeByFile = testCoverageExcludeByFile ?? "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
+        TestFramework = testFramework;
         BuildPlatformTarget = buildPlatformTarget ?? PlatformTarget.MSIL;
         MSBuildToolVersion = msBuildToolVersion;
         MaxCpuCount = maxCpuCount ?? 0;
