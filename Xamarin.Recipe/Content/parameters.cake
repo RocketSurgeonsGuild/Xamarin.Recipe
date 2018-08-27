@@ -43,7 +43,8 @@ public static class BuildParameters
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
-    public static string TestFilePattern { get; private set; }
+    public static string UnitTestFilePattern { get; private set; }
+    public static string UITestFilePattern { get; private set; }
     public static string ResharperSettingsFileName { get; private set; }
     public static string RepositoryOwner { get; private set; }
     public static string RepositoryName { get; private set; }
@@ -77,7 +78,8 @@ public static class BuildParameters
         string platform = "iPhone",
         DirectoryPath rootDirectoryPath = null,
         DirectoryPath testDirectoryPath = null,
-        string testFilePattern = null,
+        string unitTestFilePattern = null,
+        string uiTestFilePattern = null,
         string integrationTestScriptPath = null,
         string resharperSettingsFileName = null,
         string repositoryOwner = null,
@@ -108,7 +110,8 @@ public static class BuildParameters
         IOSProjectPath = iosProjectPath;
         PlistFilePath = plistFilePath;
         TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
-        TestFilePattern = testFilePattern;
+        UnitTestFilePattern = unitTestFilePattern ?? "/**/*.Tests.csproj";
+        UITestFilePattern = uiTestFilePattern ?? "/**/*.Tests.csproj";
         IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
         ResharperSettingsFileName = resharperSettingsFileName ?? string.Format("{0}.sln.DotSettings", Title);
         RepositoryOwner = repositoryOwner ?? string.Empty;
