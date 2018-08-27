@@ -33,8 +33,8 @@ public class BuildPaths
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
 
-        var unitTestPattern = BuildParameters.TestDirectoryPath + "/unit/**/*.Tests.csproj";
-        var uiTestPattern = BuildParameters.TestDirectoryPath + "/ui/**/*.Tests.csproj";
+        var unitTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UnitTestFilePattern;
+        var uiTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UITestFilePattern;
 
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");

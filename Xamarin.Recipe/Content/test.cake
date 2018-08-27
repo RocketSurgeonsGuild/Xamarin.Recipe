@@ -10,7 +10,10 @@ Task("Unit-Test")
 
             DotNetCoreTest(fullPath, new DotNetCoreTestSettings
                 { 
-                    Configuration = BuildParameters.Configuration
+                    Configuration = BuildParameters.Configuration,
+                    Framework = ToolSettings.TestFramework,
+                    NoRestore = true,
+                    NoBuild = true
                 });
         }
     });
