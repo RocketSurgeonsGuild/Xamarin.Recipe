@@ -12,6 +12,10 @@ public static class Environment
 	public static string AppIconSourceImagePathVariable { get; private set; }
 	public static string AppIconDestinationImagePathVariable { get; private set; }
 	public static string BundleIdentifierVariable { get; private set; }
+	public static string AppCenterTokenVariable { get; private set; }
+	public static string AppCenterGroupVariable { get; private set; }
+	public static string AppCenterAppNameVariable { get; private set; }
+	public static string AppCenterOwnerVariable { get; private set; }
 
     public static void SetVariableNames(
 		string myGetApiKeyVariable = "MYGET_API_KEY",
@@ -25,7 +29,11 @@ public static class Environment
 		string xamarinBuildConfigurationVariable = "XAMARIN_BUILD_CONFIGURATION",
 		string appIconSourceImagePathVariable = "APP_IMG_SRC",
 		string appIconDestinationImagePathVariable = "APP_IMG_DEST",
-		string bundleIdentifierVariable = "APP_BUNDLE_IDENTIFIER")
+		string bundleIdentifierVariable = "APP_BUNDLE_IDENTIFIER",
+		string appCenterTokenVariable = "APPCENTER_API_TOKEN",
+		string appCenterGroupVariable = "APPCENTER_GROUP",
+		string appCenterAppNameVariable = "APPCENTER_APP_NAME",
+		string appCenterOwnerVariable = "APPCENTER_OWNER")
 		{
 			MyGetApiKeyVariable = myGetApiKeyVariable;
 			MyGetSourceUrlVariable = myGetSourceUrlVariable;
@@ -39,6 +47,10 @@ public static class Environment
 			AppIconSourceImagePathVariable = appIconSourceImagePathVariable;
 			AppIconDestinationImagePathVariable = appIconDestinationImagePathVariable;
 			BundleIdentifierVariable = bundleIdentifierVariable;
+			AppCenterTokenVariable = appCenterTokenVariable;
+			AppCenterGroupVariable = appCenterGroupVariable;
+			AppCenterAppNameVariable = appCenterAppNameVariable;
+			AppCenterOwnerVariable = appCenterOwnerVariable;
 		}
 
 	public static bool ShouldCopyImage

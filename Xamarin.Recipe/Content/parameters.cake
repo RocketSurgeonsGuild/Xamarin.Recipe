@@ -22,8 +22,7 @@ public static class BuildParameters
     public static bool IsPublishBuild { get; private set; }
     public static bool IsReleaseBuild { get; private set; }
     public static bool ShouldRunGitVersion { get; private set; }
-    public static string AppCenterApiKey { get; private set; }
-  
+    public static string AppCenterApiKey { get; private set; }  
     public static bool IsDotNetCoreBuild { get; set; }
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
@@ -152,10 +151,11 @@ public static class BuildParameters
         IsDotNetCoreBuild = true;
 
         ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;
-        ShouldDeployAppCenter = shouldDeployAppCenter;
         ShouldCopyImages = shouldCopyImages;
 
 		SetBuildPaths(BuildPaths.GetPaths(context));
+
+        ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMasterBranch || IsReleaseBranch || IsDevelopBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
     }
 
     public static void SetBuildVersion(BuildVersion version)
@@ -229,7 +229,8 @@ public static ICollection<string> GetNuGetSources(ICakeContext context, ICollect
         else
         {
             // TODO: Use parameter for Cake Contrib feed from environment variable, similar to BuildParameters.MyGet.SourceUrl
-            nuGetSources = new []{
+            nuGetSources = new []
+            {
                 "https://api.nuget.org/v3/index.json",
                 "https://www.myget.org/F/cake-contrib/api/v3/index.json"
             };

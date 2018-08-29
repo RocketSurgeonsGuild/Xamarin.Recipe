@@ -48,11 +48,16 @@ Task("Android-Build")
 Task("Android-Manifest")
     .Does(() =>
     {
+        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
         var manifest = DeserializeAppManifest(BuildParameters.AndroidManifest);
 
         manifest.VersionName = BuildParameters.Version.Version;
         manifest.VersionCode = BuildParameters.Version.PreReleaseNumber;
-        // manifest.PackageName = Environment.BundleIdentifierVariable;
+
+        if(!string.IsNullOrEmpty(bundleIdentifier))
+        {
+            manifest.PackageName = bundleIdentifier;
+        }
 
         SerializeAppManifest(BuildParameters.AndroidManifest, manifest);
     });

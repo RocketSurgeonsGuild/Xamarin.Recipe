@@ -1,7 +1,7 @@
-BuildParameters.Tasks.AppCenterTask = Task("AppCenter");
+BuildParameters.Tasks.AppCenterTask = Task("AppCenter")
+                                            .WithCriteria(BuildParameters.ShouldDeployAppCenter);
 
 BuildParameters.Tasks.DistributeTask = Task("Distribute")
-                                            .IsDependentOn("Archive")
                                             .Does(() =>
                                             {
                                                 Information("Uploading to App Center");
