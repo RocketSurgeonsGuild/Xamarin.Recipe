@@ -1,5 +1,5 @@
 BuildParameters.Tasks.AppCenterTask = Task("AppCenter")
-                                            .WithCriteria(BuildParameters.ShouldDeployAppCenter);
+                                            .WithCriteria(() => BuildParameters.ShouldDeployAppCenter);
 
 BuildParameters.Tasks.DistributeTask = Task("Distribute")
                                             .Does(() =>
