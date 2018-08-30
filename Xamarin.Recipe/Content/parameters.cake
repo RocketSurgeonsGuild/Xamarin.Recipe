@@ -130,18 +130,15 @@ public static class BuildParameters
         IsRunningOnWindows = context.IsRunningOnWindows();
         IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor;
         IsRunningOnVSTS = buildSystem.TFBuild.IsRunningOnTFS || buildSystem.TFBuild.IsRunningOnVSTS;
-        IsPullRequest = buildSystem.AppVeyor.Environment.PullRequest.IsPullRequest;
-        IsMainRepository = StringComparer.OrdinalIgnoreCase.Equals(string.Concat(repositoryOwner, "/", repositoryName), buildSystem.AppVeyor.Environment.Repository.Name);
+        IsPullRequest = !string.IsNullOrEmpty(context.Environment.GetEnvironmentVariable("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"));
+        IsMainRepository = StringComparer.OrdinalIgnoreCase.Equals(string.Concat(repositoryOwner, "/", repositoryName), buildSystem.TFBuild.Environment.Repository.RepoName);
         IsPublicRepository = isPublicRepository;
-        IsMasterBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
-        IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.AppVeyor.Environment.Repository.Branch);
-        IsFeatureBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("feature", StringComparison.OrdinalIgnoreCase);
-        IsReleaseBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase);
-        IsHotFixBranch = buildSystem.AppVeyor.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
-        IsTagged = (
-            buildSystem.AppVeyor.Environment.Repository.Tag.IsTag &&
-            !string.IsNullOrWhiteSpace(buildSystem.AppVeyor.Environment.Repository.Tag.Name)
-        );
+        IsMasterBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.TFBuild.Environment.Repository.Branch);
+        IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.TFBuild.Environment.Repository.Branch);
+        IsFeatureBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("feature", StringComparison.OrdinalIgnoreCase);
+        IsReleaseBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase);
+        IsHotFixBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
+        IsTagged = (!string.IsNullOrWhiteSpace(context.Environment.GetEnvironmentVariable("$git_tag")));
 
         AndroidManifest = androidManifest;
 
