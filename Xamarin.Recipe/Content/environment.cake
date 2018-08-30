@@ -52,7 +52,7 @@ public static class Environment
 			AppCenterAppNameVariable = appCenterAppNameVariable;
 			AppCenterOwnerVariable = appCenterOwnerVariable;
 		}
-
+		
 	public static bool ShouldCopyImage
 	{
 		get

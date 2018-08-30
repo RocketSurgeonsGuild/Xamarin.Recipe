@@ -60,7 +60,7 @@ Task("iPhone-Info-Plist")
     });
 
 Task("iPhone-AppCenter")
-    .WithCriteria(BuildParameters.ShouldDeployAppCenter)
+    .WithCriteria(() => BuildParameters.ShouldDeployAppCenter)
     .IsDependentOn("iOSArchive")
     .Does(() =>
     {

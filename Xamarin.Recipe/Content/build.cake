@@ -49,6 +49,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("IsPullRequest: {0}", BuildParameters.IsPullRequest);
         Information("IsMainRepository: {0}", BuildParameters.IsMainRepository);
         Information("IsMasterBranch: {0}", BuildParameters.IsMasterBranch);
+        Information("IsDevBranch: {0}", BuildParameters.IsDevelopBranch);
         Information("IsFeatureBranch: {0}", BuildParameters.IsFeatureBranch);
         Information("IsReleaseBranch: {0}", BuildParameters.IsReleaseBranch);
         Information("IsHotFixBranch: {0}", BuildParameters.IsHotFixBranch);
