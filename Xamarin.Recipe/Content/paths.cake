@@ -15,6 +15,7 @@ public class BuildPaths
         var buildDirectoryPath             = "./BuildArtifacts";
         var tempBuildDirectoryPath         = buildDirectoryPath + "/temp";
         var iOSArtifactDirectoryPath       = buildDirectoryPath + "/ios";
+        var droidArtifactDirectoryPath     = buildDirectoryPath + "/droid";
         var publishedxUnitTestsDirectory   = tempBuildDirectoryPath + "/_PublishedxUnitTests";
         var publishedWebsitesDirectory     = tempBuildDirectoryPath + "/_PublishedWebsites";
         var publishedApplicationsDirectory = tempBuildDirectoryPath + "/_PublishedApplications";
@@ -53,6 +54,7 @@ public class BuildPaths
             buildDirectoryPath,
             tempBuildDirectoryPath,
             iOSArtifactDirectoryPath,
+            droidArtifactDirectoryPath,
             publishedxUnitTestsDirectory,
             publishedWebsitesDirectory,
             publishedApplicationsDirectory,
@@ -135,6 +137,7 @@ public class BuildDirectories
     public DirectoryPath Build { get; private set; }
     public DirectoryPath TempBuild { get; private set; }
     public DirectoryPath IOSArtifactDirectoryPath { get; private set; }
+    public DirectoryPath DroidArtifactDirectoryPath { get; private set; }
     public DirectoryPath PublishedNUnitTests { get; private set; }
     public DirectoryPath PublishedxUnitTests { get; private set; }
     public DirectoryPath PublishedMSTestTests { get; private set; }
@@ -164,6 +167,7 @@ public class BuildDirectories
         DirectoryPath build,
         DirectoryPath tempBuild,
         DirectoryPath iOSArtifactDirectoryPath,
+        DirectoryPath droidArtifactDirectoryPath,
         DirectoryPath publishedxUnitTests,
         DirectoryPath publishedWebsites,
         DirectoryPath publishedApplications,
@@ -181,6 +185,7 @@ public class BuildDirectories
         Build = build;
         TempBuild = tempBuild;
         IOSArtifactDirectoryPath = iOSArtifactDirectoryPath;
+        DroidArtifactDirectoryPath = droidArtifactDirectoryPath;
         PublishedxUnitTests = publishedxUnitTests;
         PublishedWebsites = publishedWebsites;
         PublishedApplications = publishedApplications;
@@ -199,6 +204,7 @@ public class BuildDirectories
             Build,
             TempBuild,
             IOSArtifactDirectoryPath,
+            DroidArtifactDirectoryPath,
             TestResults,
             TestCoverage
         };

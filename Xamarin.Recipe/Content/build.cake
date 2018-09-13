@@ -140,19 +140,6 @@ public class Builder
         _action(BuildParameters.Target);
     }
 
-    private static void SetupTasks(bool isDotNetCoreBuild)
-    {
-        //TODO: Only set .NET Core dependencies here.
-        // Move the remaining IsDependentOn calls to the Task assignment.
-                
-        BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
-        BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build").IsDependentOn("iPhone-Build");
-        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOSArchive").IsDependentOn("Android-Archive");
-        BuildParameters.Tasks.AppCenterTask.IsDependentOn("Archive").IsDependentOn("Distribute");
-        BuildParameters.Tasks.DefaultTask.IsDependentOn("AppCenter");
-    }
-
     private static void SetupTasks(ApplicationTarget target)
     {
         BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
@@ -178,7 +165,7 @@ public class Builder
         
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOSArchive");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
         BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");

@@ -1,14 +1,10 @@
 #addin nuget:?package=Cake.Plist&version=0.4.0
 #addin nuget:?package=Cake.AppCenter&version=1.1.0
 
-BuildParameters.Tasks.iOSArchiveTask = Task("iOSArchive")
+BuildParameters.Tasks.iOSArchiveTask = Task("iOS-Archive")
     .WithCriteria(() => BuildParameters.IsRunningOnUnix)
     .IsDependentOn("iPhone-Build")
-    .IsDependentOn("Copy-Ipa")
-    .Does(() =>
-    {
-
-    });
+    .IsDependentOn("Copy-Ipa");
 
 Task("iPhone-Build")
     .IsDependentOn("iPhone-Info-Plist")
@@ -61,7 +57,7 @@ Task("iPhone-Info-Plist")
 
 Task("iPhone-AppCenter")
     .WithCriteria(() => BuildParameters.ShouldDeployAppCenter)
-    .IsDependentOn("iOSArchive")
+    .IsDependentOn("iOS-Archive")
     .Does(() =>
     {
         var iosArtifactsPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
