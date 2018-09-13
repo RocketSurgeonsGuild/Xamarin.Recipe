@@ -12,8 +12,7 @@ Task("Unit-Test")
                 { 
                     Configuration = BuildParameters.Configuration,
                     Framework = ToolSettings.TestFramework,
-                    NoRestore = true,
-                    NoBuild = true
+                    NoBuild = ToolSettings.TestNoBuild
                 });
         }
     });
