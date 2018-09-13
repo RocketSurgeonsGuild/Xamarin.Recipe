@@ -14,7 +14,7 @@ Task("Android-Build")
             Warning("The Android key store environment variable is not defined.");
         }
 
-        var keyStoreAlias = EnvironmentVariable(Environment.KeyStoreAliasVariable);
+        var keyStoreAlias = EnvironmentVariable(Environment.KeyAliasVariable);
         if (string.IsNullOrEmpty(keyStoreAlias))
         {
            Warning("The Android key store alias environment variable is not defined.");
@@ -25,6 +25,12 @@ Task("Android-Build")
         {
             Warning("The Android key store password environment variable is not defined.");
         }
+
+        var keyPassword = EnvironmentVariable(Environment.KeyPasswordVariable);
+        if(string.IsNullOrEmpty(keyPassword))
+        {
+            Warning("The Android key password environment variable is not defined.");
+        }
         
         MSBuild(BuildParameters.AndroidProjectPath, configurator =>
                     configurator
@@ -32,8 +38,9 @@ Task("Android-Build")
                         .SetVerbosity(ToolSettings.MSBuildVerbosity)
                         .UseToolVersion(ToolSettings.MSBuildToolVersion)
                         .WithTarget("SignAndroidPackage")
-                        .WithProperty("AndroidSigningStorePass", keyStorePassword)
+                        .WithProperty("AndroidKeyStore", "true")
                         .WithProperty("AndroidSigningKeyStore", keyStore)
+                        .WithProperty("AndroidSigningStorePass", keyStorePassword)
                         .WithProperty("AndroidSigningKeyAlias", keyStoreAlias)
                         .WithProperty("AndroidSigningKeyPass", keyStorePassword));
     });

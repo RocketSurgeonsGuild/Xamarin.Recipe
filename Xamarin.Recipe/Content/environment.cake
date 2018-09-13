@@ -6,8 +6,9 @@ public static class Environment
 	public static string NuGetSourceUrlVariable { get; private set; }
 	public static string MicrosoftTeamsWebHookUrlVariable { get; private set; }
 	public static string KeyStoreVariable { get; private set; }
-	public static string KeyStoreAliasVariable { get; private set; }
+	public static string KeyAliasVariable { get; private set; }
 	public static string KeyStorePasswordVariable { get; private set; }
+	public static string KeyPasswordVariable { get; private set; }
 	public static string XamarinBuildConfigurationVariable { get; private set; }
 	public static string AppIconSourceImagePathVariable { get; private set; }
 	public static string AppIconDestinationImagePathVariable { get; private set; }
@@ -24,8 +25,9 @@ public static class Environment
 		string nuGetSourceUrlVariable = "NUGET_SOURCE",
 		string microsoftTeamsWebHookUrlVariable = "MICROSOFTTEAMS_WEBHOOKURL",
 		string keyStoreVariable = "ANDROID_KEYSTORE",
-		string keyStoreAliasVariable = "ANDROID_KEYSTORE_ALIAS",
 		string keyStorePasswordVarible = "ANDROID_KEYSTORE_PASSWORD",
+		string keyAliasVariable = "ANDROID_KEY_ALIAS",
+		string keyPasswordVarible = "ANDROID_KEY_PASSWORD",
 		string xamarinBuildConfigurationVariable = "XAMARIN_BUILD_CONFIGURATION",
 		string appIconSourceImagePathVariable = "APP_IMG_SRC",
 		string appIconDestinationImagePathVariable = "APP_IMG_DEST",
@@ -41,8 +43,9 @@ public static class Environment
 			NuGetSourceUrlVariable = nuGetSourceUrlVariable;
 			MicrosoftTeamsWebHookUrlVariable = microsoftTeamsWebHookUrlVariable;
 			KeyStoreVariable = keyStoreVariable;
-			KeyStoreAliasVariable = keyStoreAliasVariable;
+			KeyAliasVariable = keyAliasVariable;
 			KeyStorePasswordVariable = keyStorePasswordVarible;
+			KeyPasswordVariable = keyPasswordVarible;
 			XamarinBuildConfigurationVariable = xamarinBuildConfigurationVariable;
 			AppIconSourceImagePathVariable = appIconSourceImagePathVariable;
 			AppIconDestinationImagePathVariable = appIconDestinationImagePathVariable;
