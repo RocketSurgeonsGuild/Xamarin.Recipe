@@ -176,6 +176,7 @@ public class Builder
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build");
         BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("Android-Archive");
+        BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
         BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
         BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");
     }
