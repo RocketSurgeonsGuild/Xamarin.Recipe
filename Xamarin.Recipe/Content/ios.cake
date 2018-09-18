@@ -1,5 +1,4 @@
 #addin nuget:?package=Cake.Plist&version=0.4.0
-#addin nuget:?package=Cake.AppCenter&version=1.1.0
 
 BuildParameters.Tasks.iOSArchiveTask = Task("iOS-Archive")
     .WithCriteria(() => BuildParameters.IsRunningOnUnix)
@@ -8,7 +7,7 @@ BuildParameters.Tasks.iOSArchiveTask = Task("iOS-Archive")
 
 Task("iPhone-Build")
     .IsDependentOn("iPhone-Info-Plist")
-    .WithCriteria(() => IsRunningOnUnix())
+    .WithCriteria(() => BuildParameters.IsRunningOnUnix)
     .Does(() =>
     {
         Verbose("Build Configuration: {0}", BuildParameters.Configuration);

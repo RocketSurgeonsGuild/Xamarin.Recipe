@@ -46,6 +46,7 @@ Task("Android-Build")
     });
 
 Task("Android-Manifest")
+    .WithCriteria(() => !string.IsNullOrEmpty(BuildParameters.AndroidManifest.FullPath))
     .Does(() =>
     {
         var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);

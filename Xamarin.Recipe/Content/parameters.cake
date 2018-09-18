@@ -37,6 +37,7 @@ public static class BuildParameters
     public static DirectoryPath SourceDirectoryPath { get; private set; }
     public static DirectoryPath SolutionDirectoryPath { get; private set; }
     public static FilePath AndroidProjectPath { get; private set; }
+    public static FilePath AndroidManifest { get; private set; }
     public static FilePath IOSProjectPath { get; private set; }
     public static FilePath PlistFilePath { get; private set; }
     public static string Platform { get; private set; }
@@ -47,7 +48,6 @@ public static class BuildParameters
     public static string ResharperSettingsFileName { get; private set; }
     public static string RepositoryOwner { get; private set; }
     public static string RepositoryName { get; private set; }
-    public static FilePath AndroidManifest { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
 

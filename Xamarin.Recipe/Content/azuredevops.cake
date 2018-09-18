@@ -1,10 +1,10 @@
-BuildParameters.Tasks.VSTSTask = Task("VSTS")
+BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
     .WithCriteria(() => BuildParameters.IsRunningOnVSTS)
-    .IsDependentOn("Upload-VSTS-Artifacts")
-    .IsDependentOn("Clear-VSTS-Cache");
+    .IsDependentOn("Upload-AzureDevOps-Artifacts")
+    .IsDependentOn("Clear-AzureDevOps-Cache");
 
 
-    BuildParameters.Tasks.PrintVSTSEnvironmentVariablesTask = Task("Print-VSTS-Environment-Variables")
+    BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-AzureDevOps-Environment-Variables")
         .WithCriteria(() => BuildParameters.IsRunningOnVSTS)
         .Does(() =>
         {
@@ -32,13 +32,13 @@ BuildParameters.Tasks.VSTSTask = Task("VSTS")
             Information("BUILD_REPOSITORY_PROVIDER: {0}", EnvironmentVariable("BUILD_REPOSITORY_PROVIDER"));
         });
 
-    BuildParameters.Tasks.UploadVSTSArtifactsTask = Task("Upload-VSTS-Artifacts")
+    BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
         .Does(() =>
         {
 
         });
         
-    BuildParameters.Tasks.ClearVSTSCacheTask = Task("Clear-VSTS-Cache")
+    BuildParameters.Tasks.ClearAzureDevOpsCacheTask = Task("Clear-AzureDevOps-Cache")
         .Does(() =>
         {
 

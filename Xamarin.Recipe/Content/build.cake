@@ -65,7 +65,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
 
     BuildParameters.Tasks.CleanTask = Task("Clean")
     .IsDependentOn("Show-Info")
-    .IsDependentOn("Print-VSTS-Environment-Variables")
+    .IsDependentOn("Print-AzureDevOps-Environment-Variables")
     .Does(() =>
     {
         Information("Cleaning...");
@@ -74,6 +74,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
     });
 
     BuildParameters.Tasks.RestoreTask = Task("Restore")
+    .IsDependentOn("Clean")
     .Does(() =>
     {
         Information("Restoring {0}...", BuildParameters.SolutionFilePath);
@@ -142,7 +143,9 @@ public class Builder
 
     private static void SetupTasks(ApplicationTarget target)
     {
-        BuildParameters.Tasks.RestoreTask.IsDependentOn("Clean");
+        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
+        BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
+        BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");
 
         switch (target)
         {
@@ -161,24 +164,17 @@ public class Builder
     }
 
     private static void SetupiOS()
-    {
-        
+    {        
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("iPhone-Build");
-        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
-        BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
-        BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");
     }
 
     private static void SetupAndroid()
     {
         BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build");
-        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
-        BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
-        BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");
     }
 
     private static void SetupUWP()

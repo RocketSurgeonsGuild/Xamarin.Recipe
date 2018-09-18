@@ -42,8 +42,8 @@ public class BuildTasks
     public CakeTaskBuilder PublishDocumentationTask { get; set; }
     public CakeTaskBuilder PreviewDocumentationTask { get; set; }
     public CakeTaskBuilder ForcePublishDocumentationTask { get; set; }
-    public CakeTaskBuilder VSTSTask { get; set; }
-    public CakeTaskBuilder PrintVSTSEnvironmentVariablesTask { get; set; }
-    public CakeTaskBuilder UploadVSTSArtifactsTask { get; set; }
-    public CakeTaskBuilder ClearVSTSCacheTask { get; set; }
+    public CakeTaskBuilder AzureDevOpsTask { get; set; }
+    public CakeTaskBuilder PrintAzureDevOpsEnvironmentVariablesTask { get; set; }
+    public CakeTaskBuilder UploadAzureDevOpsArtifactsTask { get; set; }
+    public CakeTaskBuilder ClearAzureDevOpsCacheTask { get; set; }
 }
