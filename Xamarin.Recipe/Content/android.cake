@@ -8,8 +8,8 @@ Task("Android-Build")
     .IsDependentOn("Android-Manifest")
     .Does(() => 
     {
-        var keyStore = EnvironmentVariable(Environment.KeyStoreVariable);
-        if (string.IsNullOrEmpty(keyStore))
+        var keyStore = MakeAbsolute(File(EnvironmentVariable(Environment.KeyStoreVariable)));
+        if (string.IsNullOrEmpty(keyStore.FullPath))
         {
             Warning("The Android key store environment variable is not defined.");
         }
@@ -39,10 +39,11 @@ Task("Android-Build")
                         .UseToolVersion(ToolSettings.MSBuildToolVersion)
                         .WithTarget("SignAndroidPackage")
                         .WithProperty("AndroidKeyStore", "true")
-                        .WithProperty("AndroidSigningKeyStore", keyStore)
+                        .WithProperty("AndroidSigningKeyStore", keyStore.FullPath)
                         .WithProperty("AndroidSigningStorePass", keyStorePassword)
                         .WithProperty("AndroidSigningKeyAlias", keyStoreAlias)
-                        .WithProperty("AndroidSigningKeyPass", keyStorePassword));
+                        .WithProperty("AndroidSigningKeyPass", keyStorePassword)
+                        .WithProperty("AndroidSdkBuildToolsVersion", "27.0.2"));
     });
 
 Task("Android-Manifest")
