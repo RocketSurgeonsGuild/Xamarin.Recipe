@@ -43,7 +43,7 @@ Task("Android-Build")
                         .WithProperty("AndroidSigningStorePass", keyStorePassword)
                         .WithProperty("AndroidSigningKeyAlias", keyStoreAlias)
                         .WithProperty("AndroidSigningKeyPass", keyStorePassword)
-                        .WithProperty("AndroidSdkBuildToolsVersion", "27.0.2"));
+                        .WithProperty("AndroidSdkBuildToolsVersion", ToolSettings.AndroidBuildToolVersion));
     });
 
 Task("Android-Manifest")

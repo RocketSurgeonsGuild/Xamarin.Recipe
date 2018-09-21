@@ -14,6 +14,7 @@ public static class ToolSettings
     public static Verbosity MSBuildVerbosity { get; private set; }
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
+    public static string AndroidBuildToolVersion { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -30,7 +31,8 @@ public static class ToolSettings
         string[] dupFinderExcludeFilesByStartingCommentSubstring = null,
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
-        Verbosity msBuildVerbosity = Verbosity.Quiet
+        Verbosity msBuildVerbosity = Verbosity.Quiet,
+        string androidBuildToolVersion = "27.0.2"
     )
     {
         context.Information("Setting up tools...");
@@ -56,5 +58,6 @@ public static class ToolSettings
         MaxCpuCount = maxCpuCount ?? 0;
         OutputDirectory = outputDirectory;
         MSBuildVerbosity = msBuildVerbosity;
+        AndroidBuildToolVersion = androidBuildToolVersion;
     }
 }
