@@ -87,13 +87,16 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
             });
     });
 
-BuildParameters.Tasks.BuildTask = Task("Build");
+BuildParameters.Tasks.BuildTask = Task("Build").IsDependentOn("Restore");
 
-BuildParameters.Tasks.TestTask = Task("Test");
+BuildParameters.Tasks.TestTask = Task("Test")
+                                    .IsDependentOn("Build")
+                                    .IsDependentOn("Unit-Test")
+                                    .IsDependentOn("UI-Test");
 
-BuildParameters.Tasks.ArchiveTask = Task("Archive");
+BuildParameters.Tasks.ArchiveTask = Task("Archive").IsDependentOn("Test").IsDependentOn("Image-Copy");
 
-BuildParameters.Tasks.DefaultTask = Task("Execute");
+BuildParameters.Tasks.DefaultTask = Task("Execute").IsDependentOn("Distribute");
 
 public Builder Build
 {
@@ -132,21 +135,28 @@ public class Builder
         _action(BuildParameters.Target);
     }
 
-    public void RunNuGet()
+    public void RuniOS()
     {
-        BuildParameters.Tasks.PackageTask.IsDependentOn("Create-NuGet-Package");
-        BuildParameters.IsDotNetCoreBuild = false;
-        BuildParameters.IsNuGetBuild = true;
+        BuildParameters.IsDotNetCoreBuild = true;
+        BuildParameters.IsNuGetBuild = false;
+        
+        SetupiOS();
+        
+        _action(BuildParameters.Target);
+    }
+
+    public void RunAndroid()
+    {
+        BuildParameters.IsDotNetCoreBuild = true;
+        BuildParameters.IsNuGetBuild = false;
+
+        SetupAndroid();
 
         _action(BuildParameters.Target);
     }
 
     private static void SetupTasks(ApplicationTarget target)
     {
-        BuildParameters.Tasks.TestTask.IsDependentOn("Build").IsDependentOn("Unit-Test").IsDependentOn("UI-Test");
-        BuildParameters.Tasks.DistributeTask.IsDependentOn("Archive").IsDependentOn("AppCenter");
-        BuildParameters.Tasks.DefaultTask.IsDependentOn("Distribute");
-
         switch (target)
         {
             case ApplicationTarget.iOS:
@@ -165,15 +175,15 @@ public class Builder
 
     private static void SetupiOS()
     {        
-        BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("iPhone-Build");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("iOS-Archive");
+        BuildParameters.Tasks.BuildTask.IsDependentOn("iPhone-Build");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
     }
 
     private static void SetupAndroid()
     {
-        BuildParameters.Tasks.BuildTask.IsDependentOn("Restore").IsDependentOn("Android-Build");
-        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Test").IsDependentOn("Image-Copy").IsDependentOn("Android-Archive");
+        BuildParameters.Tasks.BuildTask.IsDependentOn("Android-Build");
+        BuildParameters.Tasks.ArchiveTask.IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
     }
 
