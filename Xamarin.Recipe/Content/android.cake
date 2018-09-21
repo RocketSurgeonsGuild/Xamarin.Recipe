@@ -2,14 +2,11 @@
 
 BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
     .IsDependentOn("Android-Build")
-    .IsDependentOn("Copy-Apk");
-
-Task("Android-Build")
-    .IsDependentOn("Android-Manifest")
-    .Does(() => 
+    .IsDependentOn("Test")
+    .Does(() =>
     {
-        var keyStore = EnvironmentVariable(Environment.KeyStoreVariable);
-        if (string.IsNullOrEmpty(keyStore))
+        var keyStore = MakeAbsolute(File(EnvironmentVariable(Environment.KeyStoreVariable)));
+        if (string.IsNullOrEmpty(keyStore.FullPath))
         {
             Warning("The Android key store environment variable is not defined.");
         }
@@ -39,13 +36,27 @@ Task("Android-Build")
                         .UseToolVersion(ToolSettings.MSBuildToolVersion)
                         .WithTarget("SignAndroidPackage")
                         .WithProperty("AndroidKeyStore", "true")
-                        .WithProperty("AndroidSigningKeyStore", keyStore)
+                        .WithProperty("AndroidSigningKeyStore", keyStore.FullPath)
                         .WithProperty("AndroidSigningStorePass", keyStorePassword)
                         .WithProperty("AndroidSigningKeyAlias", keyStoreAlias)
-                        .WithProperty("AndroidSigningKeyPass", keyStorePassword));
+                        .WithProperty("AndroidSigningKeyPass", keyStorePassword)
+                        .WithProperty("AndroidSdkBuildToolsVersion", ToolSettings.AndroidBuildToolVersion));
+    });
+
+Task("Android-Build")
+    .IsDependentOn("Android-Manifest")
+    .Does(() => 
+    {
+        MSBuild(BuildParameters.AndroidProjectPath, configurator =>
+            configurator
+                .SetConfiguration(BuildParameters.Configuration)
+                .SetVerbosity(ToolSettings.MSBuildVerbosity)
+                .UseToolVersion(ToolSettings.MSBuildToolVersion)
+                .WithProperty("AndroidSdkBuildToolsVersion", ToolSettings.AndroidBuildToolVersion));
     });
 
 Task("Android-Manifest")
+    .WithCriteria(() => !string.IsNullOrEmpty(BuildParameters.AndroidManifest.FullPath))
     .Does(() =>
     {
         var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
@@ -65,6 +76,7 @@ Task("Android-Manifest")
 Task("Android-AppCenter")
     .WithCriteria(() => BuildParameters.ShouldDeployAppCenter)
     .IsDependentOn("Android-Archive")
+    .IsDependentOn("Copy-Apk")
     .Does(() =>
     {
         var androidArtifactsPath = MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath);
