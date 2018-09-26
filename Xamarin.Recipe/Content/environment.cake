@@ -36,25 +36,37 @@ public static class Environment
 		string appCenterGroupVariable = "APPCENTER_GROUP",
 		string appCenterAppNameVariable = "APPCENTER_APP_NAME",
 		string appCenterOwnerVariable = "APPCENTER_OWNER")
-		{
-			MyGetApiKeyVariable = myGetApiKeyVariable;
-			MyGetSourceUrlVariable = myGetSourceUrlVariable;
-			NuGetApiKeyVariable = nuGetApiKeyVariable;
-			NuGetSourceUrlVariable = nuGetSourceUrlVariable;
-			MicrosoftTeamsWebHookUrlVariable = microsoftTeamsWebHookUrlVariable;
-			KeyStoreVariable = keyStoreVariable;
-			KeyAliasVariable = keyAliasVariable;
-			KeyStorePasswordVariable = keyStorePasswordVarible;
-			KeyPasswordVariable = keyPasswordVarible;
-			XamarinBuildConfigurationVariable = xamarinBuildConfigurationVariable;
-			AppIconSourceImagePathVariable = appIconSourceImagePathVariable;
-			AppIconDestinationImagePathVariable = appIconDestinationImagePathVariable;
-			BundleIdentifierVariable = bundleIdentifierVariable;
-			AppCenterTokenVariable = appCenterTokenVariable;
-			AppCenterGroupVariable = appCenterGroupVariable;
-			AppCenterAppNameVariable = appCenterAppNameVariable;
-			AppCenterOwnerVariable = appCenterOwnerVariable;
-		}
+	{
+		MyGetApiKeyVariable = myGetApiKeyVariable;
+		MyGetSourceUrlVariable = myGetSourceUrlVariable;
+		NuGetApiKeyVariable = nuGetApiKeyVariable;
+		NuGetSourceUrlVariable = nuGetSourceUrlVariable;
+		MicrosoftTeamsWebHookUrlVariable = microsoftTeamsWebHookUrlVariable;
+		KeyStoreVariable = keyStoreVariable;
+		KeyAliasVariable = keyAliasVariable;
+		KeyStorePasswordVariable = keyStorePasswordVarible;
+		KeyPasswordVariable = keyPasswordVarible;
+		XamarinBuildConfigurationVariable = xamarinBuildConfigurationVariable;
+		AppIconSourceImagePathVariable = appIconSourceImagePathVariable;
+		AppIconDestinationImagePathVariable = appIconDestinationImagePathVariable;
+		BundleIdentifierVariable = bundleIdentifierVariable;
+		AppCenterTokenVariable = appCenterTokenVariable;
+		AppCenterGroupVariable = appCenterGroupVariable;
+		AppCenterAppNameVariable = appCenterAppNameVariable;
+		AppCenterOwnerVariable = appCenterOwnerVariable;
+	}
+
+    public static void Echo(ICakeContext context)
+	{
+        context.Information("{0}: {1}", BundleIdentifierVariable, context.EnvironmentVariable(BundleIdentifierVariable));
+        context.Information("{0}: {1}", AppCenterOwnerVariable, context.EnvironmentVariable(AppCenterOwnerVariable));
+        context.Information("{0}: {1}", AppCenterAppNameVariable, context.EnvironmentVariable(AppCenterAppNameVariable));
+        context.Information("{0}: {1}", AppCenterGroupVariable, context.EnvironmentVariable(AppCenterGroupVariable));
+        context.Information("{0}: {1}", AppIconSourceImagePathVariable, context.EnvironmentVariable(AppIconSourceImagePathVariable));
+        context.Information("{0}: {1}", AppIconDestinationImagePathVariable, context.EnvironmentVariable(AppIconDestinationImagePathVariable));
+        context.Information("{0}: {1}", XamarinBuildConfigurationVariable, context.EnvironmentVariable(XamarinBuildConfigurationVariable));
+        context.Information("\n");
+	}
 		
 	public static bool ShouldCopyImage
 	{
