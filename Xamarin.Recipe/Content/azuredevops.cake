@@ -1,11 +1,12 @@
 BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
-    .WithCriteria(() => BuildParameters.IsRunningOnVSTS)
+    .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
+    .IsDependentOn("Print-AzureDevOps-Environment-Variables")
+    .IsDependentOn("Clear-AzureDevOps-Cache")
     .IsDependentOn("Upload-AzureDevOps-Artifacts")
-    .IsDependentOn("Clear-AzureDevOps-Cache");
-
+    .IsDependentOn("Distribute");
 
     BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-AzureDevOps-Environment-Variables")
-        .WithCriteria(() => BuildParameters.IsRunningOnVSTS)
+        .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
         .Does(() =>
         {
             Information("AGENT_ID: {0}", EnvironmentVariable("AGENT_ID"));
@@ -14,7 +15,6 @@ BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
             Information("AGENT_JOBNAME: {0}", EnvironmentVariable("AGENT_JOBNAME"));
             Information("AGENT_JOBSTATUS: {0}", EnvironmentVariable("AGENT_JOBSTATUS"));
             Information("AGENT_MACHINE_NAME: {0}", EnvironmentVariable("AGENT_MACHINE_NAME"));
-
             Information("\n");
                         
             Information("BUILD_BUILDID: {0}", EnvironmentVariable("BUILD_BUILDID"));
@@ -22,14 +22,13 @@ BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
             Information("BUILD_DEFINITIONNAME: {0}", EnvironmentVariable("BUILD_DEFINITIONNAME"));
             Information("BUILD_DEFINITIONVERSION: {0}", EnvironmentVariable("BUILD_DEFINITIONVERSION"));
             Information("BUILD_QUEUEDBY: {0}", EnvironmentVariable("BUILD_QUEUEDBY"));
-            
-            
             Information("\n");
 
             Information("BUILD_SOURCEBRANCHNAME: {0}", EnvironmentVariable("BUILD_SOURCEBRANCHNAME"));
             Information("BUILD_SOURCEVERSION: {0}", EnvironmentVariable("BUILD_SOURCEVERSION"));
             Information("BUILD_REPOSITORY_NAME: {0}", EnvironmentVariable("BUILD_REPOSITORY_NAME"));
             Information("BUILD_REPOSITORY_PROVIDER: {0}", EnvironmentVariable("BUILD_REPOSITORY_PROVIDER"));
+            Information("\n");
         });
 
     BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")

@@ -9,12 +9,12 @@ public static class BuildParameters
     public static bool IsRunningOnUnix { get; private set; }
     public static bool IsRunningOnWindows { get; private set; }
     public static bool IsRunningOnAppVeyor { get; private set; }
-    public static bool IsRunningOnVSTS {get; private set; }
+    public static bool IsRunningOnAzureDevOps {get; private set; }
     public static bool IsPullRequest { get; private set; }
     public static bool IsMainRepository { get; private set; }
     public static bool IsPublicRepository {get; private set; }
-    public static bool IsMasterBranch { get; private set; }
-    public static bool IsDevelopBranch { get; private set; }
+    public static bool IsMainBranch { get; private set; }
+    public static bool IsDevBranch { get; private set; }
     public static bool IsFeatureBranch { get; private set; }
     public static bool IsReleaseBranch { get; private set; }
     public static bool IsHotFixBranch { get; private set ; }
@@ -115,8 +115,6 @@ public static class BuildParameters
         ResharperSettingsFileName = resharperSettingsFileName ?? string.Format("{0}.sln.DotSettings", Title);
         RepositoryOwner = repositoryOwner ?? string.Empty;
         RepositoryName = repositoryName ?? Title;
-        // AppVeyorAccountName = appVeyorAccountName ?? RepositoryOwner.Replace("-", "").ToLower();
-        // AppVeyorProjectSlug = appVeyorProjectSlug ?? Title.Replace(".", "-").ToLower();
 
         Target = context.Argument("target", "Default");
         ApplicationTarget = context.Argument("application", ApplicationTarget.Android);
@@ -129,12 +127,12 @@ public static class BuildParameters
         IsRunningOnUnix = context.IsRunningOnUnix();
         IsRunningOnWindows = context.IsRunningOnWindows();
         IsRunningOnAppVeyor = buildSystem.AppVeyor.IsRunningOnAppVeyor;
-        IsRunningOnVSTS = buildSystem.TFBuild.IsRunningOnTFS || buildSystem.TFBuild.IsRunningOnVSTS;
-        IsPullRequest = !string.IsNullOrEmpty(context.Environment.GetEnvironmentVariable("SYSTEM_PULLREQUEST_PULLREQUESTNUMBER"));
+        IsRunningOnAzureDevOps = buildSystem.TFBuild.IsRunningOnTFS || buildSystem.TFBuild.IsRunningOnVSTS;
+        IsPullRequest = !string.IsNullOrEmpty(context.Environment.GetEnvironmentVariable("SYSTEM_PULLREQUEST_PULLREQUESTID"));
         IsMainRepository = StringComparer.OrdinalIgnoreCase.Equals(string.Concat(repositoryOwner, "/", repositoryName), buildSystem.TFBuild.Environment.Repository.RepoName);
         IsPublicRepository = isPublicRepository;
-        IsMasterBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.TFBuild.Environment.Repository.Branch);
-        IsDevelopBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.TFBuild.Environment.Repository.Branch);
+        IsMainBranch = StringComparer.OrdinalIgnoreCase.Equals(mainBranch, buildSystem.TFBuild.Environment.Repository.Branch);
+        IsDevBranch = StringComparer.OrdinalIgnoreCase.Equals(devBranch, buildSystem.TFBuild.Environment.Repository.Branch);
         IsFeatureBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("feature", StringComparison.OrdinalIgnoreCase);
         IsReleaseBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("release", StringComparison.OrdinalIgnoreCase);
         IsHotFixBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
@@ -152,7 +150,7 @@ public static class BuildParameters
 
 		SetBuildPaths(BuildPaths.GetPaths(context));
 
-        ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMasterBranch || IsReleaseBranch || IsDevelopBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
+        ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
     }
 
     public static void SetBuildVersion(BuildVersion version)
@@ -168,36 +166,30 @@ public static class BuildParameters
     public static void PrintParameters(ICakeContext context)
     {
         context.Information("IsLocalBuild: {0}", IsLocalBuild);
+        context.Information("IsRunningOnAppVeyor: {0}", IsRunningOnAppVeyor);
+        context.Information("IsRunningOnAzureDevOps: {0}", IsRunningOnAzureDevOps);
         context.Information("\n");
 
-        context.Information("========== REPOSITORY ==========");
-        context.Information("IsDevelopBranch: {0}", IsDevelopBranch);
-        context.Information("IsMasterBranch: {0}", IsMasterBranch);
+        context.Information("IsDevBranch: {0}", IsDevBranch);
+        context.Information("IsMainBranch: {0}", IsMainBranch);
+        context.Information("IsFeatureBranch: {0}", IsFeatureBranch);
         context.Information("IsReleaseBranch: {0}", IsReleaseBranch);
         context.Information("IsHotFixBranch: {0}", IsHotFixBranch);
-        context.Information("IsTagged: {0}", IsTagged);
         context.Information("IsPullRequest: {0}", IsPullRequest);
+        context.Information("IsTagged: {0}", IsTagged);
         context.Information("IsMainRepository: {0}", IsMainRepository);
         context.Information("IsPublicRepository: {0}", IsPublicRepository);
-        context.Information("==============================");
         context.Information("\n");
 
-        context.Information("========== ANDROID ==========");
         context.Information("AndroidManifest: {0}", AndroidManifest);
         context.Information("AndroidProjectPath: {0}", AndroidProjectPath);
-        context.Information("==============================");
         context.Information("\n");
 
-        context.Information("========== iOS ==========");
         context.Information("InfoPlist: {0}", PlistFilePath);
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
-        context.Information("==============================");
-        context.Information("\n");
 
-        context.Information("========== NUGET ==========");
         context.Information("NugetConfig: {0} ({1})", NugetConfig, context.FileExists(NugetConfig));
         context.Information("NuGetSources: {0}", string.Join(", ", NuGetSources));
-        context.Information("==============================");
         context.Information("\n");
     }
 }
