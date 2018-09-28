@@ -27,7 +27,8 @@ public static class BuildParameters
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
-    public static bool ShouldDeployAppCenter { get; set; }
+    public static bool ShouldDeployAppCenter { get; private set; }
+    public static bool ShouldRunFastlaneDeliver { get; private set; }
     public static bool ShouldCopyImages { get; private set; }
     public static bool ShouldRunxUnit { get; private set; }
     public static BuildVersion Version { get; private set; }
@@ -57,13 +58,7 @@ public static class BuildParameters
         Tasks = new BuildTasks();
     }
 
-    public static bool CanDistribute
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(BuildParameters.AppCenterApiKey);
-        }
-    }
+    public static bool CanDistribute => !string.IsNullOrEmpty(Environment.AppCenterTokenVariable);
 
     public static void SetParameters(
         ICakeContext context,
@@ -155,6 +150,8 @@ public static class BuildParameters
         ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
 
         ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
+
+        ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
     }
 
     public static void SetBuildVersion(BuildVersion version)

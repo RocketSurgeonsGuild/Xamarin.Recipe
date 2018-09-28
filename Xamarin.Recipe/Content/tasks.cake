@@ -37,6 +37,7 @@ public class BuildTasks
     public CakeTaskBuilder TestUITask { get; set; }
     public CakeTaskBuilder IntegrationTestTask { get;set; }
     public CakeTaskBuilder FastlaneTask { get; set; }
+    public CakeTaskBuilder FastlaneDeliverTask { get; set; }
     public CakeTaskBuilder CleanDocumentationTask { get; set; }
     public CakeTaskBuilder DeployGraphDocumentation {get; set;}
     public CakeTaskBuilder PublishDocumentationTask { get; set; }

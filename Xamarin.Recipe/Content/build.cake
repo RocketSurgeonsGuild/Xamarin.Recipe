@@ -183,6 +183,7 @@ public class Builder
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
         BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask.IsDependentOn("Upload-AzureDevOps-Ipa");
+        BuildParameters.Tasks.FastlaneTask.IsDependentOn("Fastlane-Deliver");
     }
 
     private static void SetupAndroid()

@@ -35,6 +35,8 @@ public class BuildPaths
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
 
+        var metadataDirectoryPath = "./metadata";
+
         var unitTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UnitTestFilePattern;
         var uiTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UITestFilePattern;
 
@@ -68,7 +70,8 @@ public class BuildPaths
             xUnitTestResultsDirectory,
             testCoverageDirectory,
             nuGetPackagesOutputDirectory,
-            packagesDirectory);
+            packagesDirectory,
+            metadataDirectoryPath);
 
         var buildFiles = new BuildFiles(
             context,
@@ -167,6 +170,7 @@ public class BuildDirectories
     public DirectoryPath NuGetPackages { get; private set; }
     public DirectoryPath ChocolateyPackages { get; private set; }
     public DirectoryPath Packages { get; private set; }
+    public DirectoryPath Metadata { get; private set; }
     public ICollection<DirectoryPath> ToClean { get; private set; }
 
     public BuildDirectories(
@@ -186,7 +190,8 @@ public class BuildDirectories
         DirectoryPath xunitTestResults,
         DirectoryPath testCoverage,
         DirectoryPath nuGetPackages,
-        DirectoryPath packages)
+        DirectoryPath packages,
+        DirectoryPath metadata)
     {
         Build = build;
         TempBuild = tempBuild;
@@ -205,6 +210,7 @@ public class BuildDirectories
         TestCoverage = testCoverage;
         NuGetPackages = nuGetPackages;
         Packages = packages;
+        Metadata = metadata;
         
         ToClean = new[] {
             Build,

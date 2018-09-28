@@ -3,7 +3,8 @@ BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
     .IsDependentOn("Clear-AzureDevOps-Cache")
     .IsDependentOn("Publish-AzureDevOps-Test-Results")
     .IsDependentOn("Upload-AzureDevOps-Artifacts")
-    .IsDependentOn("Distribute");
+    .IsDependentOn("Distribute")
+    .IsDependentOn("Fastlane");
 
 BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-AzureDevOps-Environment-Variables")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
