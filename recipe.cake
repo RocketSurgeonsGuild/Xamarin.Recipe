@@ -33,10 +33,10 @@ Task("Generate-Version-File")
         .WithToken("version", BuildParameters.Version.SemVersion)
         .ToString();
 
-    System.IO.File.WriteAllText(
-        "./Xamarin.Recipe/Content/version.cake",
-        buildMetaDataCodeGen
-        );
+        System.IO.File.WriteAllText(
+            "./Xamarin.Recipe/Content/version.cake",
+            buildMetaDataCodeGen
+            );
     });
 
 Build.RunNuGet();

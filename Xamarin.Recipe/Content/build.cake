@@ -41,26 +41,28 @@ Teardown(context =>
 BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
     .Does(() =>
     {
-        Information("");
         Information("Target: {0}", BuildParameters.Target);
         Information("Application Target: {0}", BuildParameters.ApplicationTarget);
         Information("Configuration: {0}", BuildParameters.Configuration);
         Information("IsLocalBuild: {0}", BuildParameters.IsLocalBuild);
-        Information("IsPullRequest: {0}", BuildParameters.IsPullRequest);
-        Information("IsMainRepository: {0}", BuildParameters.IsMainRepository);
-        Information("IsMasterBranch: {0}", BuildParameters.IsMasterBranch);
-        Information("IsDevBranch: {0}", BuildParameters.IsDevelopBranch);
+        Information("IsRunningOnAzureDevOps: {0}", BuildParameters.IsRunningOnAzureDevOps);
+        Information("\n");
+        Information("IsDevBranch: {0}", BuildParameters.IsDevBranch);
+        Information("IsMainBranch: {0}", BuildParameters.IsMainBranch);
         Information("IsFeatureBranch: {0}", BuildParameters.IsFeatureBranch);
         Information("IsReleaseBranch: {0}", BuildParameters.IsReleaseBranch);
         Information("IsHotFixBranch: {0}", BuildParameters.IsHotFixBranch);
+        Information("IsPullRequest: {0}", BuildParameters.IsPullRequest);
         Information("IsTagged: {0}", BuildParameters.IsTagged);
-
-        Information("");
+        Information("IsMainRepository: {0}", BuildParameters.IsMainRepository);
+        Information("\n");
         Information("Solution FilePath: {0}", MakeAbsolute((FilePath)BuildParameters.SolutionFilePath));
         Information("Solution DirectoryPath: {0}", MakeAbsolute((DirectoryPath)BuildParameters.SolutionDirectoryPath));
         Information("Source DirectoryPath: {0}", MakeAbsolute(BuildParameters.SourceDirectoryPath));
         Information("Build DirectoryPath: {0}", MakeAbsolute(BuildParameters.Paths.Directories.Build));
         Information("Test DirectoryPath: {0}", MakeAbsolute(BuildParameters.TestDirectoryPath));
+        Information("Unit Test Glob Pattern: {0}", BuildParameters.UnitTestFilePattern);
+        Information("UI Test Glob Pattern: {0}", BuildParameters.UITestFilePattern);
     });
 
     BuildParameters.Tasks.CleanTask = Task("Clean")
