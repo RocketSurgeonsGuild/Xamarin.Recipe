@@ -7,8 +7,9 @@ public static class ToolSettings
     public static string TestCoverageFilter { get; private set; }
     public static string TestCoverageExcludeByAttribute { get; private set; }
     public static string TestCoverageExcludeByFile { get; private set; }
-    public static string TestFramework { get; set; }
-    public static bool TestNoBuild { get; set; }
+    public static string TestFramework { get; private set; }
+    public static bool TestNoBuild { get; private set; }
+    public static bool TestNoRestore { get; private set; }
     public static PlatformTarget BuildPlatformTarget { get; private set; }
     public static MSBuildToolVersion MSBuildToolVersion { get; private set; }
     public static Verbosity MSBuildVerbosity { get; private set; }
@@ -24,14 +25,15 @@ public static class ToolSettings
         string testCoverageExcludeByFile = null,
         string testFramework = "netcoreapp2.0",
         bool testNoBuild = true,
+        bool testNoRestore = true,
         PlatformTarget? buildPlatformTarget = null,
         MSBuildToolVersion msBuildToolVersion = MSBuildToolVersion.Default,
+        Verbosity msBuildVerbosity = Verbosity.Quiet,
         int? maxCpuCount = null,
         DirectoryPath outputDirectory = null,
         string[] dupFinderExcludeFilesByStartingCommentSubstring = null,
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
-        Verbosity msBuildVerbosity = Verbosity.Quiet,
         string androidBuildToolVersion = "27.0.2"
     )
     {
@@ -53,6 +55,7 @@ public static class ToolSettings
         TestCoverageExcludeByFile = testCoverageExcludeByFile ?? "*/*Designer.cs;*/*.g.cs;*/*.g.i.cs";
         TestFramework = testFramework;
         TestNoBuild = testNoBuild;
+        TestNoRestore = testNoRestore;
         BuildPlatformTarget = buildPlatformTarget ?? PlatformTarget.MSIL;
         MSBuildToolVersion = msBuildToolVersion;
         MaxCpuCount = maxCpuCount ?? 0;

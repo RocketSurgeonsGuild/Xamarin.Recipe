@@ -8,6 +8,7 @@
     <copyright>Copyright Rodney Littles, II © 2018</copyright>
     <projectUrl>https://github.com/RocketSurgeonsGuild/Xamarin.Recipe</projectUrl>
     <licenseUrl>https://github.com/RocketSurgeonsGuild/Xamarin.Recipe/blob/main/LICENSE</licenseUrl>
+    <iconUrl>https://raw.githubusercontent.com/RocketSurgeonsGuild/graphics/master/png/rsg-patch-circle-color.png</iconUrl>
     <description>Re-usable build script for Cake that is focused on building and deploying Xamarin Mobile Applications.</description>
     <tags>Build Cake Xamarin Mobile</tags>
   </metadata>
