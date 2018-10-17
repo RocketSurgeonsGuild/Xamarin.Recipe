@@ -7,14 +7,7 @@ Task("Unit-Test")
             var fullPath = MakeAbsolute(path).FullPath;
 
             Verbose("Executing: {0}", fullPath);
-
-            DotNetCoreTest(fullPath, new DotNetCoreTestSettings
-                { 
-                    Configuration = BuildParameters.Configuration,
-                    Framework = ToolSettings.TestFramework,
-                    NoBuild = ToolSettings.TestNoBuild,
-                    NoRestore = ToolSettings.TestNoRestore
-                });
+            DotNetCoreTest(fullPath, ToolSettings.DotNetTestSettings());
         }
     });
 

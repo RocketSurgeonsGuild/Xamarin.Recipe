@@ -16,6 +16,7 @@ public static class ToolSettings
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
     public static string AndroidBuildToolVersion { get; private set; }
+    public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -34,7 +35,8 @@ public static class ToolSettings
         string[] dupFinderExcludeFilesByStartingCommentSubstring = null,
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
-        string androidBuildToolVersion = "27.0.2"
+        string androidBuildToolVersion = "27.0.2",
+        Func<DotNetCoreTestSettings> dotNetTestSettings = null
     )
     {
         context.Information("Setting up tools...");
@@ -62,5 +64,16 @@ public static class ToolSettings
         OutputDirectory = outputDirectory;
         MSBuildVerbosity = msBuildVerbosity;
         AndroidBuildToolVersion = androidBuildToolVersion;
+        DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
     }
+
+    private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
+                {
+                    Configuration = BuildParameters.Configuration,
+                    Framework = ToolSettings.TestFramework,
+                    NoBuild = ToolSettings.TestNoBuild,
+                    NoRestore = ToolSettings.TestNoRestore,
+                    ResultsDirectory = BuildParameters.Paths.Directories.xUnitTestResults,
+                    Logger = $"trx;LogFileName={BuildParameters.Title}.trx"
+                };
 }
