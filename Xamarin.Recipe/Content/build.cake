@@ -137,21 +137,21 @@ public class Builder
         _action(BuildParameters.Target);
     }
 
-    public void RuniOS()
+    public void RuniOS(bool isNetCoreBuild = true, bool isNuGetBuild = false)
     {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        BuildParameters.IsNuGetBuild = isNuGetBuild;
         
         SetupiOS();
         
         _action(BuildParameters.Target);
     }
 
-    public void RunAndroid()
+    public void RunAndroid(bool isNetCoreBuild = true, bool isNuGetBuild = false)
     {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
-
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        BuildParameters.IsNuGetBuild = isNuGetBuild;
+        
         SetupAndroid();
 
         _action(BuildParameters.Target);
