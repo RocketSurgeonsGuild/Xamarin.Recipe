@@ -12,7 +12,7 @@ Task("iPhone-Build")
     {
         Verbose("Build Configuration: {0}", BuildParameters.Configuration);
         Verbose("MSBuild Verbosity: {0}", ToolSettings.MSBuildVerbosity);
-        Verbose("MSBuild Tool Version: {0}", MSBuildToolVersion.VS2017);
+        Verbose("MSBuild Tool Version: {0}", ToolSettings.MSBuildToolVersion);
         Verbose("Build Platform: {0}", BuildParameters.Platform);
 
         MSBuild(BuildParameters.SolutionFilePath, configurator =>
@@ -39,15 +39,17 @@ Task("iPhone-Info-Plist")
     .WithCriteria(() => !string.IsNullOrEmpty(BuildParameters.PlistFilePath.FullPath))
     .Does(() =>
     {
-        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
-
         dynamic plist = DeserializePlist(BuildParameters.PlistFilePath);
         
+        Verbose("CFBundleShortVersionString: {0}", BuildParameters.Version.Version);
+        Verbose("CFBundleVersion: {0}", BuildParameters.Version.PreReleaseNumber);
         plist["CFBundleShortVersionString"] = BuildParameters.Version.Version;
         plist["CFBundleVersion"] = BuildParameters.Version.PreReleaseNumber.ToString();
 
+        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
         if(!string.IsNullOrEmpty(bundleIdentifier))
         {
+            Verbose("CFBundleIdentifier: {0}", bundleIdentifier);
             plist["CFBundleIdentifier"] = bundleIdentifier;
         }
 
@@ -87,5 +89,9 @@ Task("Copy-Ipa")
 
         Verbose("Build Output Directory: {0}", buildOutputDirectory);
 
-        CopyDirectory(buildOutputDirectory, MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath));
+        var IOSArtifactDirectoryPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
+
+        Verbose("IOS Artifact Directory: {0}", IOSArtifactDirectoryPath);
+
+        CopyDirectory(buildOutputDirectory, IOSArtifactDirectoryPath);
     });
