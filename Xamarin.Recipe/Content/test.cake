@@ -11,6 +11,13 @@ Task("Unit-Test")
         }
     });
 
+BuildParameters.Tasks.TestxUnitTask = Task("xUnit-Tests")
+                                        .WithCriteria(() => BuildParameters.ShouldRunxUnit)
+                                        .Does(() =>
+                                        {
+                                            XUnit2(BuildParameters.Paths.Files.UnitTestFilePaths, ToolSettings.XUnitSettings());
+                                        });
+
 Task("UI-Test")
     .Does(() =>
     {

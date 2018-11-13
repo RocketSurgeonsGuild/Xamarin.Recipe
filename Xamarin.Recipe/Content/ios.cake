@@ -107,5 +107,5 @@ Task("Upload-AzureDevOps-Ipa")
 
         Verbose("Ipa Path: {0}", ipa.FullPath);
 
-        BuildSystem.TFBuild.Commands.UploadArtifact(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath, ipa, ipa.GetFilename().ToString());
+        BuildSystem.TFBuild.Commands.UploadArtifact(artifactPath.ToString(), ipa, ipa.GetFilename().ToString());
     });

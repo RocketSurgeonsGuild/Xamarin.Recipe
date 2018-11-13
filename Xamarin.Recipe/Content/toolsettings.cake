@@ -17,6 +17,7 @@ public static class ToolSettings
     public static DirectoryPath OutputDirectory { get; private set; }
     public static string AndroidBuildToolVersion { get; private set; }
     public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
+    public static Func<XUnit2Settings> XUnitSettings { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -36,7 +37,8 @@ public static class ToolSettings
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
         string androidBuildToolVersion = "27.0.2",
-        Func<DotNetCoreTestSettings> dotNetTestSettings = null
+        Func<DotNetCoreTestSettings> dotNetTestSettings = null,
+        Func<XUnit2Settings> xUnitSettings = null
     )
     {
         context.Information("Setting up tools...");
@@ -65,6 +67,7 @@ public static class ToolSettings
         MSBuildVerbosity = msBuildVerbosity;
         AndroidBuildToolVersion = androidBuildToolVersion;
         DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
+        XUnitSettings = xUnitSettings ?? _xUnitSettings;
     }
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
@@ -75,5 +78,13 @@ public static class ToolSettings
                     NoRestore = ToolSettings.TestNoRestore,
                     ResultsDirectory = BuildParameters.Paths.Directories.xUnitTestResults,
                     Logger = $"trx;LogFileName={BuildParameters.Title}.trx"
+                };
+
+    private static Func<XUnit2Settings> _xUnitSettings = () => new XUnit2Settings
+               {
+                    OutputDirectory = BuildParameters.Paths.Directories.xUnitTestResults,
+                    Parallelism = ParallelismOption.All,
+                    XmlReport = true,
+                    NoAppDomain = true
                 };
 }

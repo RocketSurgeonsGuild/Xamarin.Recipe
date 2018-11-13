@@ -29,6 +29,7 @@ public static class BuildParameters
     public static bool PrepareLocalRelease { get; set; }
     public static bool ShouldDeployAppCenter { get; set; }
     public static bool ShouldCopyImages { get; private set; }
+    public static bool ShouldRunxUnit { get; private set; }
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
     public static BuildTasks Tasks { get; set; }
@@ -89,6 +90,7 @@ public static class BuildParameters
         bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
         bool shouldCopyImages = false,
+        bool? shouldRunxUnit = null,
         string mainBranch = "main",
         string devBranch = "dev",
         FilePath androidManifest = null,
@@ -151,6 +153,8 @@ public static class BuildParameters
 		SetBuildPaths(BuildPaths.GetPaths(context));
 
         ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
+
+        ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
     }
 
     public static void SetBuildVersion(BuildVersion version)
@@ -165,6 +169,7 @@ public static class BuildParameters
 
     public static void PrintParameters(ICakeContext context)
     {
+        context.Information("============ PARAMETERS ============");
         context.Information("IsLocalBuild: {0}", IsLocalBuild);
         context.Information("IsRunningOnAppVeyor: {0}", IsRunningOnAppVeyor);
         context.Information("IsRunningOnAzureDevOps: {0}", IsRunningOnAzureDevOps);

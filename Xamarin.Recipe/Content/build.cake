@@ -171,12 +171,14 @@ public class Builder
                     SetupUWP();
                 break;            
             default:
+                Setup();
             break;
         }
     }
 
     private static void SetupiOS()
-    {        
+    {
+        Setup();
         BuildParameters.Tasks.BuildTask.IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
@@ -185,6 +187,7 @@ public class Builder
 
     private static void SetupAndroid()
     {
+        Setup();
         BuildParameters.Tasks.BuildTask.IsDependentOn("Android-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
@@ -194,5 +197,13 @@ public class Builder
     private static void SetupUWP()
     {
         
+    }
+
+    private static void Setup()
+    {
+        if(!BuildParameters.IsDotNetCoreBuild)
+        {
+            BuildParameters.Tasks.TestTask.IsDependentOn("xUnit-Tests");
+        }
     }
 }
