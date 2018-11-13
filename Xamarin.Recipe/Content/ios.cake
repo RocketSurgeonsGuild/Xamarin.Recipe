@@ -101,11 +101,11 @@ Task("Copy-Ipa")
 Task("Upload-AzureDevOps-Ipa")
     .Does(() =>
     {
-        var artifactPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
-        Verbose("iOS Artifact Directory: {0}", artifactPath.FullPath);
+        var artifactPath = BuildParameters.Paths.Directories.IOSArtifactDirectoryPath;
 
-        var ipa = GetFiles(artifactPath.FullPath + "/*.ipa").FirstOrDefault();
-        Verbose("Ipa: {0}", ipa.FullPath);
+        var ipa = GetFiles(MakeAbsolute(artifactPath).FullPath + "/*.ipa").FirstOrDefault();
 
-        BuildSystem.TFBuild.Commands.UploadArtifact("drop", ipa, ipa.GetFilename().ToString());
+        Verbose("Ipa Path: {0}", ipa.FullPath);
+
+        BuildSystem.TFBuild.Commands.UploadArtifact(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath, ipa, ipa.GetFilename().ToString());
     });

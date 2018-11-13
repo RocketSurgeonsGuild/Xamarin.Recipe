@@ -117,11 +117,12 @@ Task("Copy-Apk")
 Task("Upload-AzureDevOps-Apk")
     .Does(() =>
     {
-        var artifactPath = MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath);
-        Verbose("Droid Artifact Directory: {0}", artifactPath.FullPath);
+        var artifactPath = BuildParameters.Paths.Directories.DroidArtifactDirectoryPath;
 
-        var apk = GetFiles(artifactPath.FullPath + "/*.apk").FirstOrDefault();
-        Verbose("Apk: {0}", apk.FullPath);
+        var apk = GetFiles(MakeAbsolute(artifactPath).FullPath + "/*.apk")
+                    .FirstOrDefault(x => x.GetFilename().ToString().ToLower().Contains("signed"));
         
-        BuildSystem.TFBuild.Commands.UploadArtifact("drop", apk, apk.GetFilename().ToString());
+        Verbose("Apk Path: {0}", apk.FullPath);
+        
+        BuildSystem.TFBuild.Commands.UploadArtifact(artifactPath, apk, apk.GetFilename().ToString());
     });
