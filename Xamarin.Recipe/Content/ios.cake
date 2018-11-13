@@ -62,7 +62,7 @@ Task("iPhone-AppCenter")
     .Does(() =>
     {
         var iosArtifactsPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
-        Verbose("iOS Artifact Diretory: {0}", iosArtifactsPath.FullPath);
+        Verbose("iOS Artifact Directory: {0}", iosArtifactsPath.FullPath);
 
         var ipaPath = GetFiles(iosArtifactsPath.FullPath + "/*.ipa");
 
@@ -89,9 +89,23 @@ Task("Copy-Ipa")
 
         Verbose("Build Output Directory: {0}", buildOutputDirectory);
 
-        var IOSArtifactDirectoryPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
+        var artifactDirectoryPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
 
-        Verbose("IOS Artifact Directory: {0}", IOSArtifactDirectoryPath);
+        Verbose("IOS Artifact Directory: {0}", artifactDirectoryPath);
 
-        CopyDirectory(buildOutputDirectory, IOSArtifactDirectoryPath);
+        var files = GetFiles(buildOutputDirectory + "/*.ipa");
+
+        CopyFiles(files,  artifactDirectoryPath);
+    });
+
+Task("Upload-AzureDevOps-Ipa")
+    .Does(() =>
+    {
+        var artifactPath = MakeAbsolute(BuildParameters.Paths.Directories.IOSArtifactDirectoryPath);
+        Verbose("iOS Artifact Directory: {0}", artifactPath.FullPath);
+
+        var ipa = GetFiles(artifactPath.FullPath + "/*.ipa").FirstOrDefault();
+        Verbose("Ipa: {0}", ipa.FullPath);
+
+        BuildSystem.TFBuild.Commands.UploadArtifact("drop", ipa, ipa.GetFilename().ToString());
     });

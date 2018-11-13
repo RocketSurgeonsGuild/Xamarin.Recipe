@@ -180,6 +180,7 @@ public class Builder
         BuildParameters.Tasks.BuildTask.IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
+        BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask.IsDependentOn("Upload-AzureDevOps-Ipa");
     }
 
     private static void SetupAndroid()
@@ -187,6 +188,7 @@ public class Builder
         BuildParameters.Tasks.BuildTask.IsDependentOn("Android-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
+        BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask.IsDependentOn("Upload-AzureDevOps-Apk");
     }
 
     private static void SetupUWP()

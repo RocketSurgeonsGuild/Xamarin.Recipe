@@ -80,7 +80,7 @@ Task("Android-AppCenter")
     .Does(() =>
     {
         var androidArtifactsPath = MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath);
-        Verbose("Android Artifact Diretory: {0}", androidArtifactsPath.FullPath);
+        Verbose("Android Artifact Directory: {0}", androidArtifactsPath.FullPath);
 
         var apkPath = GetFiles(androidArtifactsPath.FullPath + "/*.apk");
 
@@ -112,4 +112,16 @@ Task("Copy-Apk")
         var files = GetFiles(buildOutputDirectory + "/*.apk");
 
         CopyFiles(files, MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath));
+    });
+
+Task("Upload-AzureDevOps-Apk")
+    .Does(() =>
+    {
+        var artifactPath = MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath);
+        Verbose("Droid Artifact Directory: {0}", artifactPath.FullPath);
+
+        var apk = GetFiles(artifactPath.FullPath + "/*.apk").FirstOrDefault();
+        Verbose("Apk: {0}", apk.FullPath);
+        
+        BuildSystem.TFBuild.Commands.UploadArtifact("drop", apk, apk.GetFilename().ToString());
     });

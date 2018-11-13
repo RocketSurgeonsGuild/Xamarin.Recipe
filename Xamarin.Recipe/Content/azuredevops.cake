@@ -34,11 +34,7 @@ BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-Azu
 
 BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
-    .IsDependentOn("Archive")
-    .Does(() =>
-    {
-
-    });
+    .IsDependentOn("Archive");
 
 BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDevOps-Test-Results")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
