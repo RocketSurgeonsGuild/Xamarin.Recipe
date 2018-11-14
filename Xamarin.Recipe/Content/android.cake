@@ -110,7 +110,7 @@ Task("Copy-Apk")
         Verbose("Apk Path: {0}", buildOutputDirectory + "/*.apk");
 
         var files = GetFiles(buildOutputDirectory + "/*.apk")
-                        .FirstOrDefault(x => x.GetFilename().ToString().ToLower().Contains("signed"));
+                        .Where(x => x.GetFilename().ToString().ToLower().Contains("signed"));
 
         CopyFiles(files, MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath));
     });
