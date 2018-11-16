@@ -7,6 +7,7 @@ BuildParameters.Tasks.iOSArchiveTask = Task("iOS-Archive")
 
 Task("iPhone-Build")
     .IsDependentOn("iPhone-Info-Plist")
+    .IsDependentOn("Fastlane-Match")
     .WithCriteria(() => BuildParameters.IsRunningOnUnix)
     .Does(() =>
     {

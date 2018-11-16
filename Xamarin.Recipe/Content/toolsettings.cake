@@ -19,6 +19,7 @@ public static class ToolSettings
     public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
     public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
+    public static Action<FastlaneMatchConfiguration> FastlaneMatchConfigurator { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -40,7 +41,8 @@ public static class ToolSettings
         string androidBuildToolVersion = "27.0.2",
         Func<DotNetCoreTestSettings> dotNetTestSettings = null,
         Func<XUnit2Settings> xUnitSettings = null,
-        Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null
+        Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
+        Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null
     )
     {
         context.Information("Setting up tools...");
@@ -71,6 +73,7 @@ public static class ToolSettings
         DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
         FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
+        FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
     }
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
@@ -92,4 +95,6 @@ public static class ToolSettings
                 };
 
     private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
+
+    private static Action<FastlaneMatchConfiguration> _defaultMatchConfiguration = cfg => { cfg = new FastlaneMatchConfiguration(); };
 }
