@@ -117,42 +117,16 @@ public class Builder
         _action = action;
     }
 
-    public void Run()
+    public void RuniOS(bool isNetCoreBuild = true)
     {
-        BuildParameters.IsDotNetCoreBuild = false;
-        BuildParameters.IsNuGetBuild = false;
-
-        SetupTasks(BuildParameters.ApplicationTarget);
-
-        _action(BuildParameters.Target);
-    }
-
-    public void RunDotNetCore()
-    {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
-
-        SetupTasks(BuildParameters.ApplicationTarget);
-
-        _action(BuildParameters.Target);
-    }
-
-    public void RuniOS(bool isNetCoreBuild = true, bool isNuGetBuild = false)
-    {
-        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
-        BuildParameters.IsNuGetBuild = isNuGetBuild;
-        
-        SetupiOS();
+        SetupiOS(isNetCoreBuild);
         
         _action(BuildParameters.Target);
     }
 
-    public void RunAndroid(bool isNetCoreBuild = true, bool isNuGetBuild = false)
+    public void RunAndroid(bool isNetCoreBuild = true)
     {
-        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
-        BuildParameters.IsNuGetBuild = isNuGetBuild;
-        
-        SetupAndroid();
+        SetupAndroid(isNetCoreBuild);
 
         _action(BuildParameters.Target);
     }
@@ -176,9 +150,13 @@ public class Builder
         }
     }
 
-    private static void SetupiOS()
+    private static void SetupiOS(bool isNetCoreBuild = true)
     {
         Setup();
+        
+        BuildParameters.IsiOSBuild = true;
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        
         BuildParameters.Tasks.BuildTask.IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
@@ -186,9 +164,13 @@ public class Builder
         BuildParameters.Tasks.FastlaneTask.IsDependentOn("Fastlane-Deliver");
     }
 
-    private static void SetupAndroid()
+    private static void SetupAndroid(bool isNetCoreBuild = true)
     {
         Setup();
+
+        BuildParameters.IsAndroidBuild = true;
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        
         BuildParameters.Tasks.BuildTask.IsDependentOn("Android-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");

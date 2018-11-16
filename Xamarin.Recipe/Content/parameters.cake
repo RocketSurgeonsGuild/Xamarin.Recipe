@@ -23,7 +23,9 @@ public static class BuildParameters
     public static bool IsReleaseBuild { get; private set; }
     public static bool ShouldRunGitVersion { get; private set; }
     public static string AppCenterApiKey { get; private set; }  
-    public static bool IsDotNetCoreBuild { get; set; }
+    public static bool IsDotNetCoreBuild { get; set; }  
+    public static bool IsiOSBuild { get; set; }  
+    public static bool IsAndroidBuild { get; set; }
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
