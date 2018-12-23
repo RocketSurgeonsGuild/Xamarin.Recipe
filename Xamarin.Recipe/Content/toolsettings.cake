@@ -20,6 +20,7 @@ public static class ToolSettings
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
     public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
     public static Action<FastlaneMatchConfiguration> FastlaneMatchConfigurator { get; private set; }
+    public static Action<TFBuildPublishCodeCoverageData> AzureDevOpsPublishCodeCoverageData { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -42,7 +43,8 @@ public static class ToolSettings
         Func<DotNetCoreTestSettings> dotNetTestSettings = null,
         Func<XUnit2Settings> xUnitSettings = null,
         Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
-        Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null
+        Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null,
+        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = null
     )
     {
         context.Information("Setting up tools...");
@@ -74,6 +76,7 @@ public static class ToolSettings
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
         FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
         FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
+        AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData ?? _defaultPublishCodeCoverageData;
     }
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
@@ -93,6 +96,8 @@ public static class ToolSettings
                     XmlReport = true,
                     NoAppDomain = true
                 };
+
+    private static Action<TFBuildPublishCodeCoverageData> _defaultPublishCodeCoverageData = data => { data = new TFBuildPublishCodeCoverageData(); };
 
     private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
 

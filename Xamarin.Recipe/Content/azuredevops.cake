@@ -1,8 +1,9 @@
 BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
     .IsDependentOn("Print-AzureDevOps-Environment-Variables")
     .IsDependentOn("Clear-AzureDevOps-Cache")
-    .IsDependentOn("Publish-AzureDevOps-Test-Results")
     .IsDependentOn("Upload-AzureDevOps-Artifacts")
+    .IsDependentOn("Publish-AzureDevOps-Test-Results")
+    .IsDependentOn("Publish-AzureDevOps-Code-Coverage")
     .IsDependentOn("Distribute")
     .IsDependentOn("Fastlane");
 
@@ -31,6 +32,14 @@ BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-Azu
         Information("BUILD_REPOSITORY_NAME: {0}", EnvironmentVariable("BUILD_REPOSITORY_NAME"));
         Information("BUILD_REPOSITORY_PROVIDER: {0}", EnvironmentVariable("BUILD_REPOSITORY_PROVIDER"));
         Information("\n");
+    });
+
+BuildParameters.Tasks.ClearAzureDevOpsCacheTask = Task("Clear-AzureDevOps-Cache")
+    .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
+    .IsDependentOn("Clean")
+    .Does(() =>
+    {
+
     });
 
 BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
@@ -71,10 +80,15 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
         BuildSystem.TFBuild.Commands.PublishTestResults(testResultsData);
     });
 
-BuildParameters.Tasks.ClearAzureDevOpsCacheTask = Task("Clear-AzureDevOps-Cache")
-    .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
-    .IsDependentOn("Clean")
-    .Does(() =>
-    {
+BuildParameters.Tasks.PublishAzureDevOpsCodeCoverageTask =
+    Task("Publish-AzureDevOps-Code-Coverage")
+        .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
+        .IsDependentOn("Publish-AzureDevOps-Test-Results")
+        .Does(() =>
+        {
+            var codeCoverageData = new TFBuildPublishCodeCoverageData();
 
-    });
+            ToolSettings.AzureDevOpsPublishCodeCoverageData(codeCoverageData);
+
+            BuildSystem.TFBuild.Commands.PublishCodeCoverage(codeCoverageData);
+        });
