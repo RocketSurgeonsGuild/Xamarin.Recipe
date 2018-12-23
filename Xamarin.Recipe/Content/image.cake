@@ -1,4 +1,4 @@
-BuildParameters.Tasks.ImageCopyTask = Task("Image-Copy")
+BuildParameters.Tasks.AppIconCopy = Task("App-Icon-Copy")
     .WithCriteria(BuildParameters.ShouldCopyImages)
     .IsDependentOn("Test")
     .Does(() =>
@@ -9,7 +9,7 @@ BuildParameters.Tasks.ImageCopyTask = Task("Image-Copy")
 
         if(!string.IsNullOrEmpty(xamarinConfiguration) || !string.IsNullOrEmpty(appIconSrcImagePath) || !string.IsNullOrEmpty(appIconDestImagePath))
         {
-            Warning("Please set environment variables for Image Copy");
+            Warning("Please set environment variables for application icon copy.");
             return;
         }
         

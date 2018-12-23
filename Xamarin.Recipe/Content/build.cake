@@ -96,7 +96,9 @@ BuildParameters.Tasks.TestTask = Task("Test")
                                     .IsDependentOn("Unit-Test")
                                     .IsDependentOn("UI-Test");
 
-BuildParameters.Tasks.ArchiveTask = Task("Archive").IsDependentOn("Test").IsDependentOn("Image-Copy");
+BuildParameters.Tasks.ArchiveTask = Task("Archive")
+                                        .IsDependentOn("Test")
+                                        .IsDependentOn("App-Icon-Copy");
 
 BuildParameters.Tasks.DefaultTask = Task("Execute").IsDependentOn("Distribute");
 
