@@ -28,3 +28,15 @@ BuildParameters.Tasks.FastlanePilotTask =
         {
             Fastlane.Pilot(ToolSettings.FastlaneDeliverConfigurator);
         });
+
+
+
+BuildParameters.Tasks.FastlaneSupplyTask =
+    Task("Fastlane-Supply")
+        .WithCriteria(() => BuildParameters.ShouldRunFastlaneSupply)
+        .IsDependentOn("Android-Archive")
+        .IsDependentOn("AppCenter")
+        .Does(() =>
+        {
+            Fastlane.Supply(ToolSettings.FastlaneSupplyConfigurator);
+        });
