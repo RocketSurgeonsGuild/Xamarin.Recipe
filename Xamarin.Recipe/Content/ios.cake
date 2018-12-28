@@ -44,7 +44,7 @@ Task("iPhone-Info-Plist")
         dynamic plist = DeserializePlist(BuildParameters.PlistFilePath);
         
         plist["CFBundleShortVersionString"] = BuildParameters.Version.Version;
-        plist["CFBundleVersion"] = BuildParameters.Version.PreReleaseNumber.ToString();
+        plist["CFBundleVersion"] = BuildParameters.Version.BuildMetaData;
 
         if(!string.IsNullOrEmpty(bundleIdentifier))
         {
