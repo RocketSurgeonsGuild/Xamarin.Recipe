@@ -9,6 +9,7 @@ public class BuildVersion
     public string NuGetVersion { get; private set; }
     public string AssemblySemVer { get; private set; }
     public string FullSemVersion { get; private set; }
+    public string BuildMetaData { get; private set; }
 
     public static BuildVersion CalculatingSemanticVersion(ICakeContext context)
     {
@@ -23,6 +24,7 @@ public class BuildVersion
         string informationalVersion = null;
         string fullSemVersion = null;
         int? preReleaseNumber = null;
+        string buildMetaData = null;
         GitVersion assertedVersions = null;
 
         if (BuildParameters.ShouldRunGitVersion)
@@ -69,6 +71,7 @@ public class BuildVersion
             semVersion = assertedVersions.LegacySemVerPadded;
             informationalVersion = assertedVersions.InformationalVersion;
             preReleaseNumber = assertedVersions.PreReleaseNumber;
+            buildMetaData = assertedVersions.BuildMetaData;
             milestone = string.Concat(version);
             fullSemVersion = assertedVersions.FullSemVer;
 
@@ -104,7 +107,8 @@ public class BuildVersion
             CakeVersion = cakeVersion,
             InformationalVersion = informationalVersion,
             PreReleaseNumber = preReleaseNumber ?? 1,
-            FullSemVersion = fullSemVersion
+            FullSemVersion = fullSemVersion,
+            BuildMetaData = buildMetaData
         };
     }
 }
