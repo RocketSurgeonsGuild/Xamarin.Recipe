@@ -45,7 +45,7 @@ Task("iPhone-Info-Plist")
         Verbose("CFBundleShortVersionString: {0}", BuildParameters.Version.Version);
         Verbose("CFBundleVersion: {0}", BuildParameters.Version.PreReleaseNumber);
         plist["CFBundleShortVersionString"] = BuildParameters.Version.Version;
-        plist["CFBundleVersion"] = BuildParameters.Version.PreReleaseNumber.ToString();
+        plist["CFBundleVersion"] = BuildParameters.Version.BuildMetaData;
 
         var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
         if(!string.IsNullOrEmpty(bundleIdentifier))

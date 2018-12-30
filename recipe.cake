@@ -9,6 +9,8 @@ BuildParameters.SetParameters(context: Context,
                             repositoryOwner: "RocketSurgeonsGuild",
                             repositoryName: "Xamarin.Recipe",
                             appVeyorAccountName: "RocketSurgeonsGuild",
+                            masterBranchName: "main",
+                            developBranchName: "dev",
                             nuspecFilePath: "./Xamarin.Recipe/Rocket.Surgery.Xamarin.Recipe.nuspec");
 
 BuildParameters.PrintParameters(Context);
