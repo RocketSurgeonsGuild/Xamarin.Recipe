@@ -9,7 +9,7 @@ public class BuildTasks
     public CakeTaskBuilder RestoreTask { get; set; }
     public CakeTaskBuilder DotNetCoreRestoreTask { get; set; }
     public CakeTaskBuilder BuildTask { get; set; }
-    public CakeTaskBuilder ImageCopyTask {get; set; }
+    public CakeTaskBuilder AppIconCopy {get; set; }
     public CakeTaskBuilder iOSArchiveTask { get; set; }
     public CakeTaskBuilder AndroidArchiveTask { get; set; }
     public CakeTaskBuilder ArchiveTask { get; set; }
@@ -37,6 +37,8 @@ public class BuildTasks
     public CakeTaskBuilder TestUITask { get; set; }
     public CakeTaskBuilder IntegrationTestTask { get;set; }
     public CakeTaskBuilder FastlaneTask { get; set; }
+    public CakeTaskBuilder FastlaneDeliverTask { get; set; }
+    public CakeTaskBuilder FastlaneMatchTask { get; set; }
     public CakeTaskBuilder CleanDocumentationTask { get; set; }
     public CakeTaskBuilder DeployGraphDocumentation {get; set;}
     public CakeTaskBuilder PublishDocumentationTask { get; set; }
@@ -45,5 +47,7 @@ public class BuildTasks
     public CakeTaskBuilder AzureDevOpsTask { get; set; }
     public CakeTaskBuilder PrintAzureDevOpsEnvironmentVariablesTask { get; set; }
     public CakeTaskBuilder UploadAzureDevOpsArtifactsTask { get; set; }
+    public CakeTaskBuilder PublishAzureDevOpsTestResultsTask { get; set; }
+    public CakeTaskBuilder PublishAzureDevOpsCodeCoverageTask { get; set; }
     public CakeTaskBuilder ClearAzureDevOpsCacheTask { get; set; }
 }

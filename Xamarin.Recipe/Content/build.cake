@@ -96,7 +96,9 @@ BuildParameters.Tasks.TestTask = Task("Test")
                                     .IsDependentOn("Unit-Test")
                                     .IsDependentOn("UI-Test");
 
-BuildParameters.Tasks.ArchiveTask = Task("Archive").IsDependentOn("Test").IsDependentOn("Image-Copy");
+BuildParameters.Tasks.ArchiveTask = Task("Archive")
+                                        .IsDependentOn("Test")
+                                        .IsDependentOn("App-Icon-Copy");
 
 BuildParameters.Tasks.DefaultTask = Task("Execute").IsDependentOn("Distribute");
 
@@ -117,42 +119,16 @@ public class Builder
         _action = action;
     }
 
-    public void Run()
+    public void RuniOS(bool isNetCoreBuild = true)
     {
-        BuildParameters.IsDotNetCoreBuild = false;
-        BuildParameters.IsNuGetBuild = false;
-
-        SetupTasks(BuildParameters.ApplicationTarget);
-
-        _action(BuildParameters.Target);
-    }
-
-    public void RunDotNetCore()
-    {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
-
-        SetupTasks(BuildParameters.ApplicationTarget);
-
-        _action(BuildParameters.Target);
-    }
-
-    public void RuniOS()
-    {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
-        
-        SetupiOS();
+        SetupiOS(isNetCoreBuild);
         
         _action(BuildParameters.Target);
     }
 
-    public void RunAndroid()
+    public void RunAndroid(bool isNetCoreBuild = true)
     {
-        BuildParameters.IsDotNetCoreBuild = true;
-        BuildParameters.IsNuGetBuild = false;
-
-        SetupAndroid();
+        SetupAndroid(isNetCoreBuild);
 
         _action(BuildParameters.Target);
     }
@@ -171,26 +147,48 @@ public class Builder
                     SetupUWP();
                 break;            
             default:
+                Setup();
             break;
         }
     }
 
-    private static void SetupiOS()
-    {        
+    private static void SetupiOS(bool isNetCoreBuild = true)
+    {
+        Setup();
+        
+        BuildParameters.IsiOSBuild = true;
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        
         BuildParameters.Tasks.BuildTask.IsDependentOn("iPhone-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("iOS-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("iPhone-AppCenter");
+        BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask.IsDependentOn("Upload-AzureDevOps-Ipa");
+        BuildParameters.Tasks.FastlaneTask.IsDependentOn("Fastlane-Deliver");
     }
 
-    private static void SetupAndroid()
+    private static void SetupAndroid(bool isNetCoreBuild = true)
     {
+        Setup();
+
+        BuildParameters.IsAndroidBuild = true;
+        BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
+        
         BuildParameters.Tasks.BuildTask.IsDependentOn("Android-Build");
         BuildParameters.Tasks.ArchiveTask.IsDependentOn("Android-Archive");
         BuildParameters.Tasks.AppCenterTask.IsDependentOn("Android-AppCenter");
+        BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask.IsDependentOn("Upload-AzureDevOps-Apk");
     }
 
     private static void SetupUWP()
     {
         
+    }
+
+    private static void Setup()
+    {
+        if(!BuildParameters.IsDotNetCoreBuild)
+        {
+            BuildParameters.Tasks.TestTask.IsDependentOn("xUnit-Tests");
+        }
     }
 }

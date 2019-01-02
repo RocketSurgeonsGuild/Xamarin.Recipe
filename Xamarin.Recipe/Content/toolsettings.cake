@@ -16,6 +16,11 @@ public static class ToolSettings
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
     public static string AndroidBuildToolVersion { get; private set; }
+    public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
+    public static Func<XUnit2Settings> XUnitSettings { get; private set; }
+    public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
+    public static Action<FastlaneMatchConfiguration> FastlaneMatchConfigurator { get; private set; }
+    public static Action<TFBuildPublishCodeCoverageData> AzureDevOpsPublishCodeCoverageData { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -34,7 +39,12 @@ public static class ToolSettings
         string[] dupFinderExcludeFilesByStartingCommentSubstring = null,
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
-        string androidBuildToolVersion = "27.0.2"
+        string androidBuildToolVersion = "27.0.2",
+        Func<DotNetCoreTestSettings> dotNetTestSettings = null,
+        Func<XUnit2Settings> xUnitSettings = null,
+        Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
+        Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null,
+        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = null
     )
     {
         context.Information("Setting up tools...");
@@ -62,5 +72,34 @@ public static class ToolSettings
         OutputDirectory = outputDirectory;
         MSBuildVerbosity = msBuildVerbosity;
         AndroidBuildToolVersion = androidBuildToolVersion;
+        DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
+        XUnitSettings = xUnitSettings ?? _xUnitSettings;
+        FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
+        FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
+        AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData ?? _defaultPublishCodeCoverageData;
     }
+
+    private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
+                {
+                    Configuration = BuildParameters.Configuration,
+                    Framework = ToolSettings.TestFramework,
+                    NoBuild = ToolSettings.TestNoBuild,
+                    NoRestore = ToolSettings.TestNoRestore,
+                    ResultsDirectory = BuildParameters.Paths.Directories.xUnitTestResults,
+                    Logger = $"trx;LogFileName={BuildParameters.Title}.trx"
+                };
+
+    private static Func<XUnit2Settings> _xUnitSettings = () => new XUnit2Settings
+               {
+                    OutputDirectory = BuildParameters.Paths.Directories.xUnitTestResults,
+                    Parallelism = ParallelismOption.All,
+                    XmlReport = true,
+                    NoAppDomain = true
+                };
+
+    private static Action<TFBuildPublishCodeCoverageData> _defaultPublishCodeCoverageData = data => { data = new TFBuildPublishCodeCoverageData(); };
+
+    private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
+
+    private static Action<FastlaneMatchConfiguration> _defaultMatchConfiguration = cfg => { cfg = new FastlaneMatchConfiguration(); };
 }

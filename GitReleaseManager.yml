@@ -1,10 +1,10 @@
 issue-labels-include:
-- Feature
 - Bug
-- Improvement
+- Enhancement
 - Documentation
 issue-labels-exclude:
 - Build
+- House Keeping
 issue-labels-alias:
     - name:    Documentation
       header:  Documentation

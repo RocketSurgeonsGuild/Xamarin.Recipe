@@ -7,16 +7,16 @@ Task("Unit-Test")
             var fullPath = MakeAbsolute(path).FullPath;
 
             Verbose("Executing: {0}", fullPath);
-
-            DotNetCoreTest(fullPath, new DotNetCoreTestSettings
-                { 
-                    Configuration = BuildParameters.Configuration,
-                    Framework = ToolSettings.TestFramework,
-                    NoBuild = ToolSettings.TestNoBuild,
-                    NoRestore = ToolSettings.TestNoRestore
-                });
+            DotNetCoreTest(fullPath, ToolSettings.DotNetTestSettings());
         }
     });
+
+BuildParameters.Tasks.TestxUnitTask = Task("xUnit-Tests")
+                                        .WithCriteria(() => BuildParameters.ShouldRunxUnit)
+                                        .Does(() =>
+                                        {
+                                            XUnit2(BuildParameters.Paths.Files.UnitTestFilePaths, ToolSettings.XUnitSettings());
+                                        });
 
 Task("UI-Test")
     .Does(() =>

@@ -23,12 +23,17 @@ public static class BuildParameters
     public static bool IsReleaseBuild { get; private set; }
     public static bool ShouldRunGitVersion { get; private set; }
     public static string AppCenterApiKey { get; private set; }  
-    public static bool IsDotNetCoreBuild { get; set; }
+    public static bool IsDotNetCoreBuild { get; set; }  
+    public static bool IsiOSBuild { get; set; }  
+    public static bool IsAndroidBuild { get; set; }
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
-    public static bool ShouldDeployAppCenter { get; set; }
+    public static bool ShouldDeployAppCenter { get; private set; }
+    public static bool ShouldRunFastlaneDeliver { get; private set; }
+    public static bool ShouldRunFastlaneMatch { get; private set; }
     public static bool ShouldCopyImages { get; private set; }
+    public static bool ShouldRunxUnit { get; private set; }
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
     public static BuildTasks Tasks { get; set; }
@@ -56,13 +61,7 @@ public static class BuildParameters
         Tasks = new BuildTasks();
     }
 
-    public static bool CanDistribute
-    {
-        get
-        {
-            return !string.IsNullOrEmpty(BuildParameters.AppCenterApiKey);
-        }
-    }
+    public static bool CanDistribute => !string.IsNullOrEmpty(Environment.AppCenterTokenVariable);
 
     public static void SetParameters(
         ICakeContext context,
@@ -89,6 +88,8 @@ public static class BuildParameters
         bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
         bool shouldCopyImages = false,
+        bool? shouldRunxUnit = null,
+        bool shouldRunFastlaneMatch = false,
         string mainBranch = "main",
         string devBranch = "dev",
         FilePath androidManifest = null,
@@ -151,6 +152,12 @@ public static class BuildParameters
 		SetBuildPaths(BuildPaths.GetPaths(context));
 
         ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
+
+        ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
+
+        ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
+
+        ShouldRunFastlaneMatch = IsiOSBuild && IsRunningOnUnix && shouldRunFastlaneMatch;
     }
 
     public static void SetBuildVersion(BuildVersion version)
@@ -165,6 +172,7 @@ public static class BuildParameters
 
     public static void PrintParameters(ICakeContext context)
     {
+        context.Information("============ PARAMETERS ============");
         context.Information("IsLocalBuild: {0}", IsLocalBuild);
         context.Information("IsRunningOnAppVeyor: {0}", IsRunningOnAppVeyor);
         context.Information("IsRunningOnAzureDevOps: {0}", IsRunningOnAzureDevOps);
@@ -181,12 +189,19 @@ public static class BuildParameters
         context.Information("IsPublicRepository: {0}", IsPublicRepository);
         context.Information("\n");
 
+        context.Information("IsAndroidBuild: {0}", IsAndroidBuild);
         context.Information("AndroidManifest: {0}", AndroidManifest);
         context.Information("AndroidProjectPath: {0}", AndroidProjectPath);
         context.Information("\n");
 
+        context.Information("IsiOSBuild: {0}", IsiOSBuild);
         context.Information("InfoPlist: {0}", PlistFilePath);
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
+        context.Information("\n");
+
+        context.Information("ShouldRunFastlaneMatch: {0}", ShouldRunFastlaneMatch);
+        context.Information("ShouldRunFastlaneDeliver: {0}", ShouldRunFastlaneDeliver);
+        context.Information("\n");
 
         context.Information("NugetConfig: {0} ({1})", NugetConfig, context.FileExists(NugetConfig));
         context.Information("NuGetSources: {0}", string.Join(", ", NuGetSources));

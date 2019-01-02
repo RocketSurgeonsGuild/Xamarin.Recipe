@@ -2,8 +2,11 @@
 
 BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
     .IsDependentOn("Android-Build")
-    .IsDependentOn("Test")
-    .Does(() =>
+    .IsDependentOn("Copy-Apk");
+
+Task("Android-Build")
+    .IsDependentOn("Android-Manifest")
+    .Does(() => 
     {
         var keyStore = MakeAbsolute(File(EnvironmentVariable(Environment.KeyStoreVariable)));
         if (string.IsNullOrEmpty(keyStore.FullPath))
@@ -29,6 +32,12 @@ BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
             Warning("The Android key password environment variable is not defined.");
         }
         
+        Verbose("Build Configuration: {0}", BuildParameters.Configuration);
+        Verbose("MSBuild Verbosity: {0}", ToolSettings.MSBuildVerbosity);
+        Verbose("MSBuild Tool Version: {0}", ToolSettings.MSBuildToolVersion);
+        Verbose("AndroidSdkBuildToolsVersion: {0}", ToolSettings.AndroidBuildToolVersion);
+        Verbose("Build Platform: {0}", BuildParameters.Platform);
+
         MSBuild(BuildParameters.AndroidProjectPath, configurator =>
                     configurator
                         .SetConfiguration(BuildParameters.Configuration)
@@ -43,30 +52,22 @@ BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
                         .WithProperty("AndroidSdkBuildToolsVersion", ToolSettings.AndroidBuildToolVersion));
     });
 
-Task("Android-Build")
-    .IsDependentOn("Android-Manifest")
-    .Does(() => 
-    {
-        MSBuild(BuildParameters.AndroidProjectPath, configurator =>
-            configurator
-                .SetConfiguration(BuildParameters.Configuration)
-                .SetVerbosity(ToolSettings.MSBuildVerbosity)
-                .UseToolVersion(ToolSettings.MSBuildToolVersion)
-                .WithProperty("AndroidSdkBuildToolsVersion", ToolSettings.AndroidBuildToolVersion));
-    });
-
 Task("Android-Manifest")
     .WithCriteria(() => !string.IsNullOrEmpty(BuildParameters.AndroidManifest.FullPath))
     .Does(() =>
     {
-        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
         var manifest = DeserializeAppManifest(BuildParameters.AndroidManifest);
 
         manifest.VersionName = BuildParameters.Version.Version;
         manifest.VersionCode = Convert.ToInt32(BuildParameters.Version.BuildMetaData);
 
+        Verbose("Version Name: {0}", BuildParameters.Version.Version);
+        Verbose("Version Code: {0}", BuildParameters.Version.PreReleaseNumber);
+
+        var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
         if(!string.IsNullOrEmpty(bundleIdentifier))
         {
+            Verbose("Package Name: {0}", bundleIdentifier);
             manifest.PackageName = bundleIdentifier;
         }
 
@@ -76,11 +77,10 @@ Task("Android-Manifest")
 Task("Android-AppCenter")
     .WithCriteria(() => BuildParameters.ShouldDeployAppCenter)
     .IsDependentOn("Android-Archive")
-    .IsDependentOn("Copy-Apk")
     .Does(() =>
     {
         var androidArtifactsPath = MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath);
-        Verbose("iOS Artifact Diretory: {0}", androidArtifactsPath.FullPath);
+        Verbose("Android Artifact Directory: {0}", androidArtifactsPath.FullPath);
 
         var apkPath = GetFiles(androidArtifactsPath.FullPath + "/*.apk");
 
@@ -112,5 +112,19 @@ Task("Copy-Apk")
         var files = GetFiles(buildOutputDirectory + "/*.apk")
                         .Where(x => x.GetFilename().ToString().ToLower().Contains("signed"));
 
-        CopyFiles(files, MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath));
+        CopyFiles(files, MakeAbsolute(BuildParameters.Paths.Directories.DroidArtifactDirectoryPath).FullPath);
+    });
+
+Task("Upload-AzureDevOps-Apk")
+    .Does(() =>
+    {
+        var artifactPath = BuildParameters.Paths.Directories.DroidArtifactDirectoryPath;
+        var fullArtifactPath = MakeAbsolute(artifactPath).FullPath;
+
+        var apk = GetFiles(fullArtifactPath + "/*.apk")
+                    .FirstOrDefault(x => x.GetFilename().ToString().ToLower().Contains("signed"));
+        
+        Verbose("Apk Path: {0}", apk.FullPath);
+        
+        BuildSystem.TFBuild.Commands.UploadArtifact(artifactPath.ToString(), apk, apk.GetFilename().ToString());
     });

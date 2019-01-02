@@ -35,11 +35,14 @@ public class BuildPaths
         var nuGetPackagesOutputDirectory = packagesDirectory + "/NuGet";
         var chocolateyPackagesOutputDirectory = packagesDirectory + "/Chocolatey";
 
+        var metadataDirectoryPath = "./metadata";
+
         var unitTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UnitTestFilePattern;
         var uiTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UITestFilePattern;
 
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
+        var testResultsFilePath = ((DirectoryPath)xUnitTestResultsDirectory).CombineWithFilePath($"{BuildParameters.Title}.trx");
         var solutionInfoFilePath = ((DirectoryPath)BuildParameters.SourceDirectoryPath).CombineWithFilePath("SolutionInfo.cs");
         var buildLogFilePath = ((DirectoryPath)buildDirectoryPath).CombineWithFilePath("MsBuild.log");
         var unitTestFilePaths = context.GetFiles(unitTestPattern).ToArray();
@@ -67,7 +70,8 @@ public class BuildPaths
             xUnitTestResultsDirectory,
             testCoverageDirectory,
             nuGetPackagesOutputDirectory,
-            packagesDirectory);
+            packagesDirectory,
+            metadataDirectoryPath);
 
         var buildFiles = new BuildFiles(
             context,
@@ -76,7 +80,8 @@ public class BuildPaths
             uiTestFilePaths,
             testCoverageOutputFilePath,
             solutionInfoFilePath,
-            buildLogFilePath);
+            buildLogFilePath,
+            testResultsFilePath);
 
         return new BuildPaths
         {
@@ -95,6 +100,8 @@ public class BuildFiles
     public FilePath SolutionInfoFilePath { get; private set; }
 
     public FilePath BuildLogFilePath { get; private set; }
+
+    public FilePath TestResultsFilePath { get ; private set; }
     
     public ICollection<FilePath> UnitTestFilePaths { get; private set; }
     
@@ -107,7 +114,8 @@ public class BuildFiles
         FilePath[] uiTestFilePaths,
         FilePath testCoverageOutputFilePath,
         FilePath solutionInfoFilePath,
-        FilePath buildLogFilePath
+        FilePath buildLogFilePath,
+        FilePath testResultsFilePath
         )
     {
         RepoFilesPaths = Filter(context, repoFilesPaths);
@@ -116,6 +124,7 @@ public class BuildFiles
         BuildLogFilePath = buildLogFilePath;
         UnitTestFilePaths = unitTestFilePaths;
         UITestFilePaths = uiTestFilePaths;
+        TestResultsFilePath = testResultsFilePath;
     }
 
     private static FilePath[] Filter(ICakeContext context, FilePath[] files)
@@ -161,6 +170,7 @@ public class BuildDirectories
     public DirectoryPath NuGetPackages { get; private set; }
     public DirectoryPath ChocolateyPackages { get; private set; }
     public DirectoryPath Packages { get; private set; }
+    public DirectoryPath Metadata { get; private set; }
     public ICollection<DirectoryPath> ToClean { get; private set; }
 
     public BuildDirectories(
@@ -180,7 +190,8 @@ public class BuildDirectories
         DirectoryPath xunitTestResults,
         DirectoryPath testCoverage,
         DirectoryPath nuGetPackages,
-        DirectoryPath packages)
+        DirectoryPath packages,
+        DirectoryPath metadata)
     {
         Build = build;
         TempBuild = tempBuild;
@@ -199,6 +210,7 @@ public class BuildDirectories
         TestCoverage = testCoverage;
         NuGetPackages = nuGetPackages;
         Packages = packages;
+        Metadata = metadata;
         
         ToClean = new[] {
             Build,

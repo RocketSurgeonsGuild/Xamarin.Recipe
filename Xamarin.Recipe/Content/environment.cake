@@ -58,6 +58,7 @@ public static class Environment
 
     public static void Echo(ICakeContext context)
 	{
+        context.Information("==================== ECHO ====================");
         context.Information("{0}: {1}", BundleIdentifierVariable, context.EnvironmentVariable(BundleIdentifierVariable));
         context.Information("{0}: {1}", AppCenterOwnerVariable, context.EnvironmentVariable(AppCenterOwnerVariable));
         context.Information("{0}: {1}", AppCenterAppNameVariable, context.EnvironmentVariable(AppCenterAppNameVariable));
@@ -65,6 +66,11 @@ public static class Environment
         context.Information("{0}: {1}", AppIconSourceImagePathVariable, context.EnvironmentVariable(AppIconSourceImagePathVariable));
         context.Information("{0}: {1}", AppIconDestinationImagePathVariable, context.EnvironmentVariable(AppIconDestinationImagePathVariable));
         context.Information("{0}: {1}", XamarinBuildConfigurationVariable, context.EnvironmentVariable(XamarinBuildConfigurationVariable));
+        context.Information("\n");
+        context.Information("{0}: {1}", KeyStoreVariable, context.EnvironmentVariable(KeyStoreVariable));
+        context.Information("{0}: {1}", KeyAliasVariable, context.EnvironmentVariable(KeyAliasVariable));
+        context.Information("{0}: {1}", KeyStorePasswordVariable, context.EnvironmentVariable(KeyStorePasswordVariable));
+        context.Information("{0}: {1}", KeyPasswordVariable, context.EnvironmentVariable(KeyPasswordVariable));
         context.Information("\n");
 	}
 		
