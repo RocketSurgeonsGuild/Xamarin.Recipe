@@ -83,6 +83,7 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
 BuildParameters.Tasks.PublishAzureDevOpsCodeCoverageTask =
     Task("Publish-AzureDevOps-Code-Coverage")
         .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
+        .WithCriteria(() => ToolSettings.AzureDevOpsPublishCodeCoverageData != null)
         .IsDependentOn("Publish-AzureDevOps-Test-Results")
         .Does(() =>
         {

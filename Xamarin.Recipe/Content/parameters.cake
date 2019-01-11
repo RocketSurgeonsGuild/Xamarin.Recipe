@@ -21,19 +21,20 @@ public static class BuildParameters
     public static bool IsTagged { get; private set; }
     public static bool IsPublishBuild { get; private set; }
     public static bool IsReleaseBuild { get; private set; }
-    public static bool ShouldRunGitVersion { get; private set; }
-    public static string AppCenterApiKey { get; private set; }  
     public static bool IsDotNetCoreBuild { get; set; }  
     public static bool IsiOSBuild { get; set; }  
     public static bool IsAndroidBuild { get; set; }
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
+    
+    public static bool ShouldRunGitVersion { get; private set; }
     public static bool ShouldDeployAppCenter { get; private set; }
     public static bool ShouldRunFastlaneDeliver { get; private set; }
     public static bool ShouldRunFastlaneMatch { get; private set; }
     public static bool ShouldCopyImages { get; private set; }
     public static bool ShouldRunxUnit { get; private set; }
+
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
     public static BuildTasks Tasks { get; set; }
@@ -45,6 +46,7 @@ public static class BuildParameters
     public static FilePath AndroidManifest { get; private set; }
     public static FilePath IOSProjectPath { get; private set; }
     public static FilePath PlistFilePath { get; private set; }
+    public static string AppCenterApiKey { get; private set; }  
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
@@ -202,6 +204,12 @@ public static class BuildParameters
         context.Information("IsiOSBuild: {0}", IsiOSBuild);
         context.Information("InfoPlist: {0}", PlistFilePath);
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
+        context.Information("\n");
+
+        context.Information("ShouldPublishCodeCoverage: {0}", ShouldPublishCodeCoverage);
+        context.Information("\n");
+
+        context.Information("ShouldDeployAppCenter: {0}", ShouldDeployAppCenter);
         context.Information("\n");
 
         context.Information("ShouldRunFastlaneMatch: {0}", ShouldRunFastlaneMatch);

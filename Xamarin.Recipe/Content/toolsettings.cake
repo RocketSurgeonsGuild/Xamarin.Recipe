@@ -44,7 +44,7 @@ public static class ToolSettings
         Func<XUnit2Settings> xUnitSettings = null,
         Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
         Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null,
-        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = null
+        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = default(Action<TFBuildPublishCodeCoverageData>)
     )
     {
         context.Information("Setting up tools...");
@@ -76,7 +76,7 @@ public static class ToolSettings
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
         FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
         FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
-        AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData ?? _defaultPublishCodeCoverageData;
+        AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
     }
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
@@ -96,8 +96,6 @@ public static class ToolSettings
                     XmlReport = true,
                     NoAppDomain = true
                 };
-
-    private static Action<TFBuildPublishCodeCoverageData> _defaultPublishCodeCoverageData = data => { data = new TFBuildPublishCodeCoverageData(); };
 
     private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
 
