@@ -151,7 +151,12 @@ public static class BuildParameters
 
 		SetBuildPaths(BuildPaths.GetPaths(context));
 
-        ShouldDeployAppCenter = ((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) || shouldDeployAppCenter);
+        ShouldDeployAppCenter = (((!IsLocalBuild && !IsPullRequest && (IsMainBranch || IsReleaseBranch || IsDevBranch || IsHotFixBranch || IsTagged)) &&
+                                ((context.EnvironmentVariable(Environment.AppCenterTokenVariable) != null) &&
+                                    (context.EnvironmentVariable(Environment.AppCenterAppNameVariable) != null) &&
+                                    (context.EnvironmentVariable(Environment.AppCenterGroupVariable) != null) &&
+                                    (context.EnvironmentVariable(Environment.AppCenterOwnerVariable) != null))) ||
+                                shouldDeployAppCenter);
 
         ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
 

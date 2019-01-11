@@ -74,7 +74,7 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
             Configuration = BuildParameters.Configuration,
             TestRunTitle = "Unit Tests",
             TestRunner = TFTestRunnerType.XUnit,
-            TestResultsFiles = new string[] { BuildParameters.Paths.Files.TestResultsFilePath.ToString() }
+            TestResultsFiles = new [] { BuildParameters.Paths.Files.TestResultsFilePath }
         };
 
         BuildSystem.TFBuild.Commands.PublishTestResults(testResultsData);
