@@ -1,5 +1,3 @@
-#addin nuget:?package=Cake.Plist&version=0.4.0
-
 BuildParameters.Tasks.iOSArchiveTask = Task("iOS-Archive")
     .WithCriteria(() => BuildParameters.IsRunningOnUnix)
     .IsDependentOn("iPhone-Build")

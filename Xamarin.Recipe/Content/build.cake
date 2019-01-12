@@ -7,7 +7,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 Setup(context =>
-{
+{    
+    Information(Figlet(BuildParameters.Title));
+    
    // Executed BEFORE the first task.
    Information("Running tasks...");
    
