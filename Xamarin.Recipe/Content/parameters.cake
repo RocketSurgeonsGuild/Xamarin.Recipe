@@ -206,9 +206,6 @@ public static class BuildParameters
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
         context.Information("\n");
 
-        context.Information("ShouldPublishCodeCoverage: {0}", ShouldPublishCodeCoverage);
-        context.Information("\n");
-
         context.Information("ShouldDeployAppCenter: {0}", ShouldDeployAppCenter);
         context.Information("\n");
 

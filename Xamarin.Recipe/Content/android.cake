@@ -1,5 +1,3 @@
-#addin nuget:?package=Cake.AndroidAppManifest&version=1.1.0
-
 BuildParameters.Tasks.AndroidArchiveTask = Task("Android-Archive")
     .IsDependentOn("Android-Build")
     .IsDependentOn("Copy-Apk");
