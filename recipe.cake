@@ -1,4 +1,4 @@
-#load nuget:https://ci.appveyor.com/nuget/cake-recipe?package=Cake.Recipe&version=0.3.0-unstable0441
+#load nuget:https://www.myget.org/F/cake-contrib/api/v2?package=Cake.Recipe&prerelease
 
 Environment.SetVariableNames();
 
@@ -40,5 +40,19 @@ Task("Generate-Version-File")
             buildMetaDataCodeGen
             );
     });
+
+Task("UploadAzureDevOpsArtifacts")
+    .WithCriteria(() => TFBuild.IsRunningOnVSTS)
+    .Does(() =>
+    {
+        BuildSystem
+            .TFBuild
+            .Commands
+            .UploadArtifactDirectory(BuildParameters.Paths.Directories.NuGetPackages.MakeAbsolute(Context.Environment).FullPath, "Packages");
+    });
+
+Task("AzureDevOps")
+    .IsDependentOn("Publish-MyGet-Packages")
+    .IsDependentOn("UploadAzureDevOpsArtifacts");
 
 Build.RunNuGet();
