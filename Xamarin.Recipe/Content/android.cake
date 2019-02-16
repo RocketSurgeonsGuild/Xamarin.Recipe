@@ -57,7 +57,7 @@ Task("Android-Manifest")
         var manifest = DeserializeAppManifest(BuildParameters.AndroidManifest);
 
         manifest.VersionName = BuildParameters.Version.Version;
-        manifest.VersionCode = Convert.ToInt32(BuildParameters.Version.BuildMetaData);
+        manifest.VersionCode = BuildParameters.BuildNumber == 0 ? manifest.VersionCode ++ : BuildParameters.BuildNumber;
 
         Verbose("Version Name: {0}", BuildParameters.Version.Version);
         Verbose("Version Code: {0}", BuildParameters.Version.PreReleaseNumber);

@@ -27,6 +27,8 @@ public static class BuildParameters
     public static bool IsNuGetBuild { get; set; }
     public static bool TransifexEnabled { get; set; }
     public static bool PrepareLocalRelease { get; set; }
+
+    public static int BuildNumber { get; private set; }
     
     public static bool ShouldRunGitVersion { get; private set; }
     public static bool ShouldDeployAppCenter { get; private set; }
@@ -94,6 +96,7 @@ public static class BuildParameters
         bool? shouldRunxUnit = null,
         bool? shouldRunUnitTests = null,
         bool shouldRunFastlaneMatch = false,
+        int buildNumber = 0,
         string mainBranch = "main",
         string devBranch = "dev",
         FilePath androidManifest = null,
@@ -169,6 +172,8 @@ public static class BuildParameters
         ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
 
         ShouldRunFastlaneMatch = IsiOSBuild && IsRunningOnUnix && shouldRunFastlaneMatch;
+
+        BuildNumber = buildNumber;
     }
 
     public static void SetBuildVersion(BuildVersion version)
