@@ -1,4 +1,5 @@
 Task("Unit-Test")
+    .WithCriteria(() => BuildParameters.ShouldRunUnitTests)
     .Does(() =>
     {
         Verbose("Executing Unit Tests");
