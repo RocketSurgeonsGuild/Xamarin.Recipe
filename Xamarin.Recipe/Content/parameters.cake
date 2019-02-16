@@ -34,6 +34,7 @@ public static class BuildParameters
     public static bool ShouldRunFastlaneMatch { get; private set; }
     public static bool ShouldCopyImages { get; private set; }
     public static bool ShouldRunxUnit { get; private set; }
+    public static bool ShouldRunUnitTests { get; private set; }
 
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
@@ -91,6 +92,7 @@ public static class BuildParameters
         bool shouldDeployAppCenter = false,
         bool shouldCopyImages = false,
         bool? shouldRunxUnit = null,
+        bool? shouldRunUnitTests = null,
         bool shouldRunFastlaneMatch = false,
         string mainBranch = "main",
         string devBranch = "dev",
@@ -161,6 +163,8 @@ public static class BuildParameters
                                 shouldDeployAppCenter);
 
         ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
+
+        ShouldRunUnitTests = shouldRunUnitTests ?? context.GetFiles(UnitTestFilePattern).All(x => x != null);
 
         ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
 

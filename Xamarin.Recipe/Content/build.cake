@@ -188,7 +188,7 @@ public class Builder
 
     private static void Setup()
     {
-        if(!BuildParameters.IsDotNetCoreBuild)
+        if(BuildParameters.ShouldRunxUnit)
         {
             BuildParameters.Tasks.TestTask.IsDependentOn("xUnit-Tests");
         }
