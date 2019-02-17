@@ -18,3 +18,13 @@ BuildParameters.Tasks.FastlaneMatchTask =
         {
             Fastlane.Match(ToolSettings.FastlaneMatchConfigurator);
         });
+
+BuildParameters.Tasks.FastlanePilotTask =
+    Task("Fastlane-Pilot")
+        .WithCriteria(() => BuildParameters.ShouldRunFastlanePilot)
+        .IsDependentOn("Archive")
+        .IsDependentOn("AppCenter")
+        .Does(() =>
+        {
+            Fastlane.Pilot(ToolSettings.FastlaneDeliverConfigurator);
+        });
