@@ -2,7 +2,6 @@
 
 partial class XamarinBuild
 {
-
     /// <summary>
     /// Environments the variable.
     /// </summary>

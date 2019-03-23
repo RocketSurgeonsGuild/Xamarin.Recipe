@@ -8,6 +8,7 @@
     <IsPackable>False</IsPackable>
     <NoWarn>CS0649;CS0169</NoWarn>
     <LangVersion>7.3</LangVersion>
+    <AssemblyName>Rocket.Surgery.Xamarin.Nuke.Recipe</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,10 +33,6 @@
     <None Include="..\.travis.yml" Condition="Exists('..\.travis.yml')" />
     <None Include="..\GitVersion.yml" Condition="Exists('..\GitVersion.yml')" />
     <None Include="Platform\iOS.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Deploy\" />
   </ItemGroup>
 
 </Project>
