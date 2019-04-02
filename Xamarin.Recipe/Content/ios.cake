@@ -20,7 +20,8 @@ Task("iPhone-Build")
                         .SetVerbosity(ToolSettings.MSBuildVerbosity)
                         .UseToolVersion(ToolSettings.MSBuildToolVersion)
                         .WithProperty("Platform", BuildParameters.Platform)
-                        .WithProperty("BuildIpa", "true"));
+                        .WithProperty("BuildIpa", "true")
+                        .WithProperty("ArchiveOnBuild", "true"));
     });
 
 Task("iPhone-XBuild")
