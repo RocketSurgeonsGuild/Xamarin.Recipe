@@ -10,6 +10,8 @@ partial class XamarinBuild
     AbsolutePath BenchmarkDirectory => RootDirectory / "benchmarks";
     AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
     AbsolutePath PackageDirectory => ArtifactsDirectory / "packages";
+    AbsolutePath IpaDirectory => ArtifactsDirectory / "ios";
+    AbsolutePath ApkDirectory => ArtifactsDirectory / "android";
     AbsolutePath BenchmarkResultsDirectory => ArtifactsDirectory / "benchmarks";
     AbsolutePath TestResultsDirectory => ArtifactsDirectory / "TestResults";
     AbsolutePath TestResultFilePath => TestResultsDirectory / $"{Parameters.Title}.trx";

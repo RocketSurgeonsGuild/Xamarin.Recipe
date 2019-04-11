@@ -44,7 +44,8 @@ partial class XamarinBuild
         .OnlyWhenStatic(IsRunningOnAzureDevOps)
         .Executes(() =>
         {
-            Information($"##vso[artifact.upload containerfolder=Packages;artifactname=Packages;]{PackageDirectory}");
+            Log($"##vso[artifact.upload containerfolder=Packages;artifactname=Artifacts;]{ArtifactsDirectory}");
+            AzureDevOpsCommand("artifact.upload", new Dictionary<string, string> { { "containerfolder", "Artifacts"}, {"artifactname", "Binary" } }, ArtifactsDirectory);
         });
 
     Target PublishAzureDevOpsTestResults => _ => _
@@ -79,12 +80,23 @@ partial class XamarinBuild
     static void AzureDevOpsTestResultsCommand(IEnumerable<FileInfo> files, string title, string platform = "x64", string configuration = "Release", string testType = "VSTest")
     {
         var resultFiles = string.Join(',', files.Select(x => x.FullName.Replace('\\', Path.DirectorySeparatorChar)));
-        Information($"##vso[results.publish type={testType};mergeResults=false;platform={platform}4;config={configuration};runTitle='{title}';publishRunAttachments=true;resultFiles={resultFiles};]");
+        Log($"##vso[results.publish type={testType};mergeResults=false;platform={platform};config={configuration};runTitle='{title}';publishRunAttachments=true;resultFiles={resultFiles};]");
+
+        AzureDevOpsCommand("results.publish", new Dictionary<string, string>
+        {
+            {"type", testType},
+            {"mergeResults", "false"},
+            {"platform", platform},
+            {"config", configuration},
+            {"runTitle", title},
+            {"publishRunAttachments", "true"},
+            {"resultFiles", resultFiles}
+        });
     }
 
-    static void AzureDevOpsCommand(string command, Dictionary<string, string> properties, string value)
+    static void AzureDevOpsCommand(string command, Dictionary<string, string> properties, string value = null)
     {
         var props = string.Join(string.Empty, properties.Select(pair => string.Format(CultureInfo.InvariantCulture, "{0}={1};", pair.Key, pair.Value)));
-        Information($"##vso[{command} {props}]{value}");
+        Log($"##vso[{command} {props}]{value}");
     }
 }
