@@ -35,6 +35,7 @@ public static class BuildParameters
     public static bool ShouldRunFastlaneDeliver { get; private set; }
     public static bool ShouldRunFastlaneMatch { get; private set; }
     public static bool ShouldRunFastlanePilot { get; private set; }
+    public static bool ShouldRunFastlaneSupply { get; private set; }
     public static bool ShouldCopyImages { get; private set; }
     public static bool ShouldRunxUnit { get; private set; }
     public static bool ShouldRunUnitTests { get; private set; }
@@ -175,6 +176,8 @@ public static class BuildParameters
         ShouldRunFastlaneMatch = IsiOSBuild && IsRunningOnUnix && shouldRunFastlaneMatch;
 
         ShouldRunFastlanePilot = IsiOSBuild && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
+
+        ShouldRunFastlaneSupply = IsAndroidBuild && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
 
         BuildNumber = buildNumber;
     }
