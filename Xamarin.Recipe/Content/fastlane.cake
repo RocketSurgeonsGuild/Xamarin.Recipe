@@ -26,7 +26,7 @@ BuildParameters.Tasks.FastlanePilotTask =
         .IsDependentOn("AppCenter")
         .Does(() =>
         {
-            Fastlane.Pilot(ToolSettings.FastlaneDeliverConfigurator);
+            Fastlane.Pilot(ToolSettings.FastlanePilotConfigurator);
         });
 
 
