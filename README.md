@@ -17,3 +17,94 @@ Xamarin.Recipe is a set of convention based scripts for building and deploying X
 |:--:|:--:|
 [![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/dev?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/dev)|[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/main?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/main)|
 [![Build Status](https://dev.azure.com/rocketsurgeonsguild/Libraries/_apis/build/status/RSG.Xamarin.Recipe?branchName=dev)](https://dev.azure.com/rocketsurgeonsguild/Libraries/_build/latest?definitionId=25&branchName=dev)|[![Build Status](https://dev.azure.com/rocketsurgeonsguild/Libraries/_apis/build/status/RSG.Xamarin.Recipe?branchName=main)](https://dev.azure.com/rocketsurgeonsguild/Libraries/_build/latest?definitionId=25&branchName=main)
+
+# Sample Script
+
+## iOS
+```csharp
+#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.3.1
+
+Environment.SetVariableNames();
+
+BuildParameters.SetParameters(
+        context: Context,
+        buildSystem: BuildSystem,
+        sourceDirectoryPath: "./src",
+        title: "My.Recipe.Project",
+        solutionFilePath: "./Recipe.sln",
+        solutionDirectoryPath: "./",
+        iosProjectPath: "./src/Recipe.iOS/Recipe.iOS.csproj",
+        plistFilePath: "./src/Recipe.iOS/Info.plist",
+        platform: "iPhone",
+        rootDirectoryPath: "./",
+        testDirectoryPath: "./tests",
+        unitTestFilePattern: "./tests/unit/**/*.csproj",
+        uiTestFilePattern: "./tests/ui/**/*.csproj",
+        integrationTestScriptPath: "./tests/integration/test.cake",
+        repositoryOwner: "GitHubUserName",
+        repositoryName: "GitHubRepository",
+        appVeyorAccountName: "AppVeyorAccount",
+        appVeyorProjectSlug: "SLUG",
+        isPublicRepository: false,
+        shouldRunGitVersion: true,
+        shouldDeployAppCenter: false,
+        shouldCopyImages: false,
+        shouldRunxUnit: true,
+        shouldRunUnitTests: true,
+        shouldRunFastlaneMatch = false,
+        buildNumber: 0,
+        mainBranch: "main",
+        devBranch: "dev",
+        nugetConfig: "./NuGet.config",
+        nuGetSources: new[] { "nuget.org", "myget.org" });
+
+BuildParameters.PrintParameters(Context);
+
+ToolSettings.SetToolSettings(context: Context, msBuildToolVersion: MSBuildToolVersion.NET40);
+
+Build.RuniOS();
+```
+
+## Android
+```csharp
+#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.3.1
+
+Environment.SetVariableNames();
+
+BuildParameters.SetParameters(
+        context: Context,
+        buildSystem: BuildSystem,
+        sourceDirectoryPath: "./src",
+        title: "My.Recipe.Project",
+        solutionFilePath: "./Recipe.sln",
+        solutionDirectoryPath: "./",
+        androidProjectPath: "./src/Recipe.Android/Recipe.Android.csproj",
+        androidManifest: "./src/Recipe.Android/Properties/AndroidManifest.xml",
+        rootDirectoryPath: "./",
+        testDirectoryPath: "./tests",
+        unitTestFilePattern: "./tests/unit/**/*.csproj",
+        uiTestFilePattern: "./tests/ui/**/*.csproj",
+        integrationTestScriptPath: "./tests/integration/test.cake",
+        repositoryOwner: "GitHubUserName",
+        repositoryName: "GitHubRepository",
+        appVeyorAccountName: "AppVeyorAccount",
+        appVeyorProjectSlug: "SLUG",
+        isPublicRepository: false,
+        shouldRunGitVersion: true,
+        shouldDeployAppCenter: false,
+        shouldCopyImages: false,
+        shouldRunxUnit: true,
+        shouldRunUnitTests: true,
+        shouldRunFastlaneMatch = false,
+        buildNumber: 0,
+        mainBranch: "main",
+        devBranch: "dev",
+        nugetConfig: "./NuGet.config",
+        nuGetSources: new[] { "nuget.org", "myget.org" });
+
+BuildParameters.PrintParameters(Context);
+
+ToolSettings.SetToolSettings(context: Context);
+
+Build.Android();
+```

@@ -20,6 +20,8 @@ public static class ToolSettings
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
     public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
     public static Action<FastlaneMatchConfiguration> FastlaneMatchConfigurator { get; private set; }
+    public static Action<FastlanePilotConfiguration> FastlanePilotConfigurator { get; private set; }
+    public static Action<FastlaneSupplyConfiguration> FastlaneSupplyConfigurator { get; private set; }
     public static Action<TFBuildPublishCodeCoverageData> AzureDevOpsPublishCodeCoverageData { get; private set; }
 
     public static void SetToolSettings(
@@ -44,6 +46,8 @@ public static class ToolSettings
         Func<XUnit2Settings> xUnitSettings = null,
         Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
         Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null,
+        Action<FastlanePilotConfiguration> fastlanePilotConfigurator = null,
+        Action<FastlaneSupplyConfiguration> fastlaneSupplyConfigurator = null,
         Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = default(Action<TFBuildPublishCodeCoverageData>)
     )
     {
@@ -76,6 +80,8 @@ public static class ToolSettings
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
         FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
         FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
+        FastlanePilotConfigurator = fastlanePilotConfigurator ?? _defaultPilotConfiguration;
+        FastlaneSupplyConfigurator = fastlaneSupplyConfigurator ?? _defaultSupplyConfiguration;
         AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
     }
 
@@ -100,4 +106,8 @@ public static class ToolSettings
     private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
 
     private static Action<FastlaneMatchConfiguration> _defaultMatchConfiguration = cfg => { cfg = new FastlaneMatchConfiguration(); };
+
+    private static Action<FastlanePilotConfiguration> _defaultPilotConfiguration = cfg => { cfg = new FastlanePilotConfiguration(); };
+
+    private static Action<FastlaneSupplyConfiguration> _defaultSupplyConfiguration = cfg => { cfg = new FastlaneSupplyConfiguration(); };
 }

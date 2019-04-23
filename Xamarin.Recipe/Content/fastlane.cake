@@ -18,3 +18,25 @@ BuildParameters.Tasks.FastlaneMatchTask =
         {
             Fastlane.Match(ToolSettings.FastlaneMatchConfigurator);
         });
+
+BuildParameters.Tasks.FastlanePilotTask =
+    Task("Fastlane-Pilot")
+        .WithCriteria(() => BuildParameters.ShouldRunFastlanePilot)
+        .IsDependentOn("Archive")
+        .IsDependentOn("AppCenter")
+        .Does(() =>
+        {
+            Fastlane.Pilot(ToolSettings.FastlanePilotConfigurator);
+        });
+
+
+
+BuildParameters.Tasks.FastlaneSupplyTask =
+    Task("Fastlane-Supply")
+        .WithCriteria(() => BuildParameters.ShouldRunFastlaneSupply)
+        .IsDependentOn("Android-Archive")
+        .IsDependentOn("AppCenter")
+        .Does(() =>
+        {
+            Fastlane.Supply(ToolSettings.FastlaneSupplyConfigurator);
+        });
