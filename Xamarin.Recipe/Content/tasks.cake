@@ -34,7 +34,6 @@ public class BuildTasks
     public CakeTaskBuilder InstallOpenCoverTask { get; set; }
     public CakeTaskBuilder TestTask { get; set; }
     public CakeTaskBuilder TestxUnitTask { get; set; }
-    public CakeTaskBuilder TestUITask { get; set; }
     public CakeTaskBuilder IntegrationTestTask { get;set; }
     public CakeTaskBuilder FastlaneTask { get; set; }
     public CakeTaskBuilder FastlaneDeliverTask { get; set; }

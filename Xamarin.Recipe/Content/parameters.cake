@@ -39,6 +39,7 @@ public static class BuildParameters
     public static bool ShouldCopyImages { get; private set; }
     public static bool ShouldRunxUnit { get; private set; }
     public static bool ShouldRunUnitTests { get; private set; }
+    public static bool ShouldRunUITests { get; private set; }
 
     public static BuildVersion Version { get; private set; }
     public static BuildPaths Paths { get; private set; }
@@ -55,13 +56,13 @@ public static class BuildParameters
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
-    public static string UnitTestFilePattern { get; private set; }
-    public static string UITestFilePattern { get; private set; }
     public static string ResharperSettingsFileName { get; private set; }
     public static string RepositoryOwner { get; private set; }
     public static string RepositoryName { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
+    public static ICollection<FilePath> UnitTestWhitelist { get; private set; }
+    public static ICollection<FilePath> UITestWhitelist { get; private set; }
 
     static BuildParameters()
     {
@@ -83,8 +84,6 @@ public static class BuildParameters
         string platform = "iPhone",
         DirectoryPath rootDirectoryPath = null,
         DirectoryPath testDirectoryPath = null,
-        string unitTestFilePattern = null,
-        string uiTestFilePattern = null,
         string integrationTestScriptPath = null,
         string resharperSettingsFileName = null,
         string repositoryOwner = null,
@@ -97,13 +96,15 @@ public static class BuildParameters
         bool shouldCopyImages = false,
         bool? shouldRunxUnit = null,
         bool? shouldRunUnitTests = null,
+        bool? shouldRunUITests = null,
         bool shouldRunFastlaneMatch = false,
         int buildNumber = 0,
         string mainBranch = "main",
         string devBranch = "dev",
         FilePath androidManifest = null,
         FilePath nugetConfig = null,
-        ICollection<string> nuGetSources = null)
+        ICollection<string> nuGetSources = null,
+        ICollection<FilePath> whitelistTestPackages = null)
     {
         if (context == null)
         {
@@ -116,18 +117,17 @@ public static class BuildParameters
         SolutionDirectoryPath = solutionDirectoryPath ?? SourceDirectoryPath.Combine(Title);
         RootDirectoryPath = rootDirectoryPath ?? context.MakeAbsolute(context.Environment.WorkingDirectory);
         AndroidProjectPath = androidProjectPath;
+        AndroidManifest = androidManifest;
         IOSProjectPath = iosProjectPath;
         PlistFilePath = plistFilePath;
         TestDirectoryPath = testDirectoryPath ?? sourceDirectoryPath;
-        UnitTestFilePattern = unitTestFilePattern ?? "/**/*.Tests.csproj";
-        UITestFilePattern = uiTestFilePattern ?? "/**/*.Tests.csproj";
         IntegrationTestScriptPath = integrationTestScriptPath ?? context.MakeAbsolute((FilePath)"test.cake");
         ResharperSettingsFileName = resharperSettingsFileName ?? string.Format("{0}.sln.DotSettings", Title);
         RepositoryOwner = repositoryOwner ?? string.Empty;
         RepositoryName = repositoryName ?? Title;
 
         Target = context.Argument("target", "Default");
-        ApplicationTarget = context.Argument("application", ApplicationTarget.Android);
+        ApplicationTarget = context.Argument("application", ApplicationTarget.All);
         Configuration = context.Argument("configuration", "Release");
         PrepareLocalRelease = context.Argument("prepareLocalRelease", false);
         Platform = platform;
@@ -148,10 +148,10 @@ public static class BuildParameters
         IsHotFixBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
         IsTagged = (!string.IsNullOrWhiteSpace(context.Environment.GetEnvironmentVariable("$git_tag")));
 
-        AndroidManifest = androidManifest;
-
         NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
         NuGetSources = GetNuGetSources(context, nuGetSources);
+        UnitTestWhitelist = unitTestWhitelist ?? Enumerable.Empty<FilePath>();
+        UITestWhitelist = uiTestWhitelist ?? Enumerable.Empty<FilePath>();
 
         IsDotNetCoreBuild = true;
 
@@ -169,7 +169,9 @@ public static class BuildParameters
 
         ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
 
-        ShouldRunUnitTests = shouldRunUnitTests ?? context.GetFiles(UnitTestFilePattern).All(x => x != null);
+        ShouldRunUnitTests = shouldRunUnitTests ?? unitTestWhitelist.Any();
+
+        ShouldRunUITests = shouldRunUITests ?? uiTestWhitelist.Any();
 
         ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
 

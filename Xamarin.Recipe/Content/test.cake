@@ -3,7 +3,7 @@ Task("Unit-Test")
     .Does(() =>
     {
         Verbose("Executing Unit Tests");
-        foreach(FilePath path in BuildParameters.Paths.Files.UnitTestFilePaths)
+        foreach(FilePath path in BuildParameters.UnitTestWhitelist)
         {
             var fullPath = MakeAbsolute(path).FullPath;
 
@@ -16,11 +16,9 @@ BuildParameters.Tasks.TestxUnitTask = Task("xUnit-Tests")
                                         .WithCriteria(() => BuildParameters.ShouldRunxUnit)
                                         .Does(() =>
                                         {
-                                            XUnit2(BuildParameters.Paths.Files.UnitTestFilePaths, ToolSettings.XUnitSettings());
+                                            XUnit2(BuildParameters.UnitTestWhitelist, ToolSettings.XUnitSettings());
                                         });
 
 Task("UI-Test")
-    .Does(() =>
-    {
-
-    });
+    .WithCriteria(() => BuildParameters.ShouldRunUITests)
+    .IsDependentOn("Unit-Test");

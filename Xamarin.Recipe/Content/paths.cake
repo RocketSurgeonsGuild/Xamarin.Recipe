@@ -37,16 +37,11 @@ public class BuildPaths
 
         var metadataDirectoryPath = "./metadata";
 
-        var unitTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UnitTestFilePattern;
-        var uiTestPattern = BuildParameters.TestDirectoryPath + BuildParameters.UITestFilePattern;
-
         // Files
         var testCoverageOutputFilePath = ((DirectoryPath)testCoverageDirectory).CombineWithFilePath("OpenCover.xml");
         var testResultsFilePath = ((DirectoryPath)xUnitTestResultsDirectory).CombineWithFilePath($"{BuildParameters.Title}.trx");
         var solutionInfoFilePath = ((DirectoryPath)BuildParameters.SourceDirectoryPath).CombineWithFilePath("SolutionInfo.cs");
         var buildLogFilePath = ((DirectoryPath)buildDirectoryPath).CombineWithFilePath("MsBuild.log");
-        var unitTestFilePaths = context.GetFiles(unitTestPattern).ToArray();
-        var uiTestFilePaths = context.GetFiles(uiTestPattern).ToArray();
 
         var repoFilesPaths = new FilePath[] {
             "LICENSE",
@@ -76,8 +71,6 @@ public class BuildPaths
         var buildFiles = new BuildFiles(
             context,
             repoFilesPaths,
-            unitTestFilePaths,
-            uiTestFilePaths,
             testCoverageOutputFilePath,
             solutionInfoFilePath,
             buildLogFilePath,
@@ -102,16 +95,10 @@ public class BuildFiles
     public FilePath BuildLogFilePath { get; private set; }
 
     public FilePath TestResultsFilePath { get ; private set; }
-    
-    public ICollection<FilePath> UnitTestFilePaths { get; private set; }
-    
-    public ICollection<FilePath> UITestFilePaths { get; private set; }
 
     public BuildFiles(
         ICakeContext context,
         FilePath[] repoFilesPaths,
-        FilePath[] unitTestFilePaths,
-        FilePath[] uiTestFilePaths,
         FilePath testCoverageOutputFilePath,
         FilePath solutionInfoFilePath,
         FilePath buildLogFilePath,
@@ -122,8 +109,6 @@ public class BuildFiles
         TestCoverageOutputFilePath = testCoverageOutputFilePath;
         SolutionInfoFilePath = solutionInfoFilePath;
         BuildLogFilePath = buildLogFilePath;
-        UnitTestFilePaths = unitTestFilePaths;
-        UITestFilePaths = uiTestFilePaths;
         TestResultsFilePath = testResultsFilePath;
     }
 

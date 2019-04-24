@@ -22,7 +22,7 @@ Xamarin.Recipe is a set of convention based scripts for building and deploying X
 
 ## iOS
 ```csharp
-#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.3.1
+#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.5.0
 
 Environment.SetVariableNames();
 
@@ -38,8 +38,7 @@ BuildParameters.SetParameters(
         platform: "iPhone",
         rootDirectoryPath: "./",
         testDirectoryPath: "./tests",
-        unitTestFilePattern: "./tests/unit/**/*.csproj",
-        uiTestFilePattern: "./tests/ui/**/*.csproj",
+        unitTestWhitelist: new[] { "./tests/Recipe/Recipe.csproj" },
         integrationTestScriptPath: "./tests/integration/test.cake",
         repositoryOwner: "GitHubUserName",
         repositoryName: "GitHubRepository",
@@ -67,7 +66,7 @@ Build.RuniOS();
 
 ## Android
 ```csharp
-#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.3.1
+#load nuget:?package=Rocket.Surgery.Xamarin.Recipe&version=0.5.0
 
 Environment.SetVariableNames();
 
@@ -82,8 +81,7 @@ BuildParameters.SetParameters(
         androidManifest: "./src/Recipe.Android/Properties/AndroidManifest.xml",
         rootDirectoryPath: "./",
         testDirectoryPath: "./tests",
-        unitTestFilePattern: "./tests/unit/**/*.csproj",
-        uiTestFilePattern: "./tests/ui/**/*.csproj",
+        unitTestWhitelist: new[] { "./tests/Recipe/Recipe.csproj" },
         integrationTestScriptPath: "./tests/integration/test.cake",
         repositoryOwner: "GitHubUserName",
         repositoryName: "GitHubRepository",

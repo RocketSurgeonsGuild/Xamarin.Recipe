@@ -63,8 +63,6 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("Source DirectoryPath: {0}", MakeAbsolute(BuildParameters.SourceDirectoryPath));
         Information("Build DirectoryPath: {0}", MakeAbsolute(BuildParameters.Paths.Directories.Build));
         Information("Test DirectoryPath: {0}", MakeAbsolute(BuildParameters.TestDirectoryPath));
-        Information("Unit Test Glob Pattern: {0}", BuildParameters.UnitTestFilePattern);
-        Information("UI Test Glob Pattern: {0}", BuildParameters.UITestFilePattern);
     });
 
     BuildParameters.Tasks.CleanTask = Task("Clean")
@@ -104,13 +102,7 @@ BuildParameters.Tasks.ArchiveTask = Task("Archive")
 
 BuildParameters.Tasks.DefaultTask = Task("Execute").IsDependentOn("Distribute");
 
-public Builder Build
-{
-    get
-    {
-        return new Builder(target => RunTarget(target));
-    }
-}
+public Builder Build => new Builder(target => RunTarget(target));
 
 public class Builder
 {

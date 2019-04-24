@@ -1,11 +1,9 @@
 BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
     .IsDependentOn("Print-AzureDevOps-Environment-Variables")
-    .IsDependentOn("Clear-AzureDevOps-Cache")
     .IsDependentOn("Upload-AzureDevOps-Artifacts")
     .IsDependentOn("Publish-AzureDevOps-Test-Results")
     .IsDependentOn("Publish-AzureDevOps-Code-Coverage")
-    .IsDependentOn("Distribute")
-    .IsDependentOn("Fastlane");
+    .IsDependentOn("Distribute");
 
 BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-AzureDevOps-Environment-Variables")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
@@ -36,11 +34,7 @@ BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-Azu
 
 BuildParameters.Tasks.ClearAzureDevOpsCacheTask = Task("Clear-AzureDevOps-Cache")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
-    .IsDependentOn("Clean")
-    .Does(() =>
-    {
-
-    });
+    .IsDependentOn("Clean");
 
 BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
