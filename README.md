@@ -15,7 +15,7 @@ Xamarin.Recipe is a set of convention based scripts for building and deploying X
 
 |dev|main|
 |:--:|:--:|
-[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/dev?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/dev)|[![Build status](https://ci.appveyor.com/api/projects/status/mbn32rx9rc874dqm/branch/main?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/main)|
+[![Build status](https://ci.appveyor.com/api/projects/status/u2y7vtbaebmvl617/branch/dev?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/dev)|[![Build status](https://ci.appveyor.com/api/projects/status/u2y7vtbaebmvl617/branch/dev?svg=true)](https://ci.appveyor.com/project/RocketSurgeonsGuild/xamarin-recipe/branch/main)|
 [![Build Status](https://dev.azure.com/rocketsurgeonsguild/Libraries/_apis/build/status/RSG.Xamarin.Recipe?branchName=dev)](https://dev.azure.com/rocketsurgeonsguild/Libraries/_build/latest?definitionId=25&branchName=dev)|[![Build Status](https://dev.azure.com/rocketsurgeonsguild/Libraries/_apis/build/status/RSG.Xamarin.Recipe?branchName=main)](https://dev.azure.com/rocketsurgeonsguild/Libraries/_build/latest?definitionId=25&branchName=main)
 
 # Sample Script
