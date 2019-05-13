@@ -1,5 +1,6 @@
 BuildParameters.Tasks.AzureDevOpsTask = Task("AzureDevOps")
     .IsDependentOn("Print-AzureDevOps-Environment-Variables")
+    .IsDependentOn("Set-AzureDevOps-Build-Number")
     .IsDependentOn("Upload-AzureDevOps-Artifacts")
     .IsDependentOn("Publish-AzureDevOps-Test-Results")
     .IsDependentOn("Publish-AzureDevOps-Code-Coverage")
@@ -35,6 +36,14 @@ BuildParameters.Tasks.PrintAzureDevOpsEnvironmentVariablesTask = Task("Print-Azu
 BuildParameters.Tasks.ClearAzureDevOpsCacheTask = Task("Clear-AzureDevOps-Cache")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
     .IsDependentOn("Clean");
+
+BuildParameters.Tasks.SetAzureDevOpsBuildNumberTask = Task("Set-AzureDevOps-Build-Number")
+    .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)
+    .IsDependentOn("Clean")
+    .Does(context =>
+    {
+        BuildParameters.SetBuildNumber(context.EnvironmentVariable<int>("BUILD_BUILDNUMBER", 0));
+    });
 
 BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
     .WithCriteria(() => BuildParameters.IsRunningOnAzureDevOps)

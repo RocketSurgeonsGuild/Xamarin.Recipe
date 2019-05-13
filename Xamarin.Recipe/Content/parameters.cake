@@ -189,6 +189,11 @@ public static class BuildParameters
         Version  = version;
     }
 
+    public static void SetBuildNumber(int buildNumber)
+    {
+        BuildNumber  = buildNumber;
+    }
+
     public static void SetBuildPaths(BuildPaths paths)
     {
         Paths = paths;
