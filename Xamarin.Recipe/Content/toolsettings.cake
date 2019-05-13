@@ -18,6 +18,11 @@ public static class ToolSettings
     public static string AndroidBuildToolVersion { get; private set; }
     public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
+    public static ICollection<string> TestCoverageFilters { get; private set; }
+    public static ICollection<string> TestCoverageExcludeFilters { get; private set; }
+    public static ICollection<string> TestCoverageExcludeByAttributeFilters { get; private set; }
+    public static ICollection<string> TestCoverageExcludeByFileFilters { get; private set; }
+    public static string TestCoverageOutputFormat { get; private set; }
     public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
     public static Action<FastlaneMatchConfiguration> FastlaneMatchConfigurator { get; private set; }
     public static Action<FastlanePilotConfiguration> FastlanePilotConfigurator { get; private set; }
@@ -83,6 +88,48 @@ public static class ToolSettings
         FastlanePilotConfigurator = fastlanePilotConfigurator ?? _defaultPilotConfiguration;
         FastlaneSupplyConfigurator = fastlaneSupplyConfigurator ?? _defaultSupplyConfiguration;
         AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
+    }
+
+    public static ProcessArgumentBuilder SetCoverageProcessArguments(ProcessArgumentBuilder settings)
+    {
+        if (TestCoverageFilters != null)
+        {
+            foreach (var filter in TestCoverageFilters)
+            {
+                settings = settings.AppendSwitch("--include", filter);
+            }
+        }
+
+        if (TestCoverageExcludeFilters != null)   
+        {
+            foreach (var filter in TestCoverageExcludeFilters)
+            {
+                settings = settings.AppendSwitch("--exclude", filter);
+            }   
+        }
+
+        if (TestCoverageExcludeByAttributeFilters != null)
+        {
+            foreach (var filter in TestCoverageExcludeByAttributeFilters)
+            {
+                settings = settings.AppendSwitch("--exclude-by-attribute", filter);
+            }   
+        }
+
+        if (TestCoverageExcludeByFileFilters != null)
+        {
+            foreach (var filter in TestCoverageExcludeByFileFilters)
+            {
+                settings = settings.AppendSwitch("--exclude-by-file", filter);
+            }   
+        }
+
+        if (TestCoverageOutputFormat != null)
+        {
+            settings = settings.AppendSwitch("--format", TestCoverageOutputFormat);
+        }
+
+        return settings;
     }
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings

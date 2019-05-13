@@ -104,7 +104,7 @@ public static class BuildParameters
         FilePath androidManifest = null,
         FilePath nugetConfig = null,
         ICollection<string> nuGetSources = null,
-        ICollection<FilePath> whitelistTestPackages = null)
+        ICollection<FilePath> unitTestWhitelist= null)
     {
         if (context == null)
         {
