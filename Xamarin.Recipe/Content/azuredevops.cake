@@ -42,7 +42,7 @@ BuildParameters.Tasks.SetAzureDevOpsBuildNumberTask = Task("Set-AzureDevOps-Buil
     .IsDependentOn("Clean")
     .Does(context =>
     {
-        BuildParameters.SetBuildNumber(context.EnvironmentVariable<int>("BUILD_BUILDNUMBER", 0));
+        BuildParameters.SetBuildNumber(context.EnvironmentVariable<int>("BUILD_BUILDID", 0));
     });
 
 BuildParameters.Tasks.UploadAzureDevOpsArtifactsTask = Task("Upload-AzureDevOps-Artifacts")
