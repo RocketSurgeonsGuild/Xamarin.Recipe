@@ -30,6 +30,8 @@ public static class BuildParameters
 
     public static int BuildNumber { get; private set; }
     
+    public static bool UseDotNet { get; private set; }
+    
     public static bool ShouldRunGitVersion { get; private set; }
     public static bool ShouldDeployAppCenter { get; private set; }
     public static bool ShouldRunFastlaneDeliver { get; private set; }
@@ -91,6 +93,7 @@ public static class BuildParameters
         string appVeyorAccountName = null,
         string appVeyorProjectSlug = null,
         bool isPublicRepository = false,
+        bool useDotNet = true,
         bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
         bool shouldCopyImages = false,
@@ -154,6 +157,8 @@ public static class BuildParameters
         UITestWhitelist = uiTestWhitelist ?? Enumerable.Empty<FilePath>();
 
         IsDotNetCoreBuild = true;
+
+        UseDotNet = useDotNet;
 
         ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;
         ShouldCopyImages = shouldCopyImages;

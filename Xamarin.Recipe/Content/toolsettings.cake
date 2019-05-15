@@ -16,6 +16,7 @@ public static class ToolSettings
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
     public static string AndroidBuildToolVersion { get; private set; }
+    public static Func<DotNetCoreRestoreSettings> DotNetRestoreSettings { get; private set; }
     public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
     public static Action<FastlaneDeliverConfiguration> FastlaneDeliverConfigurator { get; private set; }
@@ -42,6 +43,7 @@ public static class ToolSettings
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
         string androidBuildToolVersion = "27.0.2",
+        Func<DotNetCoreRestoreSettings> dotNetRestoreSettings = null,
         Func<DotNetCoreTestSettings> dotNetTestSettings = null,
         Func<XUnit2Settings> xUnitSettings = null,
         Action<FastlaneDeliverConfiguration> fastlaneDeliverConfigurator = null,
@@ -77,6 +79,7 @@ public static class ToolSettings
         MSBuildVerbosity = msBuildVerbosity;
         AndroidBuildToolVersion = androidBuildToolVersion;
         DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
+        DotNetRestoreSettings = dotNetRestoreSettings ?? _dotNetRestoreSettings;
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
         FastlaneDeliverConfigurator = fastlaneDeliverConfigurator ?? _defaultDeliverConfiguration;
         FastlaneMatchConfigurator = fastlaneMatchConfigurator ?? _defaultMatchConfiguration;
@@ -84,6 +87,14 @@ public static class ToolSettings
         FastlaneSupplyConfigurator = fastlaneSupplyConfigurator ?? _defaultSupplyConfiguration;
         AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
     }
+
+    private static Func<DotNetCoreRestoreSettings> _dotNetRestoreSettings = () => new DotNetCoreRestoreSettings
+    {
+        Sources = new []
+            {
+                "https://api.nuget.org/v3/index.json"
+            }
+    };
 
     private static Func<DotNetCoreTestSettings> _defaultDotNetTestSettings = () => new DotNetCoreTestSettings
                 {
