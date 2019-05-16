@@ -29,8 +29,6 @@ BuildParameters.Tasks.FastlanePilotTask =
             Fastlane.Pilot(ToolSettings.FastlanePilotConfigurator);
         });
 
-
-
 BuildParameters.Tasks.FastlaneSupplyTask =
     Task("Fastlane-Supply")
         .WithCriteria(() => BuildParameters.ShouldRunFastlaneSupply)
