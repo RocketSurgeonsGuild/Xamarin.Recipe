@@ -150,7 +150,7 @@ public static class BuildParameters
 
         AndroidManifest = androidManifest;
 
-        NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
+        NugetConfig = nugetConfig ?? (FilePath)"./NuGet.Config";
         NuGetSources = GetNuGetSources(context, nuGetSources);
 
         IsDotNetCoreBuild = true;
