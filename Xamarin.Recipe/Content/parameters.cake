@@ -151,7 +151,9 @@ public static class BuildParameters
         IsHotFixBranch = buildSystem.TFBuild.Environment.Repository.Branch.StartsWith("hotfix", StringComparison.OrdinalIgnoreCase);
         IsTagged = (!string.IsNullOrWhiteSpace(context.Environment.GetEnvironmentVariable("$git_tag")));
 
-        NugetConfig = context.MakeAbsolute(nugetConfig ?? (FilePath)"./NuGet.Config");
+        AndroidManifest = androidManifest;
+
+        NugetConfig = nugetConfig;
         NuGetSources = GetNuGetSources(context, nuGetSources);
         UnitTestWhitelist = unitTestWhitelist ?? Enumerable.Empty<FilePath>();
         UITestWhitelist = uiTestWhitelist ?? Enumerable.Empty<FilePath>();
@@ -240,7 +242,7 @@ public static class BuildParameters
         context.Information("ShouldRunFastlaneDeliver: {0}", ShouldRunFastlaneDeliver);
         context.Information("\n");
 
-        context.Information("NugetConfig: {0} ({1})", NugetConfig, context.FileExists(NugetConfig));
+        context.Information("NugetConfig: {0}", NugetConfig);
         context.Information("NuGetSources: {0}", string.Join(", ", NuGetSources));
         context.Information("\n");
     }
@@ -257,7 +259,7 @@ public static ICollection<string> GetNuGetSources(ICakeContext context, ICollect
 {
     if (nuGetSources == null)
     {
-        if (context.FileExists(BuildParameters.NugetConfig))
+        if (BuildParameters.NugetConfig != null && context.FileExists(BuildParameters.NugetConfig))
         {
             nuGetSources = (
                 from configuration in System.Xml.Linq.XDocument.Load(BuildParameters.NugetConfig.FullPath).Elements("configuration")
