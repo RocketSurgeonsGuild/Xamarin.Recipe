@@ -30,7 +30,7 @@ public static class BuildParameters
 
     public static int BuildNumber { get; private set; }
     
-    public static bool UseDotNet { get; private set; }
+    public static bool ShouldUseDotNet { get; private set; }
     
     public static bool ShouldRunGitVersion { get; private set; }
     public static bool ShouldDeployAppCenter { get; private set; }
@@ -54,7 +54,6 @@ public static class BuildParameters
     public static FilePath AndroidManifest { get; private set; }
     public static FilePath IOSProjectPath { get; private set; }
     public static FilePath PlistFilePath { get; private set; }
-    public static string AppCenterApiKey { get; private set; }  
     public static string Platform { get; private set; }
     public static DirectoryPath TestDirectoryPath { get; private set; }
     public static FilePath IntegrationTestScriptPath { get; private set; }
@@ -93,7 +92,7 @@ public static class BuildParameters
         string appVeyorAccountName = null,
         string appVeyorProjectSlug = null,
         bool isPublicRepository = false,
-        bool useDotNet = true,
+        bool shouldUseDotNet = true,
         bool? shouldRunGitVersion = true,
         bool shouldDeployAppCenter = false,
         bool shouldCopyImages = false,
@@ -107,7 +106,8 @@ public static class BuildParameters
         FilePath androidManifest = null,
         FilePath nugetConfig = null,
         ICollection<string> nuGetSources = null,
-        ICollection<FilePath> whitelistTestPackages = null)
+        ICollection<FilePath> unitTestWhitelist = null,
+        ICollection<FilePath> uiTestWhitelist = null)
     {
         if (context == null)
         {
@@ -155,12 +155,12 @@ public static class BuildParameters
 
         NugetConfig = nugetConfig;
         NuGetSources = GetNuGetSources(context, nuGetSources);
-        UnitTestWhitelist = unitTestWhitelist ?? Enumerable.Empty<FilePath>();
-        UITestWhitelist = uiTestWhitelist ?? Enumerable.Empty<FilePath>();
+        UnitTestWhitelist = unitTestWhitelist ?? Array.Empty<FilePath>();
+        UITestWhitelist = uiTestWhitelist ?? Array.Empty<FilePath>();
 
         IsDotNetCoreBuild = true;
 
-        UseDotNet = useDotNet;
+        ShouldUseDotNet = shouldUseDotNet;
 
         ShouldRunGitVersion = shouldRunGitVersion ?? IsRunningOnUnix;
         ShouldCopyImages = shouldCopyImages;
@@ -209,9 +209,15 @@ public static class BuildParameters
     public static void PrintParameters(ICakeContext context)
     {
         context.Information("============ PARAMETERS ============");
+        context.Information("Target: {0}", Target);
+        context.Information("ApplicationTarget: {0}", ApplicationTarget);
+        context.Information("Platform: {0}", Platform);
+        context.Information("\n");
+
         context.Information("IsLocalBuild: {0}", IsLocalBuild);
         context.Information("IsRunningOnAppVeyor: {0}", IsRunningOnAppVeyor);
         context.Information("IsRunningOnAzureDevOps: {0}", IsRunningOnAzureDevOps);
+        context.Information("BuildNumber: {0}", BuildNumber);
         context.Information("\n");
 
         context.Information("IsDevBranch: {0}", IsDevBranch);
@@ -235,11 +241,24 @@ public static class BuildParameters
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
         context.Information("\n");
 
+        context.Information("UnitTestWhitelist: Count({0})", UnitTestWhitelist.Count);
+        context.Information("UITestWhitelist: Count({0})", UITestWhitelist.Count);
+        context.Information("\n");
+
+        context.Information("ShouldCopyImages: {0}", ShouldCopyImages);
+        context.Information("\n");
+
+        context.Information("ShouldRunUnitTests: {0}", ShouldRunUnitTests);
+        context.Information("ShouldRunUITests: {0}", ShouldRunUITests);
+        context.Information("\n");
+
         context.Information("ShouldDeployAppCenter: {0}", ShouldDeployAppCenter);
         context.Information("\n");
 
-        context.Information("ShouldRunFastlaneMatch: {0}", ShouldRunFastlaneMatch);
         context.Information("ShouldRunFastlaneDeliver: {0}", ShouldRunFastlaneDeliver);
+        context.Information("ShouldRunFastlaneMatch: {0}", ShouldRunFastlaneMatch);
+        context.Information("ShouldRunFastlanePilot: {0}", ShouldRunFastlanePilot);
+        context.Information("ShouldRunFastlaneSupply: {0}", ShouldRunFastlaneSupply);
         context.Information("\n");
 
         context.Information("NugetConfig: {0}", NugetConfig);

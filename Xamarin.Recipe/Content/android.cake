@@ -57,18 +57,19 @@ Task("Android-Manifest")
         var manifest = DeserializeAppManifest(BuildParameters.AndroidManifest);
 
         manifest.VersionName = BuildParameters.Version.Version;
-        manifest.VersionCode = BuildParameters.BuildNumber == 0 ? manifest.VersionCode ++ : BuildParameters.BuildNumber;
-
         Verbose("Version Name: {0}", BuildParameters.Version.Version);
+
+        manifest.VersionCode = BuildParameters.BuildNumber == 0 ? manifest.VersionCode ++ : BuildParameters.BuildNumber;
         Verbose("Version Code: {0}", BuildParameters.Version.PreReleaseNumber);
 
         var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
+        Verbose("Package Name: {0}", bundleIdentifier);
         if(!string.IsNullOrEmpty(bundleIdentifier))
         {
-            Verbose("Package Name: {0}", bundleIdentifier);
             manifest.PackageName = bundleIdentifier;
         }
 
+        Verbose("Serializing the Application Manifest: {0}", BuildParameters.AndroidManifest);
         SerializeAppManifest(BuildParameters.AndroidManifest, manifest);
     });
 
@@ -81,9 +82,9 @@ Task("Android-AppCenter")
         Verbose("Android Artifact Directory: {0}", androidArtifactsPath.FullPath);
 
         var apkPath = GetFiles(androidArtifactsPath.FullPath + "/*.apk");
+        Verbose("Found {0} apks", apkPath.Count);
 
         var apk = apkPath.FirstOrDefault()?.FullPath;
-
         Verbose("apk: {0}", apk);
 
         var settings = new AppCenterDistributeReleaseSettings
@@ -118,6 +119,7 @@ Task("Upload-AzureDevOps-Apk")
     {
         var artifactPath = BuildParameters.Paths.Directories.DroidArtifactDirectoryPath;
         var fullArtifactPath = MakeAbsolute(artifactPath).FullPath;
+        Verbose("Full artifact path: {0}", fullArtifactPath);
 
         var apk = GetFiles(fullArtifactPath + "/*.apk")
                     .FirstOrDefault(x => x.GetFilename().ToString().ToLower().Contains("signed"));

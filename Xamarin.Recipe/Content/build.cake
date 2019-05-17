@@ -62,6 +62,21 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("Source DirectoryPath: {0}", MakeAbsolute(BuildParameters.SourceDirectoryPath));
         Information("Build DirectoryPath: {0}", MakeAbsolute(BuildParameters.Paths.Directories.Build));
         Information("Test DirectoryPath: {0}", MakeAbsolute(BuildParameters.TestDirectoryPath));
+        Information("NuGet Config FilePath: {0}", BuildParameters.NugetConfig);
+        Information("Unit Test Whitelist", BuildParameters.UnitTestWhitelist);
+        Information("UI Test Whitelist", BuildParameters.UITestWhitelist);
+        Information("NuGet Config FilePath: {0}", BuildParameters.NugetConfig);
+        Information("\n");
+        Information("ShouldUseDotNet: {0}", BuildParameters.ShouldUseDotNet);
+        Information("ShouldCopyImages: {0}", BuildParameters.ShouldCopyImages);
+        Information("ShouldDeployAppCenter", BuildParameters.ShouldDeployAppCenter);
+        Information("ShouldRunxUnit", BuildParameters.ShouldRunxUnit);
+        Information("ShouldRunUnitTests: {0}", BuildParameters.ShouldRunUnitTests);
+        Information("ShouldRunUITests: {0}", BuildParameters.ShouldRunUITests);
+        Information("ShouldRunFastlaneDeliver", BuildParameters.ShouldRunFastlaneDeliver);
+        Information("ShouldRunFastlaneMatch", BuildParameters.ShouldRunFastlaneMatch);
+        Information("ShouldRunFastlanePilot: {0}", BuildParameters.ShouldRunFastlanePilot);
+        Information("ShouldRunFastlaneSupply: {0}", BuildParameters.ShouldRunFastlaneSupply);
     });
 
 BuildParameters.Tasks.CleanTask = Task("Clean")
@@ -150,7 +165,6 @@ public class Builder
     private static void SetupAndroid(bool isNetCoreBuild = true)
     {
         Setup();
-
         BuildParameters.IsAndroidBuild = true;
         BuildParameters.IsDotNetCoreBuild = isNetCoreBuild;
         
@@ -172,7 +186,7 @@ public class Builder
             BuildParameters.Tasks.TestTask.IsDependentOn("xUnit-Tests");
         }
         
-        if (BuildParameters.UseDotNet)
+        if (BuildParameters.ShouldUseDotNet)
         {
             BuildParameters.Tasks.RestoreTask.IsDependentOn("DotNet-Restore");
         }

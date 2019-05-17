@@ -47,12 +47,13 @@ Task("iPhone-Info-Plist")
         plist["CFBundleVersion"] = BuildParameters.BuildNumber == 0 ? BuildParameters.Version.BuildMetaData : BuildParameters.BuildNumber.ToString();
 
         var bundleIdentifier = EnvironmentVariable(Environment.BundleIdentifierVariable);
+        Verbose("CFBundleIdentifier: {0}", bundleIdentifier);
         if(!string.IsNullOrEmpty(bundleIdentifier))
         {
-            Verbose("CFBundleIdentifier: {0}", bundleIdentifier);
             plist["CFBundleIdentifier"] = bundleIdentifier;
         }
 
+        Verbose("Serializing the Plist: {0}", BuildParameters.PlistFilePath);
         SerializePlist(BuildParameters.PlistFilePath, plist);
     });
 

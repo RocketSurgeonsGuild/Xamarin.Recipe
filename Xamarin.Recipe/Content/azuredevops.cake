@@ -66,7 +66,6 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
         {
             Verbose("File Path: {0}", result);
             Verbose("File Name: {0}", result.GetFilename());
-            // Verbose("Relative Path: {0}", result.MakeAbsolute(Context.Environment).GetRelativePath(testResultsDirectory));
             Verbose("Absolute File Path: {0}", result.MakeAbsolute(Context.Environment));
         }
 
