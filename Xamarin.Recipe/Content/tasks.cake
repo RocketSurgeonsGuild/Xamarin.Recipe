@@ -8,6 +8,7 @@ public class BuildTasks
     public CakeTaskBuilder DotNetCoreCleanTask { get; set; }
     public CakeTaskBuilder RestoreTask { get; set; }
     public CakeTaskBuilder DotNetCoreRestoreTask { get; set; }
+    public CakeTaskBuilder NuGetRestoreTask { get;set; }
     public CakeTaskBuilder BuildTask { get; set; }
     public CakeTaskBuilder AppIconCopy {get; set; }
     public CakeTaskBuilder iOSArchiveTask { get; set; }

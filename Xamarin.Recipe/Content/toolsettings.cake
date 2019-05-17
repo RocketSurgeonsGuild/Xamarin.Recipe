@@ -16,6 +16,7 @@ public static class ToolSettings
     public static int MaxCpuCount { get; private set; }
     public static DirectoryPath OutputDirectory { get; private set; }
     public static string AndroidBuildToolVersion { get; private set; }
+    public static Func<NuGetRestoreSettings> NuGetRestoreSettings { get; private set; }
     public static Func<DotNetCoreRestoreSettings> DotNetRestoreSettings { get; private set; }
     public static Func<DotNetCoreTestSettings> DotNetTestSettings { get; private set; }
     public static Func<XUnit2Settings> XUnitSettings { get; private set; }
@@ -43,6 +44,7 @@ public static class ToolSettings
         int? dupFinderDiscardCost = null,
         bool? dupFinderThrowExceptionOnFindingDuplicates = null,
         string androidBuildToolVersion = "27.0.2",
+        Func<NuGetRestoreSettings> nuGetRestoreSettings = null,
         Func<DotNetCoreRestoreSettings> dotNetRestoreSettings = null,
         Func<DotNetCoreTestSettings> dotNetTestSettings = null,
         Func<XUnit2Settings> xUnitSettings = null,
@@ -78,6 +80,7 @@ public static class ToolSettings
         OutputDirectory = outputDirectory;
         MSBuildVerbosity = msBuildVerbosity;
         AndroidBuildToolVersion = androidBuildToolVersion;
+        NuGetRestoreSettings = nuGetRestoreSettings ?? _nuGetRestoreSettings;
         DotNetTestSettings = dotNetTestSettings ?? _defaultDotNetTestSettings;
         DotNetRestoreSettings = dotNetRestoreSettings ?? _dotNetRestoreSettings;
         XUnitSettings = xUnitSettings ?? _xUnitSettings;
@@ -87,6 +90,14 @@ public static class ToolSettings
         FastlaneSupplyConfigurator = fastlaneSupplyConfigurator ?? _defaultSupplyConfiguration;
         AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
     }
+
+    private static Func<NuGetRestoreSettings> _nuGetRestoreSettings = () => new NuGetRestoreSettings
+    {
+        Source = new []
+            {
+                "https://api.nuget.org/v3/index.json"
+            }
+    };
 
     private static Func<DotNetCoreRestoreSettings> _dotNetRestoreSettings = () => new DotNetCoreRestoreSettings
     {

@@ -39,7 +39,6 @@ Teardown(context =>
 ///////////////////////////////////////////////////////////////////////////////
 // TASK DEFINITIONS
 ///////////////////////////////////////////////////////////////////////////////
-
 BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
     .Does(() =>
     {
@@ -65,7 +64,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         Information("Test DirectoryPath: {0}", MakeAbsolute(BuildParameters.TestDirectoryPath));
     });
 
-    BuildParameters.Tasks.CleanTask = Task("Clean")
+BuildParameters.Tasks.CleanTask = Task("Clean")
     .IsDependentOn("Show-Info")
     .IsDependentOn("Print-AzureDevOps-Environment-Variables")
     .Does(() =>
@@ -75,19 +74,7 @@ BuildParameters.Tasks.ShowInfoTask = Task("Show-Info")
         CleanDirectories(BuildParameters.Paths.Directories.ToClean);
     });
 
-    BuildParameters.Tasks.RestoreTask = Task("Restore")
-    .IsDependentOn("Clean")
-    .Does(() =>
-    {
-        Information("Restoring {0}...", BuildParameters.SolutionFilePath);
-
-        NuGetRestore(
-            BuildParameters.SolutionFilePath,
-            new NuGetRestoreSettings
-            {
-                Source = BuildParameters.NuGetSources
-            });
-    });
+BuildParameters.Tasks.RestoreTask = Task("Restore").IsDependentOn("Clean");
 
 BuildParameters.Tasks.BuildTask = Task("Build").IsDependentOn("Restore");
 
@@ -183,6 +170,15 @@ public class Builder
         if(BuildParameters.ShouldRunxUnit)
         {
             BuildParameters.Tasks.TestTask.IsDependentOn("xUnit-Tests");
+        }
+        
+        if (BuildParameters.UseDotNet)
+        {
+            BuildParameters.Tasks.RestoreTask.IsDependentOn("DotNet-Restore");
+        }
+        else
+        {
+            BuildParameters.Tasks.RestoreTask.IsDependentOn("NuGet-Restore");
         }
     }
 }
