@@ -89,7 +89,9 @@ BuildParameters.Tasks.CleanTask = Task("Clean")
         CleanDirectories(BuildParameters.Paths.Directories.ToClean);
     });
 
-BuildParameters.Tasks.RestoreTask = Task("Restore").IsDependentOn("Clean");
+BuildParameters.Tasks.RestoreTask = Task("Restore")
+                                        .IsDependentOn("Clean")
+                                        .IsDependentOn("Add-NuGet-Source");
 
 BuildParameters.Tasks.BuildTask = Task("Build").IsDependentOn("Restore");
 

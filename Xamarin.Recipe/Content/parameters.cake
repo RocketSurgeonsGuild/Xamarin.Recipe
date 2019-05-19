@@ -62,6 +62,7 @@ public static class BuildParameters
     public static string RepositoryName { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
+    public static ICollection<NuGetPackageSource> NuGetPackageSources { get; private set; }
     public static ICollection<FilePath> UnitTestWhitelist { get; private set; }
     public static ICollection<FilePath> UITestWhitelist { get; private set; }
 
@@ -106,6 +107,7 @@ public static class BuildParameters
         FilePath androidManifest = null,
         FilePath nugetConfig = null,
         ICollection<string> nuGetSources = null,
+        ICollection<NuGetPackageSource> nuGetPackageSources = null,
         ICollection<FilePath> unitTestWhitelist = null,
         ICollection<FilePath> uiTestWhitelist = null)
     {
@@ -155,6 +157,7 @@ public static class BuildParameters
 
         NugetConfig = nugetConfig;
         NuGetSources = GetNuGetSources(context, nuGetSources);
+        NuGetPackageSources = nuGetPackageSources ?? Array.Empty<NuGetPackageSource>();
         UnitTestWhitelist = unitTestWhitelist ?? Array.Empty<FilePath>();
         UITestWhitelist = uiTestWhitelist ?? Array.Empty<FilePath>();
 
