@@ -25,6 +25,7 @@ public static class ToolSettings
     public static Action<FastlanePilotConfiguration> FastlanePilotConfigurator { get; private set; }
     public static Action<FastlaneSupplyConfiguration> FastlaneSupplyConfigurator { get; private set; }
     public static Action<TFBuildPublishCodeCoverageData> AzureDevOpsPublishCodeCoverageData { get; private set; }
+    public static Func<TFBuildPublishTestResultsData> AzureDevOpsPublishTestResultsData { get; private set; }
 
     public static void SetToolSettings(
         ICakeContext context,
@@ -52,7 +53,8 @@ public static class ToolSettings
         Action<FastlaneMatchConfiguration> fastlaneMatchConfigurator = null,
         Action<FastlanePilotConfiguration> fastlanePilotConfigurator = null,
         Action<FastlaneSupplyConfiguration> fastlaneSupplyConfigurator = null,
-        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = default(Action<TFBuildPublishCodeCoverageData>)
+        Action<TFBuildPublishCodeCoverageData> azureDevOpsPublishCodeCoverageData = default(Action<TFBuildPublishCodeCoverageData>),
+        Func<TFBuildPublishTestResultsData> azureDevOpsPublishTestResultsData = default(Func<TFBuildPublishTestResultsData>)
     )
     {
         context.Information("Setting up tools...");
@@ -89,6 +91,7 @@ public static class ToolSettings
         FastlanePilotConfigurator = fastlanePilotConfigurator ?? _defaultPilotConfiguration;
         FastlaneSupplyConfigurator = fastlaneSupplyConfigurator ?? _defaultSupplyConfiguration;
         AzureDevOpsPublishCodeCoverageData = azureDevOpsPublishCodeCoverageData;
+        AzureDevOpsPublishTestResultsData = azureDevOpsPublishTestResultsData ?? _azureDevOpsPublishTestResultsData;
     }
 
     private static Func<NuGetRestoreSettings> _nuGetRestoreSettings = () => new NuGetRestoreSettings
@@ -124,6 +127,14 @@ public static class ToolSettings
                     XmlReport = true,
                     NoAppDomain = true
                 };
+
+    private static Func<TFBuildPublishTestResultsData> _azureDevOpsPublishTestResultsData = () => new TFBuildPublishTestResultsData
+    {
+        Configuration = BuildParameters.Configuration,
+        TestRunTitle = "Unit Tests",
+        TestRunner = TFTestRunnerType.XUnit,
+        TestResultsFiles = new [] { BuildParameters.Paths.Files.TestResultsFilePath }
+    };
 
     private static Action<FastlaneDeliverConfiguration> _defaultDeliverConfiguration = cfg => { cfg = new FastlaneDeliverConfiguration(); };
 

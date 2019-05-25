@@ -60,9 +60,7 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
 
         var testResults = testResultsDirectory + "/**/*.trx";
 
-        var results = GetFiles(testResults);
-
-        foreach(var result in results.Select(filepath => filepath.MakeAbsolute(Context.Environment)))
+        foreach(var result in GetFiles(testResults).Select(filepath => filepath.MakeAbsolute(Context.Environment)))
         {
             Verbose("File Path: {0}", result);
             Verbose("File Name: {0}", result.GetFilename());
@@ -71,15 +69,7 @@ BuildParameters.Tasks.PublishAzureDevOpsTestResultsTask = Task("Publish-AzureDev
 
         Verbose("Test Results: {0}",BuildParameters.Paths.Files.TestResultsFilePath);
 
-        var testResultsData = new TFBuildPublishTestResultsData
-        {
-            Configuration = BuildParameters.Configuration,
-            TestRunTitle = "Unit Tests",
-            TestRunner = TFTestRunnerType.XUnit,
-            TestResultsFiles = new [] { BuildParameters.Paths.Files.TestResultsFilePath }
-        };
-
-        BuildSystem.TFBuild.Commands.PublishTestResults(testResultsData);
+        BuildSystem.TFBuild.Commands.PublishTestResults(ToolSettings.AzureDevOpsPublishTestResultsData());
     });
 
 BuildParameters.Tasks.PublishAzureDevOpsCodeCoverageTask =
