@@ -1,10 +1,10 @@
- BuildParameters.Tasks.DotNetRestoreTask = Task("DotNet-Restore")
+ BuildParameters.Tasks.DotNetCoreRestoreTask = Task("DotNet-Restore")
     .WithCriteria(() => BuildParameters.ShouldUseDotNet)
     .Does(() => 
     { 
         Verbose("Restoring {0}...", BuildParameters.SolutionFilePath); 
 
-        DotNetCoreRestore(BuildParameters.SolutionFilePath, ToolSettings.DotNetRestoreSettings());
+        DotNetCoreRestore(BuildParameters.SolutionFilePath.FullPath, ToolSettings.DotNetRestoreSettings());
     });
 
 BuildParameters.Tasks.NuGetRestoreTask = Task("NuGet-Restore")
@@ -19,8 +19,8 @@ BuildParameters.Tasks.NuGetRestoreTask = Task("NuGet-Restore")
 BuildParameters.Tasks.AddNuGetPackageSourceTask =
     Task("Add-NuGet-Source")
         .IsDependentOn("Clean")
-        .WithCriteria(() => BuildParameters.AddNuGetSource.Any())
-        .DoesForEach(BuildParameters.AddNuGetSources, source =>
+        .WithCriteria(() => BuildParameters.NuGetPackageSources.Any())
+        .DoesForEach(BuildParameters.NuGetPackageSources, source =>
         {
             Verbose("Adding Package Source: {0} - {1}", source.Name, source.Source);
             NuGetAddSource(source.Name, source.Source, source.Settings);
