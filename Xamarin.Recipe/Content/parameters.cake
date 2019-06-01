@@ -62,7 +62,7 @@ public static class BuildParameters
     public static string RepositoryName { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
-    public static ICollection<NuGetPackageSource> NuGetPackageSources { get; private set; } = Array.Empty<NuGetPackageSource>();
+    public static ICollection<NuGetPackageSource> NuGetPackageSources { get; private set; } = new List<NuGetPackageSource>();
     public static ICollection<FilePath> UnitTestWhitelist { get; private set; }
     public static ICollection<FilePath> UITestWhitelist { get; private set; }
 
@@ -157,7 +157,7 @@ public static class BuildParameters
 
         NugetConfig = nugetConfig;
         NuGetSources = GetNuGetSources(context, nuGetSources);
-        NuGetPackageSources = nuGetPackageSources ?? Array.Empty<NuGetPackageSource>();
+        NuGetPackageSources = nuGetPackageSources ?? new List<NuGetPackageSource>();
         UnitTestWhitelist = unitTestWhitelist ?? Array.Empty<FilePath>();
         UITestWhitelist = uiTestWhitelist ?? Array.Empty<FilePath>();
 
@@ -179,9 +179,9 @@ public static class BuildParameters
 
         ShouldRunxUnit = shouldRunxUnit ?? !IsDotNetCoreBuild;
 
-        ShouldRunUnitTests = shouldRunUnitTests ?? unitTestWhitelist.Any();
+        ShouldRunUnitTests = shouldRunUnitTests ?? unitTestWhitelist != null;
 
-        ShouldRunUITests = shouldRunUITests ?? uiTestWhitelist.Any();
+        ShouldRunUITests = shouldRunUITests ?? uiTestWhitelist != null;
 
         ShouldRunFastlaneDeliver = context.DirectoryExists(BuildParameters.Paths.Directories.Metadata) && (IsReleaseBranch || IsHotFixBranch || (IsMainBranch && IsTagged));
 
@@ -244,8 +244,8 @@ public static class BuildParameters
         context.Information("IOSProjectPath: {0}", IOSProjectPath);
         context.Information("\n");
 
-        context.Information("UnitTestWhitelist: Count({0})", UnitTestWhitelist.Count);
-        context.Information("UITestWhitelist: Count({0})", UITestWhitelist.Count);
+        context.Information("UnitTestWhitelist: Count({0})", UnitTestWhitelist?.Count);
+        context.Information("UITestWhitelist: Count({0})", UITestWhitelist?.Count);
         context.Information("\n");
 
         context.Information("ShouldCopyImages: {0}", ShouldCopyImages);

@@ -19,11 +19,11 @@ BuildParameters.Tasks.NuGetRestoreTask = Task("NuGet-Restore")
 BuildParameters.Tasks.AddNuGetPackageSourceTask =
     Task("Add-NuGet-Source")
         .IsDependentOn("Clean")
-        .WithCriteria(() => BuildParameters.NuGetPackageSources.Any())
-        .DoesForEach(BuildParameters.NuGetPackageSources, source =>
+        .WithCriteria(() => BuildParameters.NuGetPackageSources != null)
+        .DoesForEach(BuildParameters.NuGetPackageSources, (source, context) =>
         {
             Verbose("Adding Package Source: {0} - {1}", source.Name, source.Source);
-            NuGetAddSource(source.Name, source.Source, source.Settings);
+            context.NuGetAddSource(source.Name, source.Source, source.Settings);
         });
 
 public class NuGetPackageSource
