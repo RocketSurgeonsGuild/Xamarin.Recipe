@@ -62,7 +62,7 @@ public static class BuildParameters
     public static string RepositoryName { get; private set; }
     public static FilePath NugetConfig { get; private set; }
     public static ICollection<string> NuGetSources { get; private set; }
-    public static ICollection<NuGetPackageSource> NuGetPackageSources { get; private set; }
+    public static ICollection<NuGetPackageSource> NuGetPackageSources { get; private set; } = Array.Empty<NuGetPackageSource>();
     public static ICollection<FilePath> UnitTestWhitelist { get; private set; }
     public static ICollection<FilePath> UITestWhitelist { get; private set; }
 
