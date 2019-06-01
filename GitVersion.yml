@@ -25,7 +25,7 @@ branches:
     track-merge-target: false
   release[/-]:
     mode: ContinuousDelivery
-    tag: beta
+    tag: rc
     increment: Patch
     prevent-increment-of-merged-branch-version: true
     track-merge-target: false
